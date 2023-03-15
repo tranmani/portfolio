@@ -1,101 +1,20 @@
+import useScroll from "@/lib/hooks/use-scroll";
 import Image from "next/image";
 import Link from "next/link";
 
 const Nav = () => {
   return (
-    <div className="justify-center text-center">
-      <Image alt="huy tran's picture" src="/logo.jpg" width={170} height={170} className="margin-auto mt-14 rounded-full" />
-      <h1 className="mt-8">Huy Tran</h1>
-      <div>Front-end / Back-end developer</div>
-      <div>in the Netherlands 🇳🇱</div>
-
-      <ul className="mt-8">
-        {sections.map((section) => (
-          <li key={section.section}>
-            <Link href="#" data-nav-section={section.section}>
-              {section.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <div>
-        <p>
-          <small>a</small>
-        </p>
-        <ul>
-          {socialMedias.map((socialMedia) => (
-            <li key={socialMedia.name}>
-              <Link href={socialMedia.link}>
-                <i className={socialMedia.icon}></i>
-              </Link>
-            </li>
-          ))}
-        </ul>
+    <div
+      className={`fixed top-0 left-0 z-[100] flex h-[120px] w-full items-center justify-center transition-all ease-[cubic-bezier(0,0,0.2,1)] ${
+        useScroll(50) && "!h-[60px] bg-[rgba(105,90,166,0.1)]"
+      } ${useScroll(550) && "bg-[rgba(105,90,166,0.35))]"} ${useScroll(950) && "bg-[rgba(255,255,255,0.2)]"}`}>
+      <div className={`flex h-full w-full items-center justify-center  backdrop-blur-sm`}>
+        <Link href="/">
+          <Image src="/favicon.ico" height={32} width={32} className="rounded-full" alt="Huy Tran's picture" />
+        </Link>
       </div>
     </div>
   );
 };
 
 export default Nav;
-
-const sections = [
-  {
-    name: "Home",
-    section: "home",
-  },
-  {
-    name: "About",
-    section: "about",
-  },
-  {
-    name: "Services",
-    section: "services",
-  },
-  {
-    name: "Skills",
-    section: "skills",
-  },
-  {
-    name: "Education",
-    section: "education",
-  },
-  {
-    name: "Experience",
-    section: "experience",
-  },
-  {
-    name: "Work",
-    section: "work",
-  },
-  {
-    name: "Blog",
-    section: "blog",
-  },
-  {
-    name: "Contact",
-    section: "contact",
-  },
-];
-
-const socialMedias = [
-  {
-    name: "Facebook",
-    icon: "icon-facebook2",
-    link: "https://www.facebook.com/jackson.ford.399",
-  },
-  {
-    name: "Twitter",
-    icon: "icon-twitter2",
-    link: "https://twitter.com/jacksonford",
-  },
-  {
-    name: "Instagram",
-    icon: "icon-instagram",
-    link: "https://www.instagram.com/jacksonford/",
-  },
-  {
-    name: "LinkedIn",
-    icon: "icon-linkedin2",
-    link: "https://www.linkedin.com/in/jackson-ford-1b1b0a1b/",
-  },
-];

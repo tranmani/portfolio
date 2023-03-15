@@ -17,14 +17,8 @@ export default function Layout({
     <>
       <Meta {...meta} />
       {/* Nav */}
-      <div className="flex justify-center">
-        <div className="hidden h-screen w-72 justify-center bg-slate-200 lg:flex">
-          <Nav />
-        </div>
-        <div className="flex w-[1000px] bg-slate-100">{children}</div>
-      </div>
-
-      {/* <main className="flex w-full flex-col items-center justify-center py-32">{children}</main> */}
+      <Nav />
+      <main className="">{children}</main>
       {/* Footer */}
     </>
   );
