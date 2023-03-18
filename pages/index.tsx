@@ -1,6 +1,5 @@
 import Layout from "@/components/layout";
 import Image from "next/image";
-// linear-gradient(to top, #fff 0%, rgba(105, 90, 166, 0.35) 99%, rgba(105, 90, 166, 0.5) 100%);
 export default function Home() {
   return (
     <Layout>
@@ -22,7 +21,7 @@ export default function Home() {
         <div className="flex flex-wrap justify-center gap-4 md:flex-nowrap">
           <div className="basis-[100%] md:basis-1/4">
             <div className="flex justify-center">
-              <Image src="/logo.jpg" height={250} width={250} className="rounded-full" alt="Huy Tran's picture" />
+              <Image src="/logo.webp" height={250} width={250} className="rounded-full" alt="Huy Tran's picture" />
             </div>
           </div>
           <div className="basis-[100%] md:basis-1/2">
