@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { ParticlesBackground } from "../home/ParticlesBackground";
 import Meta from "./meta";
 import Nav from "./Nav";
 
@@ -16,9 +17,16 @@ export default function Layout({
   return (
     <>
       <Meta {...meta} />
+
       {/* Nav */}
       <Nav />
-      <main className="">{children}</main>
+
+      {/* Main */}
+      <main className="">
+        <ParticlesBackground />
+        {children}
+      </main>
+
       {/* Footer */}
     </>
   );

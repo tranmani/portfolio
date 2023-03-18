@@ -36,7 +36,7 @@ export const ParticlesBackground = () => {
 
   return (
     <Particles
-      id="tsparticles"
+      id="particles"
       init={loadFull}
       options={{
         fullScreen: false,
