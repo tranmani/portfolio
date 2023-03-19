@@ -3,6 +3,7 @@ import About from "@/components/Sections/About";
 import Experience from "@/components/Sections/Experience";
 import Hero from "@/components/Sections/Hero";
 import Portfolio from "@/components/Sections/Portfolio";
+import Technologies from "@/components/Sections/Technologies";
 import { GetServerSideProps } from "next/types";
 import React from "react";
 
@@ -16,6 +17,7 @@ const Home: React.FC<IProps> = ({}) => {
         <About />
         <Portfolio />
         <Experience />
+        <Technologies />
       </div>
     </Layout>
   );

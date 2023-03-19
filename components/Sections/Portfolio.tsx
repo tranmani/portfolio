@@ -1,7 +1,7 @@
-import Image from "next/image";
-import BackgroundAnimation from "../home/BackgroundAnimation";
+import { motion } from "framer-motion";
 import Ghost from "../shared/icons/Ghost";
 import Project from "./Portfolio/Project";
+import React from "react";
 
 const Portfolio: React.FC = () => {
   return (
@@ -16,12 +16,23 @@ const Portfolio: React.FC = () => {
           <p className="text-neutral-400">Selected Work</p>
         </div>
 
+        {/* <motion.div
+          initial="hidden"
+          whileInView="visible"
+          animate="show"
+          viewport={{ once: true }}
+          variants={{
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.15,
+              },
+            },
+          }} */}
         <div className="md:px-12">
           <div className="flex flex-col items-center gap-16">
             {projects.map((project, index) => (
-              <div key={index} className="">
-                <Project project={project} index={index + 1} technologies={project.technologies} />
-              </div>
+              <Project key={index} project={project} index={index + 1} technologies={project.technologies} />
             ))}
           </div>
         </div>
