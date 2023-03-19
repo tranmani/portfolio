@@ -5,7 +5,7 @@ import React from "react";
 
 const Portfolio: React.FC = () => {
   return (
-    <section className="mb-24 max-w-[85vw] md:max-w-[1400px]" id="portfolio">
+    <section className="mb-24" id="portfolio">
       <div className="flex flex-col items-center justify-center">
         <div className="">
           <Ghost className="h-24 w-24" />
@@ -16,20 +16,7 @@ const Portfolio: React.FC = () => {
           <p className="text-neutral-400">Selected Work</p>
         </div>
 
-        {/* <motion.div
-          initial="hidden"
-          whileInView="visible"
-          animate="show"
-          viewport={{ once: true }}
-          variants={{
-            hidden: {},
-            show: {
-              transition: {
-                staggerChildren: 0.15,
-              },
-            },
-          }} */}
-        <div className="md:px-12">
+        <div className="">
           <div className="flex flex-col items-center gap-16">
             {projects.map((project, index) => (
               <Project key={index} project={project} index={index + 1} technologies={project.technologies} />

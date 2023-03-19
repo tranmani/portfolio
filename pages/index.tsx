@@ -14,10 +14,12 @@ const Home: React.FC<IProps> = ({}) => {
     <Layout>
       <div className="flex flex-col items-center">
         <Hero />
-        <About />
-        <Portfolio />
-        <Experience />
-        <Technologies />
+        <div className="max-w-[85vw] md:max-w-[1200px] md:px-12">
+          <About />
+          <Portfolio />
+          <Experience />
+          {/* <Technologies /> */}
+        </div>
       </div>
     </Layout>
   );
