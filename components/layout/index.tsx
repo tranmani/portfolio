@@ -22,7 +22,7 @@ export default function Layout({
       <Nav />
 
       {/* Main */}
-      <main className="">
+      <main className="bg-white dark:bg-black">
         <ParticlesBackground />
         {children}
       </main>

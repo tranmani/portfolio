@@ -1,10 +1,13 @@
+import useDarkMode from "@/lib/hooks/use-dark-mode";
 import useScroll from "@/lib/hooks/use-scroll";
 import useWindowSize from "@/lib/hooks/use-window-size";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 
 const Nav = () => {
   const { windowSize } = useWindowSize();
+  const { theme, toggleTheme } = useDarkMode();
 
   return (
     <div
@@ -26,6 +29,9 @@ const Nav = () => {
           />
         </Link>
       </div>
+
+      <button onClick={() => toggleTheme}>Theme</button>
+      <div>{theme}</div>
     </div>
   );
 };

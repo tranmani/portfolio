@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const About: React.FC = () => {
   return (
-    <section className="mb-24" id="about">
+    <section className="mb-24 max-w-[85vw] text-black dark:text-white md:max-w-[1400px] md:px-12" id="about">
       <div className="flex flex-wrap justify-center gap-4 md:flex-nowrap">
         <div className="basis-[100%] md:basis-1/4">
           <div className="flex justify-center">

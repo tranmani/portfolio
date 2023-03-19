@@ -11,10 +11,12 @@ interface IProps {}
 const Home: React.FC<IProps> = ({}) => {
   return (
     <Layout>
-      <Hero />
-      <About />
-      <Portfolio />
-      <Experience />
+      <div className="flex flex-col items-center">
+        <Hero />
+        <About />
+        <Portfolio />
+        <Experience />
+      </div>
     </Layout>
   );
 };

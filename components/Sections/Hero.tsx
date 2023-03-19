@@ -1,7 +1,7 @@
 const Hero: React.FC = () => {
   return (
     <section
-      className="stop-[rgba(105,90,166,0.5)] flex h-[100vh] items-center  justify-center bg-gradient-to-t from-white to-[rgba(105,90,166,0.35)]"
+      className="stop-[rgba(105,90,166,0.5)] flex h-[100vh] w-full items-center  justify-center bg-gradient-to-t from-white to-[rgba(105,90,166,0.35)]"
       id="hero">
       <div className="grow-1">
         <h1 className="bold mb-4 text-4xl text-slate-800 opacity-80">
