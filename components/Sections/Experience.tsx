@@ -18,17 +18,17 @@ const Experience: React.FC = () => {
   };
 
   return (
-    <section className="mb-24 " id="experience">
+    <section className="mb-24" id="experience">
       <div className="flex flex-wrap lg:flex-nowrap">
         <div className="basis-[100%] md:basis-[30%] lg:basis-[20%]">
           <div className="mb-14 before:mb-5 before:block before:h-3 before:w-24 before:rounded-md before:bg-[rgba(105,90,166,0.6)] sm:text-left">
             <h3 className="text-3xl font-semibold uppercase">Experiences</h3>
-            <span className="text-sm uppercase tracking-wider dark:text-gray-400">Where I have worked</span>
+            <span className="text-sm uppercase tracking-wider dark:text-gray-400">My working experience</span>
           </div>
         </div>
-        <ol className="relative basis-[100%] border-l border-gray-200 dark:border-gray-700 md:basis-[70%] lg:basis-[80%]">
+        <div className="relative basis-[100%] border-l border-dashed border-gray-200 dark:border-gray-700 md:basis-[70%] lg:basis-[80%]">
           {experiences.map((experience, index) => (
-            <li className="mb-10 ml-6" key={index}>
+            <div className="mb-10 ml-6" key={index}>
               {renderCalendarIcon()}
               <div className="mb-1 items-end">
                 <span className="text-lg font-semibold text-gray-900 dark:text-white">{experience.title}</span>
@@ -54,9 +54,9 @@ const Experience: React.FC = () => {
                   );
                 })}
               </p>
-            </li>
+            </div>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
   );
@@ -100,7 +100,7 @@ const experiences: IExperience[] = [
     company: "Eye Designer",
     place: "Geneva, Switzerland",
     description:
-      "- Responsible for the social media appearance of the salon.|- Setting up a few e-commerce websites (NopCommerce) for the business.",
+      "- Responsible for the social media appearance of the salon.|- Setting up a few e-commerce websites (NopCommerce) for the business BrowHenna.ch - DluxPro.com.",
     date: "July 2020 - December 2020",
   },
 ];

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import Ghost from "../shared/icons/Ghost";
 import Project from "./Portfolio/Project";
 import React from "react";
