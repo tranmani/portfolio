@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Tooltip from "../shared/tooltip";
 
 interface ITechnology {
   name: string;
@@ -16,16 +17,17 @@ const Technologies: React.FC = () => {
   return (
     <section className="mb-24" id="technologies">
       <div className="">
-        <div className="grid w-full auto-rows-auto grid-cols-6 gap-4">
+        <div className="grid auto-rows-min grid-cols-3 gap-4 md:grid-cols-6">
           {technologies.map((technology, index) => (
-            <div key={index} className={`flex flex-col items-center justify-center ${technology.className}`}>
-              <Image
-                src={technology.logo}
-                alt={technology.name}
-                width={imgSize(technology.className)}
-                height={imgSize(technology.className)}
-              />
-              <span className="text-center">{technology.name}</span>
+            <div key={index} className={`flex h-full flex-col items-center justify-center p-4 ${technology.className}`}>
+              <Tooltip content={technology.name}>
+                <Image
+                  src={technology.logo}
+                  alt={technology.name}
+                  width={imgSize(technology.className)}
+                  height={imgSize(technology.className)}
+                />
+              </Tooltip>
             </div>
           ))}
         </div>
