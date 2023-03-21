@@ -4,7 +4,7 @@ import React from "react";
 
 const Portfolio: React.FC = () => {
   return (
-    <section className="mb-24" id="portfolio">
+    <section className="mb-24 max-w-[85vw] md:max-w-[1200px] md:px-12" id="portfolio">
       <div className="flex flex-col items-center justify-center">
         <div className="">
           <Ghost className="h-24 w-24" />

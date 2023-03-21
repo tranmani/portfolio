@@ -5,6 +5,9 @@ const nextConfig = {
   images: {
     domains: ["tranmani.com"],
   },
+  compiler: {
+    styledComponents: true,
+  },
 };
 
 module.exports = nextConfig;

@@ -18,8 +18,8 @@ const Experience: React.FC = () => {
   };
 
   return (
-    <section className="mb-24" id="experience">
-      <div className="flex flex-wrap lg:flex-nowrap">
+    <section className="mb-24 max-w-[85vw] md:max-w-[1200px] md:px-12" id="experience">
+      <div className="flex flex-wrap gap-x-6 lg:flex-nowrap">
         <div className="basis-[100%] md:basis-[30%] lg:basis-[20%]">
           <div className="mb-14 before:mb-5 before:block before:h-3 before:w-24 before:rounded-md before:bg-[rgba(105,90,166,0.6)] sm:text-left">
             <h3 className="text-3xl font-semibold uppercase">Experiences</h3>

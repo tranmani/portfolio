@@ -1,10 +1,10 @@
 const Hero: React.FC = () => {
   return (
     <section
-      className="stop-[rgba(105,90,166,0.5)] flex h-[100vh] w-full items-center  justify-center bg-gradient-to-t from-white to-[rgba(105,90,166,0.35)]"
+      className="stop-[rgba(105,90,166,0.5)] flex h-[100vh] w-full items-center justify-center bg-gradient-to-t from-white to-[rgba(105,90,166,0.35)] dark:from-[rgba(26,26,26,0.35)] dark:to-[rgba(105,90,166,0.35)]"
       id="hero">
       <div className="grow-1">
-        <h1 className="bold mb-4 text-4xl text-slate-800 opacity-80">
+        <h1 className="bold mb-4 text-4xl text-slate-800 opacity-80 dark:text-slate-50">
           <span className="mb-[calc(1px+(27-4)*((100vw-200px)/(1300-300)))] block text-[calc(30px+(30-30)*((100vw-200px)/(1300-300)))] font-[500]">
             HI!
           </span>
