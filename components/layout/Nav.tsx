@@ -26,11 +26,13 @@ const Nav = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 z-[100] flex h-[120px] w-full items-center justify-center transition-all ease-[cubic-bezier(0,0,0.2,1)] ${
-        useScroll(50) && "!h-[60px] bg-[rgba(105,90,166,0.1)]"
+      className={`fixed top-0 left-0 z-[100] flex h-[120px] w-full items-center justify-center border-[rgba(105,90,166,0.3)] transition-all ease-[cubic-bezier(0,0,0.2,1)] dark:border-[rgba(105,90,166,0.3)] ${
+        useScroll(50) && "!h-[60px] border-b-[1px] bg-[rgba(105,90,166,0.1)]"
       } ${useScroll((windowSize.height || 1100) / 1.5) && "bg-[rgba(105,90,166,0.35)]"} ${
         useScroll((windowSize.height || 1900) / 1.5) && "bg-[rgba(255,255,255,0.2)] dark:bg-[rgba(0,0,0,0.2)]"
       }`}>
+      <button onClick={() => toggleTheme()}>Theme</button>
+      <div>{theme}</div>
       <div className={`flex h-full w-full items-center justify-center ${useScroll(50) && "backdrop-blur-sm"}`}>
         <Link href="/">
           <Image
@@ -44,9 +46,6 @@ const Nav = () => {
           />
         </Link>
       </div>
-
-      <button onClick={() => toggleTheme()}>Theme</button>
-      <div>{theme}</div>
     </div>
   );
 };

@@ -14,13 +14,15 @@ const useDarkMode = () => {
     }
     document.documentElement.classList.remove(theme)
     document.documentElement.classList.add(theme === 'dark' ? 'light' : 'dark')
-
-    console.log(window);
-
   }, []);
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
+    if (!document) return;
+    else {
+      document.documentElement.classList.remove(theme)
+      document.documentElement.classList.add(theme === 'dark' ? 'light' : 'dark')
+    }
   };
 
   return { theme, toggleTheme }
