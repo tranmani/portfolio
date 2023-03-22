@@ -14,13 +14,14 @@ const About: React.FC = () => {
         <div className="basis-[100%] md:basis-1/2">
           <p className="mb-2">Who Am I ?</p>
           <p>
-            I'm a frontend programmer with 1 years of experience in creating responsive and user-friendly websites. I'm proficient
-            in HTML, CSS, JavaScript and React. I enjoy learning new technologies and solving challenging problems. Some of my
-            recent projects include this portfolio website, a blog platform for with headless CMS with a focus in SEO.
+            I&apos;m a frontend programmer with 1 years of experience in creating responsive and user-friendly websites. I&apos;m
+            proficient in HTML, CSS, JavaScript and React. I enjoy learning new technologies and solving challenging problems.
+            Some of my recent projects include this portfolio website, a blog platform for with headless CMS with a focus in SEO.
           </p>
           <br />
           <p className="pb-6">
-            I have a degree in computer science from XYZ University and I'm currently working remotely in Almere, the Netherlands.
+            I have a degree in computer science from Saxion University and I&apos;m currently working remotely in Almere, the
+            Netherlands.
           </p>
           <Link
             href="https://nbviewer.org/github/tranmani/tranmani/blob/dev/HuyTran_CV.pdf"
