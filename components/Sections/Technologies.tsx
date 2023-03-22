@@ -80,7 +80,7 @@ const Technologies: React.FC = () => {
                   }}
                   style={technology.style}
                 />
-                <motion.div
+                <Card
                   variants={cardVariants}
                   transition={{
                     ease: "easeOut",
@@ -93,8 +93,9 @@ const Technologies: React.FC = () => {
                     height={isMobile ? 100 : imgSize(technology.className.split(" ")[1])}
                     width={isMobile ? 100 : imgSize(technology.className.split(" ")[0])}
                     aria-label={technology.name}
+                    style={{ objectFit: "contain" }}
                   />
-                </motion.div>
+                </Card>
               </Wrapper>
             </Tooltip>
           ))}
@@ -111,12 +112,16 @@ const Wrapper = styled(motion.div)`
 `;
 
 const Glow = styled(motion.div)`
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  filter: blur(15px);
-  border-radius: 16px;
+  @media only screen and (min-width: 768px) {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(15px);
+    border-radius: 16px;
+  }
 `;
+
+const Card = styled(motion.div)``;

@@ -195,4 +195,21 @@ export const technologies: ITechnology[] = [
       background: "linear-gradient(120deg, rgb(254, 173, 166) 0%, rgb(245, 239, 239) 100%)",
     },
   },
+  {
+    name: "Vue.js",
+    logo: "/tech-logo/vue.svg",
+    className: "col-span-1 row-span-1",
+    style: {
+      background:
+        "linear-gradient(90deg,#6d9ee7 12.5%,#adbfe3 26.04%,#f0c9b4 39.06%,#f4ba6e 56.96%,#ffc178 70.83%,#e58334 92.71%)",
+    },
+  },
+  {
+    name: "Figma",
+    logo: "/tech-logo/figma.svg",
+    className: "col-span-1 row-span-1",
+    style: {
+      background: "linear-gradient(90deg, rgb(167, 159, 253) -10%, rgb(227, 190, 233) 40%, rgb(244, 168, 154) 70%)",
+    },
+  },
 ];

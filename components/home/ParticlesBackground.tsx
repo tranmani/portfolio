@@ -9,21 +9,13 @@ export const ParticlesBackground = () => {
   const isSmallerThan600 = useMediaQuery("(max-width: 600px)");
   const isSmallerThan1024 = useMediaQuery("(max-width: 1024px)");
 
-  const getBoubleColor = () => {
+  const getBubbleColor = () => {
     if (theme === "light") {
       return "#000";
     } else {
       return "#fff";
     }
   };
-
-  React.useEffect(() => {
-    if (theme === "light") {
-      document.documentElement.classList.remove("dark");
-    } else {
-      document.documentElement.classList.add("dark");
-    }
-  }, [theme]);
 
   const getBubbleNumber = () => {
     if (isSmallerThan600) {
@@ -88,7 +80,7 @@ export const ParticlesBackground = () => {
         },
         particles: {
           color: {
-            value: getBoubleColor(),
+            value: getBubbleColor(),
           },
           number: {
             value: getBubbleNumber(),
