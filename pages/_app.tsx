@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { Analytics } from "@vercel/analytics/react";
 import { Provider as RWBProvider } from "react-wrap-balancer";
 import cx from "classnames";
 import localFont from "@next/font/local";
@@ -18,13 +17,10 @@ const inter = Inter({
 
 export default function MyApp({ Component, pageProps: {} }: AppProps) {
   return (
-    <>
-      <RWBProvider>
-        <div className={cx(sfPro.variable, inter.variable)}>
-          <Component />
-        </div>
-      </RWBProvider>
-      <Analytics />
-    </>
+    <RWBProvider>
+      <div className={cx(sfPro.variable, inter.variable)}>
+        <Component />
+      </div>
+    </RWBProvider>
   );
 }

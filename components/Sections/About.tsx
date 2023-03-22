@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import styled from "styled-components";
 
 const About: React.FC = () => {
   return (
@@ -14,9 +13,10 @@ const About: React.FC = () => {
         <div className="basis-[100%] md:basis-1/2">
           <p className="mb-2">Who Am I ?</p>
           <p>
-            I&apos;m a frontend programmer with 1 years of experience in creating responsive and user-friendly websites. I&apos;m
-            proficient in HTML, CSS, JavaScript and React. I enjoy learning new technologies and solving challenging problems.
-            Some of my recent projects include this portfolio website, a blog platform for with headless CMS with a focus in SEO.
+            I&apos;m a frontend programmer who have experience with creating responsive and user-friendly websites. I&apos;m
+            proficient in JavaScript, React, Vue and Nodejs. I enjoy learning and adapt to new technologies as well as solving
+            challenging problems. Some of my recent projects include this portfolio website, a blog platform for with headless CMS
+            with a focus in SEO.
           </p>
           <br />
           <p className="pb-6">
