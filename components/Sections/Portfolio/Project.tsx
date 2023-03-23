@@ -32,7 +32,7 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
       className={`flex ${index % 2 === 0 ? "flex-row-reverse" : ""} flex-wrap gap-12 md:flex-nowrap`}
     >
       <div className="basis-[100%] md:basis-1/2">
-        <Link href={project.link} target="_blank">
+        <Link href={project.link} target={project.link.substring(0, 1) === "#" ? "_top" : "_blank"}>
           <Image
             src={project.image || "/logo.webp"}
             height={550}
@@ -44,7 +44,7 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
       </div>
       {/* Project info */}
       <div className="flex basis-[100%] flex-col md:basis-1/2">
-        <Link href={project.link} target="_blank" className="mb-12">
+        <Link href={project.link} target={project.link.substring(0, 1) === "#" ? "_top" : "_blank"} className="mb-12">
           <h3 className="text-1xl font-bold uppercase md:text-2xl">{project.title}</h3>
         </Link>
         <p className="mb-12">{project.description}</p>
@@ -55,7 +55,7 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
         </div>
 
         <div className="flex gap-4">
-          <Link href={project.link} target="_blank" className="w-32">
+          <Link href={project.link} target={project.link.substring(0, 1) === "#" ? "_top" : "_blank"} className="w-32">
             <div className="flex items-center gap-1 transition-all ease-in-out hover:gap-4">
               <span>Visit the site</span>
               <span>
@@ -63,7 +63,7 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
               </span>
             </div>
           </Link>
-          <Link href={project.github} target="_blank">
+          <Link href={project.github} target={project.link.substring(0, 1) === "#" ? "_top" : "_blank"}>
             <span>Github</span>
           </Link>
         </div>

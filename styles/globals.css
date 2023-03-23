@@ -9,3 +9,7 @@
 .light {
   @apply bg-zinc-50 text-gray-800;
 }
+
+html {
+  scroll-behavior: smooth;
+}

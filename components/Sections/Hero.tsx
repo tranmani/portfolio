@@ -6,11 +6,12 @@ const Hero: React.FC = () => {
     >
       <div className="grow-1">
         <h1 className="bold mb-4 text-4xl text-slate-800 opacity-80 dark:text-slate-50">
-          <span className="mb-[calc(1px_+_(27_-_4)*((100vw-200px)/(1300-300)))] block text-[calc(30px_+_(40_-_30)*((100vw_-_200px)/(1300_-_300)))] font-[500]">
+          <span className="mb-[calc(1px_+_(27_-_4)*((100vw-200px)/(1300-300)))] block text-[calc(30px_+_(40_-_30)*((100vw_-_200px)/(1300_-_300)))] font-[300]">
             HI!
           </span>
-          <span className="mb-0, block text-[calc(40px_+_(45_-_30)*((100vw_-_200px)/(1300_-_300)))]">
-            I am Huy Tran
+          <span className="mb-0, block text-[calc(40px_+_(45_-_30)*((100vw_-_200px)/(1300_-_300)))] font-[300]">
+            I am
+            <span className="font-bold text-violet-500"> Huy Tran</span>
           </span>
         </h1>
         <br />
