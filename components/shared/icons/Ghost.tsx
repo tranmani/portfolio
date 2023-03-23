@@ -10,24 +10,90 @@ const Ghost: React.FC<IProps> = ({ className }) => {
         data-name="Layer 1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 1024 1024">
+        viewBox="0 0 1024 1024"
+      >
         <defs>
-          <linearGradient id="linear-gradient" x1={396.95} y1={98.5} x2={589.4} y2={824.82} gradientUnits="userSpaceOnUse">
+          <linearGradient
+            id="linear-gradient"
+            x1={396.95}
+            y1={98.5}
+            x2={589.4}
+            y2={824.82}
+            gradientUnits="userSpaceOnUse"
+          >
             <stop offset={0.01} stopColor="#f6f5fa" />
             <stop offset={1} stopColor="#dfd9ef" />
           </linearGradient>
-          <linearGradient id="linear-gradient-2" x1={631.03} y1={816.9} x2={631.03} y2={391.95} gradientUnits="userSpaceOnUse">
+          <linearGradient
+            id="linear-gradient-2"
+            x1={631.03}
+            y1={816.9}
+            x2={631.03}
+            y2={391.95}
+            gradientUnits="userSpaceOnUse"
+          >
             <stop offset={0.01} stopColor="#cfc5e6" />
             <stop offset={1} stopColor="#dfd9ef" />
           </linearGradient>
-          <linearGradient id="linear-gradient-3" x1={258.88} y1={816.9} x2={258.88} y2={391.95} xlinkHref="#linear-gradient-2" />
-          <linearGradient id="linear-gradient-4" x1={764.46} y1={816.9} x2={764.46} y2={391.95} xlinkHref="#linear-gradient-2" />
-          <linearGradient id="linear-gradient-5" x1={665.78} y1={816.9} x2={665.78} y2={391.95} xlinkHref="#linear-gradient-2" />
-          <linearGradient id="linear-gradient-6" x1={546.06} y1={816.9} x2={546.06} y2={391.95} xlinkHref="#linear-gradient-2" />
-          <linearGradient id="linear-gradient-7" x1={417.53} y1={816.9} x2={417.53} y2={391.95} xlinkHref="#linear-gradient-2" />
-          <linearGradient id="linear-gradient-8" x1={585.47} y1={501.4} x2={605.32} y2={559.15} xlinkHref="#linear-gradient-2" />
-          <linearGradient id="linear-gradient-9" x1={260.83} y1={522.44} x2={283.25} y2={587.68} xlinkHref="#linear-gradient-2" />
-          <style>{".cls-15,.cls-2{fill:#fff}.cls-9{fill:#111116}.cls-14{fill:#ff9c9d;opacity:.44}.cls-15{opacity:.38}"}</style>
+          <linearGradient
+            id="linear-gradient-3"
+            x1={258.88}
+            y1={816.9}
+            x2={258.88}
+            y2={391.95}
+            xlinkHref="#linear-gradient-2"
+          />
+          <linearGradient
+            id="linear-gradient-4"
+            x1={764.46}
+            y1={816.9}
+            x2={764.46}
+            y2={391.95}
+            xlinkHref="#linear-gradient-2"
+          />
+          <linearGradient
+            id="linear-gradient-5"
+            x1={665.78}
+            y1={816.9}
+            x2={665.78}
+            y2={391.95}
+            xlinkHref="#linear-gradient-2"
+          />
+          <linearGradient
+            id="linear-gradient-6"
+            x1={546.06}
+            y1={816.9}
+            x2={546.06}
+            y2={391.95}
+            xlinkHref="#linear-gradient-2"
+          />
+          <linearGradient
+            id="linear-gradient-7"
+            x1={417.53}
+            y1={816.9}
+            x2={417.53}
+            y2={391.95}
+            xlinkHref="#linear-gradient-2"
+          />
+          <linearGradient
+            id="linear-gradient-8"
+            x1={585.47}
+            y1={501.4}
+            x2={605.32}
+            y2={559.15}
+            xlinkHref="#linear-gradient-2"
+          />
+          <linearGradient
+            id="linear-gradient-9"
+            x1={260.83}
+            y1={522.44}
+            x2={283.25}
+            y2={587.68}
+            xlinkHref="#linear-gradient-2"
+          />
+          <style>
+            {".cls-15,.cls-2{fill:#fff}.cls-9{fill:#111116}.cls-14{fill:#ff9c9d;opacity:.44}.cls-15{opacity:.38}"}
+          </style>
         </defs>
 
         <ellipse
@@ -93,9 +159,26 @@ const Ghost: React.FC<IProps> = ({ className }) => {
             fill: "url(#linear-gradient-7)",
           }}
         />
-        <ellipse className="cls-14" cx={347.89} cy={445.46} rx={19.83} ry={13.22} transform="rotate(-.51 347.415 445.313)" />
-        <ellipse className="cls-14" cx={548.84} cy={448.1} rx={19.83} ry={13.22} transform="rotate(-.51 548.505 447.332)" />
-        <path className="cls-15" d="M333.35 257.73s34.37 15.86 74-37S542.2 170.5 542.2 170.5 399.45 144 333.35 257.73Z" />
+        <ellipse
+          className="cls-14"
+          cx={347.89}
+          cy={445.46}
+          rx={19.83}
+          ry={13.22}
+          transform="rotate(-.51 347.415 445.313)"
+        />
+        <ellipse
+          className="cls-14"
+          cx={548.84}
+          cy={448.1}
+          rx={19.83}
+          ry={13.22}
+          transform="rotate(-.51 548.505 447.332)"
+        />
+        <path
+          className="cls-15"
+          d="M333.35 257.73s34.37 15.86 74-37S542.2 170.5 542.2 170.5 399.45 144 333.35 257.73Z"
+        />
         <circle className="cls-2" cx={358.47} cy={396.54} r={6.61} />
         <circle className="cls-2" cx={525.05} cy={399.19} r={6.61} />
         <path

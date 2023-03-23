@@ -24,11 +24,22 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: index % 2 === 0 ? 100 : -100 }}
-      whileInView={{ opacity: 1, x: 0, transition: { type: "spring", delay: 0.05 } }}
-      className={`flex ${index % 2 === 0 ? "flex-row-reverse" : ""} flex-wrap gap-12 md:flex-nowrap`}>
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        transition: { type: "spring", delay: 0.05 },
+      }}
+      className={`flex ${index % 2 === 0 ? "flex-row-reverse" : ""} flex-wrap gap-12 md:flex-nowrap`}
+    >
       <div className="basis-[100%] md:basis-1/2">
         <Link href={project.link} target="_blank">
-          <Image src={project.image || "/logo.webp"} height={550} width={550} className="" alt={`${project.title} image`} />
+          <Image
+            src={project.image || "/logo.webp"}
+            height={550}
+            width={550}
+            className=""
+            alt={`${project.title} image`}
+          />
         </Link>
       </div>
       {/* Project info */}

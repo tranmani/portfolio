@@ -18,7 +18,7 @@ const inter = Inter({
 export default function MyApp({ Component, pageProps: {} }: AppProps) {
   return (
     <RWBProvider>
-      <div className={cx(sfPro.variable, inter.variable)}>
+      <div className={cx(sfPro.variable, inter.variable, "dark")}>
         <Component />
       </div>
     </RWBProvider>

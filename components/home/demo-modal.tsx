@@ -1,11 +1,5 @@
 import Modal from "@/components/shared/modal";
-import {
-  useState,
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useMemo,
-} from "react";
+import { useState, Dispatch, SetStateAction, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { WEBSITE_URL } from "@/lib/constants";
 
@@ -37,16 +31,8 @@ export function useDemoModal() {
   const [showDemoModal, setShowDemoModal] = useState(false);
 
   const DemoModalCallback = useCallback(() => {
-    return (
-      <DemoModal
-        showDemoModal={showDemoModal}
-        setShowDemoModal={setShowDemoModal}
-      />
-    );
+    return <DemoModal showDemoModal={showDemoModal} setShowDemoModal={setShowDemoModal} />;
   }, [showDemoModal, setShowDemoModal]);
 
-  return useMemo(
-    () => ({ setShowDemoModal, DemoModal: DemoModalCallback }),
-    [setShowDemoModal, DemoModalCallback],
-  );
+  return useMemo(() => ({ setShowDemoModal, DemoModal: DemoModalCallback }), [setShowDemoModal, DemoModalCallback]);
 }

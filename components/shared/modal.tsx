@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef } from "react";
 import FocusTrap from "focus-trap-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Leaflet from "./leaflet";

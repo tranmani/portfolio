@@ -7,9 +7,9 @@ import React from "react";
 const Nav = () => {
   const { windowSize } = useWindowSize();
 
-  React.useEffect(() => {
-    document.documentElement.classList.add("dark");
-  }, []);
+  // React.useEffect(() => {
+  //   document.documentElement.classList.add("dark");
+  // }, []);
 
   return (
     <div
@@ -17,7 +17,8 @@ const Nav = () => {
         useScroll(50) && "!h-[60px] border-b-[1px] bg-[rgba(105,90,166,0.1)]"
       } ${useScroll((windowSize.height || 1100) / 1.5) && "bg-[rgba(105,90,166,0.35)]"} ${
         useScroll((windowSize.height || 1900) / 1.5) && "bg-[rgba(255,255,255,0.2)] dark:bg-[rgba(0,0,0,0.2)]"
-      }`}>
+      }`}
+    >
       <div className={`flex h-full w-full items-center justify-center ${useScroll(50) && "backdrop-blur-sm"}`}>
         <Link href="/">
           <Image

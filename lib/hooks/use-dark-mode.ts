@@ -18,15 +18,15 @@ const useDarkMode = () => {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    setTheme(theme === "dark" ? "light" : "dark");
     if (!document) return;
     else {
-      document.documentElement.classList.remove(theme)
-      document.documentElement.classList.add(theme === 'dark' ? 'light' : 'dark')
+      document.documentElement.classList.remove(theme);
+      document.documentElement.classList.add(theme === "dark" ? "light" : "dark");
     }
   };
 
-  return { theme, toggleTheme }
+  return { theme, toggleTheme };
 };
 
 export default useDarkMode;

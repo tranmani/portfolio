@@ -14,7 +14,8 @@ const ChevronRight: React.FC<IProps> = ({ className }) => {
         viewBox="-18.53 -18.53 222.4 222.4"
         xmlSpace="preserve"
         stroke="#000"
-        strokeWidth={0.002}>
+        strokeWidth={0.002}
+      >
         <path
           style={{
             fill: theme == "light" ? "#010002" : "#fff",

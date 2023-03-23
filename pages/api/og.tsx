@@ -6,9 +6,9 @@ export const config = {
   runtime: "experimental-edge",
 };
 
-const sfPro = fetch(
-  new URL("../../styles/SF-Pro-Display-Medium.otf", import.meta.url),
-).then((res) => res.arrayBuffer());
+const sfPro = fetch(new URL("../../styles/SF-Pro-Display-Medium.otf", import.meta.url)).then((res) =>
+  res.arrayBuffer(),
+);
 
 export default async function handler(req: NextRequest) {
   const [sfProData] = await Promise.all([sfPro]);
@@ -28,8 +28,13 @@ export default async function handler(req: NextRequest) {
           justifyContent: "center",
           backgroundColor: "white",
           backgroundImage: "linear-gradient(to bottom right, #E0E7FF 25%, #ffffff 50%, #CFFAFE 75%)",
-        }}>
-        <img src={new URL("../../public/face.png", import.meta.url).toString()} alt="tranmani Logo" tw="w-70 h-70 opacity-95" />
+        }}
+      >
+        <img
+          src={new URL("../../public/face.png", import.meta.url).toString()}
+          alt="tranmani Logo"
+          tw="w-70 h-70 opacity-95"
+        />
         <h1
           style={{
             fontSize: "100px",
@@ -39,7 +44,8 @@ export default async function handler(req: NextRequest) {
             color: "transparent",
             lineHeight: "5rem",
             letterSpacing: "-0.02em",
-          }}>
+          }}
+        >
           {title}
         </h1>
       </div>
@@ -53,6 +59,6 @@ export default async function handler(req: NextRequest) {
           data: sfProData,
         },
       ],
-    }
+    },
   );
 }
