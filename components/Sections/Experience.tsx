@@ -54,7 +54,7 @@ const Experience: React.FC = () => {
         </div>
       </div>
       {/* Education */}
-      <div className="flex flex-wrap gap-x-8 md:flex-nowrap lg:gap-x-20">
+      <div className="mt-20 flex flex-wrap gap-x-8 md:mt-0 md:flex-nowrap lg:gap-x-20">
         <div className="basis-[100%] md:basis-[30%] lg:basis-[20%]">
           <div className="mb-14 before:mb-5 before:block before:h-3 before:w-24 before:rounded-md before:bg-[rgba(105,90,166,0.6)] sm:text-left">
             <h3 className="text-3xl font-semibold uppercase">Education</h3>
