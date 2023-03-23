@@ -33,13 +33,7 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
     >
       <div className="basis-[100%] md:basis-1/2">
         <Link href={project.link} target={project.link.substring(0, 1) === "#" ? "_top" : "_blank"}>
-          <Image
-            src={project.image || "/logo.webp"}
-            height={550}
-            width={550}
-            className=""
-            alt={`${project.title} image`}
-          />
+          <Image src={project.image || "/logo.webp"} height={550} width={550} alt={`${project.title} image`} />
         </Link>
       </div>
       {/* Project info */}
@@ -47,7 +41,7 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
         <Link href={project.link} target={project.link.substring(0, 1) === "#" ? "_top" : "_blank"} className="mb-12">
           <h3 className="text-1xl font-bold uppercase md:text-2xl">{project.title}</h3>
         </Link>
-        <p className="mb-12">{project.description}</p>
+        <p className="mb-12 text-justify">{project.description}</p>
         <div className="mb-12 flex flex-wrap gap-4">
           {technologies.map((technology, index) => (
             <TechnologyChip key={index} color={technology.color} technology={technology.technology} />

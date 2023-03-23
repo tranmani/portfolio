@@ -14,7 +14,7 @@ export const projects: IProject[] = [
   {
     title: "This website",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae aliquid ad provident aut fuga animi soluta quae eos non cupiditate voluptates dolorem, doloremque quos dicta quibusdam impedit iure nemo a iste culpa! Quasi quibusdam hic recusandae delectus velit officiis explicabo voluptatibus! Nemo esse similique, voluptates labore distinctio, placeat explicabo facilis molestias, blanditiis culpa iusto voluptatem ratione eligendi a, quia temporibus velit vero ipsa sint ex voluptatum expedita aliquid! Debitis, nam!",
+      "I created this website to showcase my best work and make it easy for others to access my resume. It's an invaluable tool for networking and job searching, as it allows me to connect with potential employers and showcase my expertise. On my website, I've included a selection of my best work, along with a summary of my education and qualifications and contact information for those interested in connecting with me.",
     image: "/projects/project1.png",
     link: "#hero",
     github: "https://github.com/tranmani",
