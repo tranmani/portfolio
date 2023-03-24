@@ -74,7 +74,7 @@ const Experience: React.FC = () => {
               <time className="mb-2 block text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
                 {education.date}
               </time>
-              <p className="mb-4 text-justify text-base font-normal text-gray-500 dark:text-gray-400">
+              <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
                 {education.description.split("|").map((description, index) => {
                   return (
                     <span key={description}>
