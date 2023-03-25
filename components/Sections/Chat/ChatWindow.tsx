@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import TailIn from "@/components/shared/icons/TailIn";
 import TailOut from "@/components/shared/icons/TailOut";
 import DeliveredIcon from "@/components/shared/icons/DeliveredIcon";
-import useDarkMode from "@/lib/hooks/use-dark-mode";
+import { ThemeContext } from "@/lib/hooks/use-dark-mode";
 
 interface IChatWindow {}
 
@@ -111,7 +111,7 @@ const messagesRaw: IChatMessage[] = [
 ];
 
 const ChatWindow: React.FC<IChatWindow> = ({}) => {
-  const { theme } = useDarkMode();
+  const { theme, toggleTheme } = React.useContext(ThemeContext);
   const [message, setMessage] = React.useState<string>("");
   const [messages, setMessages] = React.useState<IChatMessage[]>(messagesRaw);
   const chatEndRef = React.useRef<HTMLDivElement>(null);
@@ -165,7 +165,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   // const calculation = useMemo(() => checkIfLastMessageIsMe(index), [messages]);
 
   return (
-    <div className="relative h-min w-full max-w-[600px] overflow-hidden rounded-xl ">
+    <div className="relative h-min w-full max-w-[600px] overflow-hidden rounded-xl shadow-xl dark:shadow-none">
       <ChatBG className="absolute top-0 left-0 h-full w-full bg-[url('/chat-bg.png')] opacity-[0.4] dark:opacity-[0.06]" />
       {/* chat header */}
       <div className="relative z-[99] flex h-14 justify-between bg-[#f0f2f5] py-2 px-4 dark:bg-[#202c33]">
@@ -214,6 +214,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
           })}
         </AnimatePresence>
         <div ref={chatEndRef}></div>
+        <button onClick={toggleTheme}>Theme</button>
       </div>
       {/* chat footer */}
       <div className="relative z-[99] flex h-16 bg-[#f0f2f5] py-2 px-3 dark:bg-[#202c33] md:px-6">

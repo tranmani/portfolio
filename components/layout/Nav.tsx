@@ -1,3 +1,4 @@
+import { ThemeContext } from "@/lib/hooks/use-dark-mode";
 import useScroll from "@/lib/hooks/use-scroll";
 import useWindowSize from "@/lib/hooks/use-window-size";
 import Image from "next/image";
@@ -5,17 +6,11 @@ import Link from "next/link";
 import React from "react";
 import ThemeSwitcher from "./ThemeSwitcher";
 
-interface INavProps {
-  theme: "light" | "dark";
-  onToggleTheme: () => void;
-}
+interface INavProps {}
 
-const Nav: React.FC<INavProps> = ({ theme, onToggleTheme }) => {
+const Nav: React.FC<INavProps> = () => {
   const { windowSize } = useWindowSize();
-
-  // React.useEffect(() => {
-  //   document.documentElement.classList.add("dark");
-  // }, []);
+  const { toggleTheme } = React.useContext(ThemeContext);
 
   return (
     <div
@@ -27,19 +22,23 @@ const Nav: React.FC<INavProps> = ({ theme, onToggleTheme }) => {
       }`}
     >
       <div className={`flex h-full w-full items-center justify-center ${useScroll(50) && "backdrop-blur-sm"}`}>
-        <Link href="/">
-          <Image
-            src="/favicon.ico"
-            height={32}
-            width={32}
-            className={`origin-center rotate-[360deg] transition-all ease-[cubic-bezier(0,0,0.2,1)] ${
-              useScroll(50) && "rotate-[0deg]"
-            }`}
-            alt="Huy Tran's picture"
-          />
-        </Link>
-        <button onClick={onToggleTheme}>Theme</button>
-        <ThemeSwitcher isDark={theme == "dark"} toggleTheme={onToggleTheme} />
+        <div className="relative flex w-[85vw] items-center justify-center md:w-[1200px]">
+          <Link href="/">
+            <Image
+              src="/favicon.ico"
+              height={32}
+              width={32}
+              className={`origin-center rotate-[360deg] transition-all ease-[cubic-bezier(0,0,0.2,1)] ${
+                useScroll(50) && "rotate-[0deg]"
+              }`}
+              alt="Huy Tran's picture"
+            />
+          </Link>
+          <div className="absolute right-0">
+            <button onClick={toggleTheme}>Theme</button>
+            <ThemeSwitcher />
+          </div>
+        </div>
       </div>
     </div>
   );
