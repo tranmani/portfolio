@@ -1,12 +1,13 @@
 import SendButton from "@/components/shared/icons/SendButton";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import TailIn from "@/components/shared/icons/TailIn";
 import TailOut from "@/components/shared/icons/TailOut";
 import DeliveredIcon from "@/components/shared/icons/DeliveredIcon";
 import { ThemeContext } from "@/lib/hooks/use-dark-mode";
+import Typing from "./Typing";
 
 interface IChatWindow {}
 
@@ -113,17 +114,28 @@ const messagesRaw: IChatMessage[] = [
 const ChatWindow: React.FC<IChatWindow> = ({}) => {
   const { theme } = React.useContext(ThemeContext);
   const [message, setMessage] = React.useState<string>("");
-  const [messages, setMessages] = React.useState<IChatMessage[]>(messagesRaw);
+  const [messages, setMessages] = React.useState<IChatMessage[]>([]);
   const chatEndRef = React.useRef<HTMLDivElement>(null);
+  const chatBody = React.useRef<HTMLDivElement>(null);
+  const chatInputRef = React.useRef<HTMLInputElement>(null);
   const [isTyping, setIsTyping] = React.useState<boolean>(false);
   const [userEmail, setUserEmail] = React.useState<string>("");
   const [userName, setUserName] = React.useState<string>("");
+  const isInView = useInView(chatBody);
 
   const scroll = () => {
     if (chatEndRef.current) {
       chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  React.useEffect(() => {
+    if (isInView && messages.length == 0) {
+      chatInputRef.current?.focus();
+      replyBack("Hi, I'm Huy, nice to meet you");
+      replyBack("What is your name?", 1000);
+    }
+  }, [isInView]);
 
   React.useEffect(() => {
     if (messages.length >= 5) {
@@ -146,42 +158,34 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   //   }, 5000);
   // }, []);
 
-  // React.useEffect(() => {
-  //   setInterval(() => {
-  //     setMessages((messages) => [
-  //       ...messages,
-  //       {
-  //         id: messages.length + 1,
-  //         content: "I'm fine too",
-  //         isMe: true,
-  //         time: "12:00",
-  //       },
-  //     ]);
-  //   }, 5500);
-  // }, []);
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSendMessage();
     }
   };
 
-  const replyBack = () => {
+  const replyBack = (message: string, offset: number = 0) => {
     setIsTyping(true);
+    setTimeout(() => {
+      scroll();
+    }, 50);
     setTimeout(() => {
       setMessages((messages) => [
         ...messages,
         {
           id: messages.length + 1,
-          content: "I'm fine too",
+          content: message,
           isMe: false,
-          time: "12:00",
+          time: getCurrentTime(),
         },
       ]);
-    }, 1000);
+    }, 1000 + offset);
     setTimeout(() => {
       setIsTyping(false);
-    }, 1000);
+    }, 1000 + offset);
+    setTimeout(() => {
+      scroll();
+    }, 1000 + offset + 50);
   };
 
   const getCurrentTime = () => {
@@ -195,6 +199,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
 
   const handleSendMessage = () => {
     if (!message) return;
+    if (isTyping) return;
     setMessage("");
 
     setMessages((messages) => [
@@ -208,89 +213,106 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     ]);
   };
 
-  // const checkIfLastMessageIsMe = (index: number) => {
-  //   if (messages[index - 1].isMe) {
-  //     console.log(messages[index - 1].isMe);
-
-  //     return true;
-  //   } else return false;
-  // };
-
-  // const calculation = useMemo(() => checkIfLastMessageIsMe(index), [messages]);
-
   return (
-    <div className="relative h-min w-full max-w-[600px] overflow-hidden rounded-xl shadow-xl dark:shadow-none">
-      <ChatBG className="absolute top-0 left-0 h-full w-full bg-[url('/chat-bg.png')] opacity-[0.4] dark:opacity-[0.06]" />
-      {/* chat header */}
-      <div className="relative z-[99] flex h-14 select-none justify-between bg-[#f0f2f5] py-2 px-4 dark:bg-[#202c33]">
-        <div className="flex items-center">
-          <Image src={"/logo.webp"} width={40} height={40} className="rounded-full" alt="Huy Tran's picture" priority />{" "}
-          <span className="ml-4 font-[500]">Huy Tran</span>
-        </div>
-        <div></div>
+    <>
+      <div
+        onClick={() => {
+          replyBack("I'm fine too");
+        }}
+      >
+        Mock reply
       </div>
-      {/* chat body */}
-      <div className="scrollbar-hide z-[2] h-[500px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229] ">
-        <AnimatePresence>
-          {messages.map((message) => {
-            return (
-              <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 90 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className={`mb-1 flex items-center gap-4 ${message.isMe ? "justify-end" : "justify-start"}`}
-              >
-                {message.isMe ? (
-                  <ChatMessageTailOut
-                    className={`relative z-[99] flex max-w-max items-end rounded-b-lg rounded-tl-lg bg-[#d9fdd3] py-1 px-1.5 dark:bg-[#005c4b]`}
-                    borderWidth={messages[message.id - 1].isMe ? 0 : 9}
-                    tailOutColor={theme === "dark" ? "#005c4b" : "#d9fdd3"}
-                  >
-                    <span className="w-full max-w-[200px] sm:max-w-[400px] lg:max-w-[500px]">{message.content}</span>
-                    <ChatTime className="text-[#667781] dark:text-[rgba(255,255,255,0.5)]">{message.time}</ChatTime>
-                    <span className="mb-0.5">
-                      <DeliveredIcon />
-                    </span>
-                  </ChatMessageTailOut>
-                ) : (
-                  <ChatMessageTailIn
-                    className={`relative z-[99] flex max-w-max items-end rounded-b-lg rounded-tr-lg bg-[#fff] py-1 px-1.5 dark:bg-[#202c33]`}
-                    borderWidth={!messages[message.id - 1].isMe ? 0 : 9}
-                    tailInColor={theme === "dark" ? "#202c33" : "#d9fdd3"}
-                  >
-                    <span className="w-full max-w-[200px] sm:max-w-[400px] lg:max-w-[500px]">{message.content}</span>
-                    <ChatTime className="text-[#667781] dark:text-[rgba(255,255,255,0.5)]">{message.time}</ChatTime>
-                  </ChatMessageTailIn>
-                )}
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-        <div ref={chatEndRef}></div>
-      </div>
-      {/* chat footer */}
-      <div className="relative z-[99] flex h-16 bg-[#f0f2f5] py-2 px-3 dark:bg-[#202c33] md:px-6">
-        {/* Chat text box */}
-        <div className="basis-[90%] px-3 py-1">
-          <input
-            readOnly={false}
-            onKeyDown={handleKeyDown}
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="h-full w-full rounded-md border-transparent border-[#fff] bg-[#fff] focus:border-transparent focus:ring-0 dark:border-[#2a3942] dark:bg-[#2a3942]"
-          />
+      <div className="relative h-min w-full max-w-[600px] overflow-hidden rounded-xl shadow-xl dark:shadow-none">
+        <ChatBG className="absolute top-0 left-0 h-full w-full bg-[url('/chat-bg.png')] opacity-[0.4] dark:opacity-[0.06]" />
+        {/* chat header */}
+        <div className="relative z-[99] flex h-14 select-none justify-between bg-[#f0f2f5] py-2 px-4 dark:bg-[#202c33]">
+          <div className="flex items-center">
+            <Image
+              src={"/logo.webp"}
+              width={40}
+              height={40}
+              className="rounded-full"
+              alt="Huy Tran's picture"
+              priority
+            />{" "}
+            <span className="ml-4 font-[500]">Huy Tran</span>
+          </div>
+          <div></div>
         </div>
-        {/* Chat send button */}
+        {/* chat body */}
         <div
-          className="flex h-full w-10 basis-[10%] cursor-pointer items-center justify-center rounded-md"
-          onClick={handleSendMessage}
+          className="scrollbar-hide z-[2] h-[500px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229]"
+          ref={chatBody}
         >
-          <SendButton />
+          <AnimatePresence>
+            {messages.map((message) => {
+              return (
+                <motion.div
+                  key={message.id}
+                  initial={{ opacity: 0, y: 90 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className={`mb-1 flex items-center gap-4 ${message.isMe ? "justify-end" : "justify-start"}`}
+                >
+                  <ChatMessageTailOut
+                    className={`relative z-[99] flex max-w-max items-end rounded-b-lg rounded-tl-lg py-1 px-1.5 before:border-b-[11px] before:border-b-transparent 
+                  ${
+                    message.isMe
+                      ? "bg-[#d9fdd3] before:right-[-6px] before:border-l-[9px] dark:bg-[#005c4b]"
+                      : "bg-[#fff] before:left-[-6px] before:border-r-[9px] dark:bg-[#202c33]"
+                  }
+                  ${messages[message.id - 1].isMe ? "before:border-r-[0px]" : "before:border-r-[9px]"}
+                  ${
+                    theme === "dark"
+                      ? "before:border-r-[#202c33] before:border-l-[#005c4b]"
+                      : "before:border-r-[#fff] before:border-l-[#d9fdd3]"
+                  }
+                  `}
+                  >
+                    <span className="w-full max-w-[200px] sm:max-w-[400px] lg:max-w-[500px]">{message.content}</span>
+                    <ChatTime className="text-[#667781] dark:text-[rgba(255,255,255,0.5)]">{message.time}</ChatTime>
+                    {message.isMe && (
+                      <span className="mb-0.5">
+                        <DeliveredIcon />
+                      </span>
+                    )}
+                  </ChatMessageTailOut>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+
+          {isTyping && (
+            <motion.div initial={{ opacity: 0, y: -90 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 90 }}>
+              <Typing />
+            </motion.div>
+          )}
+          <div ref={chatEndRef}></div>
+        </div>
+        {/* chat footer */}
+        <div className="relative z-[99] flex h-16 bg-[#f0f2f5] py-2 px-3 dark:bg-[#202c33] md:px-6">
+          {/* Chat text box */}
+          <div className="basis-[90%] px-3 py-1">
+            <input
+              ref={chatInputRef}
+              readOnly={isTyping ? true : false}
+              onKeyDown={handleKeyDown}
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="h-full w-full rounded-md border-transparent border-[#fff] bg-[#fff] focus:border-transparent focus:ring-0 dark:border-[#2a3942] dark:bg-[#2a3942]"
+            />
+          </div>
+          {/* Chat send button */}
+          <div
+            className="flex h-full w-10 basis-[10%] cursor-pointer items-center justify-center rounded-md"
+            onClick={handleSendMessage}
+          >
+            <SendButton />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -303,31 +325,13 @@ const ChatBG = styled.div`
   background-repeat: repeat-y;
 `;
 
-const ChatFooter = styled.div``;
-
-const ChatMessageTailOut = styled("div")<{ borderWidth: number; tailOutColor: string }>`
+export const ChatMessageTailOut = styled.div`
   ::before {
     content: "";
     position: absolute;
     top: 0;
-    right: -6px;
     width: 6px;
     height: 13px;
-    border-bottom: 11px solid transparent;
-    border-left: ${(props) => props.borderWidth}px solid ${(props) => props.tailOutColor};
-  }
-`;
-
-const ChatMessageTailIn = styled("div")<{ borderWidth: number; tailInColor: string }>`
-  ::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -6px;
-    width: 6px;
-    height: 13px;
-    border-bottom: 11px solid transparent;
-    border-right: ${(props) => props.borderWidth} px solid ${(props) => props.tailInColor};
   }
 `;
 
