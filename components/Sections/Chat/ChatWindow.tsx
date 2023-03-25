@@ -111,7 +111,7 @@ const messagesRaw: IChatMessage[] = [
 ];
 
 const ChatWindow: React.FC<IChatWindow> = ({}) => {
-  const { theme, toggleTheme } = React.useContext(ThemeContext);
+  const { theme } = React.useContext(ThemeContext);
   const [message, setMessage] = React.useState<string>("");
   const [messages, setMessages] = React.useState<IChatMessage[]>(messagesRaw);
   const chatEndRef = React.useRef<HTMLDivElement>(null);
@@ -168,7 +168,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     <div className="relative h-min w-full max-w-[600px] overflow-hidden rounded-xl shadow-xl dark:shadow-none">
       <ChatBG className="absolute top-0 left-0 h-full w-full bg-[url('/chat-bg.png')] opacity-[0.4] dark:opacity-[0.06]" />
       {/* chat header */}
-      <div className="relative z-[99] flex h-14 justify-between bg-[#f0f2f5] py-2 px-4 dark:bg-[#202c33]">
+      <div className="relative z-[99] flex h-14 select-none justify-between bg-[#f0f2f5] py-2 px-4 dark:bg-[#202c33]">
         <div className="flex items-center">
           <Image src={"/logo.webp"} width={40} height={40} className="rounded-full" alt="Huy Tran's picture" priority />{" "}
           <span className="ml-4 font-[500]">Huy Tran</span>
@@ -214,7 +214,6 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
           })}
         </AnimatePresence>
         <div ref={chatEndRef}></div>
-        <button onClick={toggleTheme}>Theme</button>
       </div>
       {/* chat footer */}
       <div className="relative z-[99] flex h-16 bg-[#f0f2f5] py-2 px-3 dark:bg-[#202c33] md:px-6">

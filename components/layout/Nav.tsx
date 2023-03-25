@@ -35,7 +35,6 @@ const Nav: React.FC<INavProps> = () => {
             />
           </Link>
           <div className="absolute right-0">
-            <button onClick={toggleTheme}>Theme</button>
             <ThemeSwitcher />
           </div>
         </div>
