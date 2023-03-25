@@ -19,7 +19,6 @@ export default function Layout({
       <Meta {...meta} />
 
       {/* Nav */}
-      <Nav />
 
       {/* Main */}
       <main className="overflow-hidden bg-white dark:bg-gradient-to-b dark:from-[#1d1d1d] dark:to-[#0F0F0F]">

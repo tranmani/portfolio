@@ -3,8 +3,14 @@ import useWindowSize from "@/lib/hooks/use-window-size";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import ThemeSwitcher from "./ThemeSwitcher";
 
-const Nav = () => {
+interface INavProps {
+  theme: "light" | "dark";
+  onToggleTheme: () => void;
+}
+
+const Nav: React.FC<INavProps> = ({ theme, onToggleTheme }) => {
   const { windowSize } = useWindowSize();
 
   // React.useEffect(() => {
@@ -32,6 +38,8 @@ const Nav = () => {
             alt="Huy Tran's picture"
           />
         </Link>
+        <button onClick={onToggleTheme}>Theme</button>
+        <ThemeSwitcher isDark={theme == "dark"} toggleTheme={onToggleTheme} />
       </div>
     </div>
   );

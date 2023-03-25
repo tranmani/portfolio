@@ -13,7 +13,7 @@ const SendButton: React.FC<IProps> = ({ className }) => {
         version="1.1"
         x="0px"
         y="0px"
-        enable-background="new 0 0 24 24"
+        enableBackground="new 0 0 24 24"
         xmlSpace="preserve"
         className="text-[#8696a0]"
       >

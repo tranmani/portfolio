@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import TailIn from "@/components/shared/icons/TailIn";
 import TailOut from "@/components/shared/icons/TailOut";
 import DeliveredIcon from "@/components/shared/icons/DeliveredIcon";
+import useDarkMode from "@/lib/hooks/use-dark-mode";
 
 interface IChatWindow {}
 
@@ -110,18 +111,21 @@ const messagesRaw: IChatMessage[] = [
 ];
 
 const ChatWindow: React.FC<IChatWindow> = ({}) => {
+  const { theme } = useDarkMode();
   const [message, setMessage] = React.useState<string>("");
   const [messages, setMessages] = React.useState<IChatMessage[]>(messagesRaw);
-  const chatBodyRef = React.useRef<HTMLDivElement>(null);
+  const chatEndRef = React.useRef<HTMLDivElement>(null);
 
   const scroll = () => {
-    if (chatBodyRef.current) {
-      chatBodyRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatEndRef.current) {
+      chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   React.useEffect(() => {
-    scroll();
+    if (messages.length >= 5) {
+      scroll();
+    }
   }, [messages]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -131,6 +135,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   };
 
   const handleSendMessage = () => {
+    if (!message) return;
     setMessage("");
     const currentTime = new Date();
     let hour = currentTime.getHours().toString();
@@ -149,18 +154,21 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     ]);
   };
 
-  const checkIfLastMessageIsMe = (index: number) => {
-    if (messages[index - 1].isMe) {
-      console.log(messages[index - 1].isMe);
+  // const checkIfLastMessageIsMe = (index: number) => {
+  //   if (messages[index - 1].isMe) {
+  //     console.log(messages[index - 1].isMe);
 
-      return true;
-    } else return false;
-  };
+  //     return true;
+  //   } else return false;
+  // };
+
+  // const calculation = useMemo(() => checkIfLastMessageIsMe(index), [messages]);
 
   return (
-    <div className="h-min w-full max-w-[600px] overflow-hidden rounded-xl bg-[#202c33]">
+    <div className="relative h-min w-full max-w-[600px] overflow-hidden rounded-xl ">
+      <ChatBG className="absolute top-0 left-0 h-full w-full bg-[url('/chat-bg.png')] opacity-[0.4] dark:opacity-[0.06]" />
       {/* chat header */}
-      <div className="flex h-14 justify-between py-2 px-4">
+      <div className="relative z-[99] flex h-14 justify-between bg-[#f0f2f5] py-2 px-4 dark:bg-[#202c33]">
         <div className="flex items-center">
           <Image src={"/logo.webp"} width={40} height={40} className="rounded-full" alt="Huy Tran's picture" priority />{" "}
           <span className="ml-4 font-[500]">Huy Tran</span>
@@ -168,7 +176,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
         <div></div>
       </div>
       {/* chat body */}
-      <ChatBody className="scrollbar-hide h-[300px] overflow-y-scroll overscroll-contain bg-[#182229] px-6 py-2">
+      <div className="scrollbar-hide z-[2] h-[300px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229] ">
         <AnimatePresence>
           {messages.map((message) => {
             return (
@@ -181,32 +189,34 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
               >
                 {message.isMe ? (
                   <ChatMessageTailOut
-                    className={`relative flex max-w-max items-end rounded-b-lg rounded-tl-lg bg-[#005c4b] py-1 px-1.5`}
-                    borderWidth={checkIfLastMessageIsMe(message.id) ? 0 : 9}
+                    className={`relative z-[99] flex max-w-max items-end rounded-b-lg rounded-tl-lg bg-[#d9fdd3] py-1 px-1.5 dark:bg-[#005c4b]`}
+                    borderWidth={messages[message.id - 1].isMe ? 0 : 9}
+                    tailOutColor={theme === "dark" ? "#005c4b" : "#d9fdd3"}
                   >
-                    <span>{message.content}</span>
-                    <ChatTime>{message.time}</ChatTime>
-                    <span>
+                    <span className="w-full max-w-[200px] sm:max-w-[400px] lg:max-w-[500px]">{message.content}</span>
+                    <ChatTime className="text-[#667781] dark:text-[rgba(255,255,255,0.5)]">{message.time}</ChatTime>
+                    <span className="mb-0.5">
                       <DeliveredIcon />
                     </span>
                   </ChatMessageTailOut>
                 ) : (
                   <ChatMessageTailIn
-                    className={`relative flex max-w-max items-end rounded-b-lg rounded-tr-lg bg-[#202c33] py-1 px-1.5`}
-                    borderWidth={checkIfLastMessageIsMe(message.id) ? 0 : 9}
+                    className={`relative z-[99] flex max-w-max items-end rounded-b-lg rounded-tr-lg bg-[#fff] py-1 px-1.5 dark:bg-[#202c33]`}
+                    borderWidth={!messages[message.id - 1].isMe ? 0 : 9}
+                    tailInColor={theme === "dark" ? "#202c33" : "#d9fdd3"}
                   >
-                    {message.content}
-                    <ChatTime>{message.time}</ChatTime>
+                    <span className="w-full max-w-[200px] sm:max-w-[400px] lg:max-w-[500px]">{message.content}</span>
+                    <ChatTime className="text-[#667781] dark:text-[rgba(255,255,255,0.5)]">{message.time}</ChatTime>
                   </ChatMessageTailIn>
                 )}
               </motion.div>
             );
           })}
         </AnimatePresence>
-        <div ref={chatBodyRef}></div>
-      </ChatBody>
+        <div ref={chatEndRef}></div>
+      </div>
       {/* chat footer */}
-      <div className="flex h-16 bg-[#202c33] py-2 px-3 md:px-6">
+      <div className="relative z-[99] flex h-16 bg-[#f0f2f5] py-2 px-3 dark:bg-[#202c33] md:px-6">
         {/* Chat text box */}
         <div className="basis-[90%] px-3 py-1">
           <input
@@ -214,7 +224,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="h-full w-full rounded-md border-[#2a3942] border-transparent bg-[#2a3942] focus:border-transparent focus:ring-0"
+            className="h-full w-full rounded-md border-transparent border-[#fff] bg-[#fff] focus:border-transparent focus:ring-0 dark:border-[#2a3942] dark:bg-[#2a3942]"
           />
         </div>
         {/* Chat send button */}
@@ -231,16 +241,16 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
 
 export default ChatWindow;
 
-const ChatBody = styled.div`
-  background-image: url("/chat-bg.png");
+const ChatBG = styled.div`
   object-fit: cover;
   background-size: cover;
   background-position: top;
+  background-repeat: repeat-y;
 `;
 
 const ChatFooter = styled.div``;
 
-const ChatMessageTailOut = styled("div")<{ borderWidth: number }>`
+const ChatMessageTailOut = styled("div")<{ borderWidth: number; tailOutColor: string }>`
   ::before {
     content: "";
     position: absolute;
@@ -249,11 +259,11 @@ const ChatMessageTailOut = styled("div")<{ borderWidth: number }>`
     width: 6px;
     height: 13px;
     border-bottom: 11px solid transparent;
-    border-left: ${(props) => props.borderWidth}px solid #005c4b;
+    border-left: ${(props) => props.borderWidth}px solid ${(props) => props.tailOutColor};
   }
 `;
 
-const ChatMessageTailIn = styled("div")<{ borderWidth: number }>`
+const ChatMessageTailIn = styled("div")<{ borderWidth: number; tailInColor: string }>`
   ::before {
     content: "";
     position: absolute;
@@ -262,12 +272,12 @@ const ChatMessageTailIn = styled("div")<{ borderWidth: number }>`
     width: 6px;
     height: 13px;
     border-bottom: 11px solid transparent;
-    border-right: ${(props) => props.borderWidth} px solid #202c33;
+    border-right: ${(props) => props.borderWidth} px solid ${(props) => props.tailInColor};
   }
 `;
 
 const ChatTime = styled("span")`
   font-size: 0.6rem;
-  color: rgba(255, 255, 255, 0.5);
   margin: 0 0.25rem;
+  user-select: none;
 `;

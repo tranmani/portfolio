@@ -14,7 +14,7 @@ const TailOut: React.FC<IProps> = ({ className }) => {
         version="1.1"
         x="0px"
         y="0px"
-        enable-background="new 0 0 8 13"
+        enableBackground="new 0 0 8 13"
         xmlSpace="preserve"
       >
         <path opacity="0.13" d="M5.188,1H0v11.193l6.467-8.625 C7.526,2.156,6.958,1,5.188,1z"></path>

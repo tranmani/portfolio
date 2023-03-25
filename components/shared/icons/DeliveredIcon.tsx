@@ -10,7 +10,7 @@ const DeliveredIcon: React.FC<IProps> = ({ className }) => {
         height="11"
         width="16"
         preserveAspectRatio="xMidYMid meet"
-        className="text-[rgba(255,255,255,0.5)]"
+        className="text-[#8696a0] dark:text-[rgba(255,255,255,0.5)]"
         fill="none"
       >
         <path

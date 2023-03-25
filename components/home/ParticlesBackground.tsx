@@ -1,13 +1,16 @@
 import useDarkMode from "@/lib/hooks/use-dark-mode";
 import useMediaQuery from "@/lib/hooks/use-media-query";
+import { DarkModeContext } from "@/pages/_app";
 import React from "react";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
 export const ParticlesBackground = () => {
-  const { theme } = useDarkMode();
+  // const { theme } = useDarkMode();
   const isSmallerThan600 = useMediaQuery("(max-width: 600px)");
   const isSmallerThan1024 = useMediaQuery("(max-width: 1024px)");
+
+  const { theme } = React.useContext(DarkModeContext);
 
   const getBubbleColor = () => {
     if (theme === "light") {
