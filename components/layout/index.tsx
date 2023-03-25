@@ -23,7 +23,7 @@ export default function Layout({
       <Nav />
 
       {/* Main */}
-      <main className={cx("overflow-hidden dark:bg-gradient-to-b dark:from-[#1d1d1d] dark:to-[#0F0F0F]")}>
+      <main className={cx("overflow-hidden")}>
         <ParticlesBackground />
         {children}
       </main>

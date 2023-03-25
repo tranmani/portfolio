@@ -115,6 +115,9 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   const [message, setMessage] = React.useState<string>("");
   const [messages, setMessages] = React.useState<IChatMessage[]>(messagesRaw);
   const chatEndRef = React.useRef<HTMLDivElement>(null);
+  const [isTyping, setIsTyping] = React.useState<boolean>(false);
+  const [userEmail, setUserEmail] = React.useState<string>("");
+  const [userName, setUserName] = React.useState<string>("");
 
   const scroll = () => {
     if (chatEndRef.current) {
@@ -126,7 +129,36 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     if (messages.length >= 5) {
       scroll();
     }
+    console.log(messages);
   }, [messages]);
+
+  // React.useEffect(() => {
+  //   setInterval(() => {
+  //     setMessages((messages) => [
+  //       ...messages,
+  //       {
+  //         id: messages.length + 1,
+  //         content: "I'm fine too hehe",
+  //         isMe: false,
+  //         time: "12:00",
+  //       },
+  //     ]);
+  //   }, 5000);
+  // }, []);
+
+  // React.useEffect(() => {
+  //   setInterval(() => {
+  //     setMessages((messages) => [
+  //       ...messages,
+  //       {
+  //         id: messages.length + 1,
+  //         content: "I'm fine too",
+  //         isMe: true,
+  //         time: "12:00",
+  //       },
+  //     ]);
+  //   }, 5500);
+  // }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -134,22 +166,44 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     }
   };
 
-  const handleSendMessage = () => {
-    if (!message) return;
-    setMessage("");
+  const replyBack = () => {
+    setIsTyping(true);
+    setTimeout(() => {
+      setMessages((messages) => [
+        ...messages,
+        {
+          id: messages.length + 1,
+          content: "I'm fine too",
+          isMe: false,
+          time: "12:00",
+        },
+      ]);
+    }, 1000);
+    setTimeout(() => {
+      setIsTyping(false);
+    }, 1000);
+  };
+
+  const getCurrentTime = () => {
     const currentTime = new Date();
     let hour = currentTime.getHours().toString();
     let minute = currentTime.getMinutes().toString();
     if (parseInt(hour) < 10) hour = `0${hour}`;
     if (parseInt(minute) < 10) minute = `0${minute}`;
+    return `${hour}:${minute}`;
+  };
 
-    setMessages([
+  const handleSendMessage = () => {
+    if (!message) return;
+    setMessage("");
+
+    setMessages((messages) => [
       ...messages,
       {
         id: messages.length + 1,
         content: message,
         isMe: true,
-        time: `${hour}:${minute}`,
+        time: getCurrentTime(),
       },
     ]);
   };
@@ -176,7 +230,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
         <div></div>
       </div>
       {/* chat body */}
-      <div className="scrollbar-hide z-[2] h-[300px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229] ">
+      <div className="scrollbar-hide z-[2] h-[500px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229] ">
         <AnimatePresence>
           {messages.map((message) => {
             return (
@@ -220,6 +274,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
         {/* Chat text box */}
         <div className="basis-[90%] px-3 py-1">
           <input
+            readOnly={false}
             onKeyDown={handleKeyDown}
             type="text"
             value={message}

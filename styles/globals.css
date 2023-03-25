@@ -3,18 +3,17 @@
 @tailwind utilities;
 
 .dark {
-  @apply bg-gray-800 text-zinc-50;
-  -webkit-transition: background-color 1000ms linear;
-  -ms-transition: background-color 1000ms linear;
-  transition: background-color 1000ms linear;
+  @apply bg-[#1d1d1d] text-zinc-50;
+  -webkit-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear;
 }
 
 .light {
-  @apply bg-zinc-50 text-gray-800;
-  -webkit-transition: background-color 1000ms linear;
-  -ms-transition: background-color 1000ms linear;
-  transition: background-color 1000ms linear;
-  background-color: white;
+  @apply bg-white text-gray-800;
+  -webkit-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear;
 }
 
 html {

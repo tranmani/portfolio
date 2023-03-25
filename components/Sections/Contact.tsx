@@ -14,11 +14,14 @@ const Contact: React.FC = () => {
           <p className="text-neutral-400">Well there are several ways you can reach me</p>
         </div>
 
-        <ChatWindow />
-
-        <div className="">
+        <div className="mb-16">
           <div className="flex flex-col items-center gap-16">minhhuy8137@gmail.com</div>
         </div>
+
+        {/* <div className="mb-12 text-center">
+          <p className="text-neutral-400">Or better yet, you can reach me by using this form ;)</p>
+        </div>
+        <ChatWindow /> */}
       </div>
     </section>
   );
