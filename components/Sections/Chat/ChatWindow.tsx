@@ -1,10 +1,8 @@
 import SendButton from "@/components/shared/icons/SendButton";
 import Image from "next/image";
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import TailIn from "@/components/shared/icons/TailIn";
-import TailOut from "@/components/shared/icons/TailOut";
 import DeliveredIcon from "@/components/shared/icons/DeliveredIcon";
 import { ThemeContext } from "@/lib/hooks/use-dark-mode";
 import Typing from "./Typing";
@@ -12,7 +10,7 @@ import useMediaQuery from "@/lib/hooks/use-media-query";
 
 interface IChatWindow {}
 
-interface IChatMessage {
+export interface IChatMessage {
   id: number;
   content: string;
   isMe: boolean;
@@ -122,8 +120,8 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   const [isTyping, setIsTyping] = React.useState<boolean>(false);
   const [userEmail, setUserEmail] = React.useState<string>("");
   const [userName, setUserName] = React.useState<string>("");
+  const [isSendEmailButton, setIsSendEmailButton] = React.useState<boolean>(false);
   const isInView = useInView(chatBody);
-
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const scroll = () => {
@@ -132,40 +130,43 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     }
   };
 
+  // Send first messages to guest
   React.useEffect(() => {
-    if (isInView && messages.length == 0) {
+    if (isInView && messages.length === 0) {
       chatInputRef.current?.focus();
-      // Promise.all([replyBack("Hi, I'm Huy, nice to meet you"), replyBack("What is your name?", 1000)]).then(
-      //   (values) => {
-      //     console.log(values);
-      //   },
-      // );
-
-      replyBack("Hi, I'm Huy, nice to meet you");
-      replyBack("What is your name?", 1000);
+      replyBack(["Hi, I'm Huy, nice to meet you", "What is your name?"]);
     }
-  }, [isInView]);
+  }, [isInView, messages]);
 
+  // Watch for new messages
   React.useEffect(() => {
     if (messages.length >= 10) {
       scroll();
     }
-    console.log(messages);
+    // If there are 2 messages, then it's the first time the guest is chatting
+    if (messages.length === 3) {
+      setUserName(messages[2].content);
+      replyBack([`Hi ${messages[2].content}, nice to meet you too`, `What is your email?`]);
+    }
+    if (messages.length === 6) {
+      setUserEmail(messages[5].content);
+      replyBack([`I got your email`, `What messages do you want to leave for me?`]);
+    }
+    // Show SEND EMAIL button
+    if (messages.length === 9) {
+      replyBack([`When you are done, press SEND EMAIL button to send your message to me`], true);
+    }
+    // Remind guest to click SEND EMAIL button
+    if (messages.length === 15 && isSendEmailButton) {
+      replyBack([`Remember to click SEND EMAIL button to send your messages to me ;)`]);
+    }
+    if (messages.length === 20 && isSendEmailButton) {
+      replyBack([`You must have a lot to say to me, right?`]);
+    }
+    if (messages.length === 25 && isSendEmailButton) {
+      replyBack([`You must be bored, I suppose?`]);
+    }
   }, [messages]);
-
-  // React.useEffect(() => {
-  //   setInterval(() => {
-  //     setMessages((messages) => [
-  //       ...messages,
-  //       {
-  //         id: messages.length + 1,
-  //         content: "I'm fine too hehe",
-  //         isMe: false,
-  //         time: "12:00",
-  //       },
-  //     ]);
-  //   }, 5000);
-  // }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -175,42 +176,35 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
 
   const timeOut = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-  const replyBack = async (message: string, offset: number = 0) => {
+  // Send message back to guest
+  const replyBack = async (messagesToSent: string[], showButton: boolean = false, resetChat: boolean = false) => {
     setIsTyping(true);
-    await timeOut(50);
+    await timeOut(isMobile ? 50 : 10);
     scroll();
-    await timeOut(1500 + offset);
-    setMessages((messages) => [
-      ...messages,
-      {
-        id: messages.length + 1,
-        content: message,
-        isMe: false,
-        time: getCurrentTime(),
-      },
-    ]);
+    await timeOut(1500);
+    for (let i = 0; i < messagesToSent.length; i++) {
+      setMessages((messages) => [
+        ...messages,
+        {
+          id: messages.length + 1,
+          content: messagesToSent[i],
+          isMe: false,
+          time: getCurrentTime(),
+        },
+      ]);
+      if (i < messagesToSent.length - 1) await timeOut(1100);
+    }
     setIsTyping(false);
-
-    // setTimeout(() => {
-    //   scroll();
-    // }, 50);
-    // setTimeout(() => {
-    //   setMessages((messages) => [
-    //     ...messages,
-    //     {
-    //       id: messages.length + 1,
-    //       content: message,
-    //       isMe: false,
-    //       time: getCurrentTime(),
-    //     },
-    //   ]);
-    // }, 1500 + offset);
-    // setTimeout(() => {
-    //   setIsTyping(false);
-    // }, 1500 + offset);
-    // setTimeout(() => {
-    //   scroll();
-    // }, 1500 + offset + 50);
+    if (showButton) {
+      setIsSendEmailButton(true);
+    }
+    if (resetChat) {
+      await timeOut(6000);
+      setMessages([]);
+      setUserEmail("");
+      setUserName("");
+      setIsSendEmailButton(false);
+    }
   };
 
   const getCurrentTime = () => {
@@ -238,15 +232,62 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     ]);
   };
 
+  const handleEmailButtonClick = async () => {
+    if (isTyping) return;
+    if (!userEmail) {
+      replyBack([`You haven't typed your email yet`]);
+      return;
+    }
+    if (!userName) {
+      replyBack([`You haven't typed your name yet`]);
+      return;
+    }
+    if (messages.length < 8) {
+      replyBack([`You haven't typed your messages yet`]);
+      return;
+    }
+    setIsSendEmailButton(false);
+    const messagesToSent = messages.slice(2).filter((message) => message.isMe);
+    const response = await fetch("/api/send-email", {
+      method: "POST",
+      body: JSON.stringify({ userName, userEmail, messagesToSent }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.message === "Email sent successfully") {
+      replyBack(
+        [`Sending your messages to me...`, `Success ╰(*°▽°*)╯`, `The chat will be reset after 5 seconds`],
+        false,
+        true,
+      );
+    } else if (data.message === "Invalid email") {
+      replyBack(
+        [
+          `Sending your messages to me...`,
+          `Failed, your email is invalid (┬┬﹏┬┬)`,
+          `The chat will be reset after 5 seconds`,
+        ],
+        false,
+        true,
+      );
+    } else {
+      replyBack([`Unfortunately, there was an error sending your messages to me. Please try again later`]);
+    }
+  };
+
   return (
     <>
-      <div
+      {/* <div
         onClick={() => {
-          replyBack("I'm fine too");
+          replyBack(["I'm fine too", "I'm fine too222222222"]);
         }}
       >
         Mock reply
-      </div>
+      </div> */}
       <div className="relative h-min w-full max-w-[600px] overflow-hidden rounded-xl shadow-xl dark:shadow-none">
         <ChatBG className="absolute top-0 left-0 h-full w-full bg-[url('/chat-bg.png')] opacity-[0.8] dark:opacity-[0.1]" />
         {/* chat header */}
@@ -274,9 +315,8 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
               return (
                 <motion.div
                   key={message.id}
-                  initial={{ opacity: 0, y: isMobile ? 0 : 90 }}
+                  initial={{ opacity: 0, y: isMobile ? 0 : 15 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
                   className={`mb-1 flex items-center gap-4 ${message.isMe ? "justify-end" : "justify-start"}`}
                 >
                   <ChatMessageTailOut
@@ -286,7 +326,11 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
                       ? "bg-[#d9fdd3] before:right-[-6px] before:border-l-[9px] dark:bg-[#005c4b]"
                       : "bg-[#fff] before:left-[-6px] before:border-r-[9px] dark:bg-[#202c33]"
                   }
-                  ${messages[message.id - 1].isMe ? "before:border-r-[0px]" : "before:border-r-[9px]"}
+                  ${
+                    messages.length > 1 && messages[message.id - 1].isMe
+                      ? "before:border-r-[0px]"
+                      : "before:border-r-[9px]"
+                  }
                   ${
                     theme === "dark"
                       ? "before:border-r-[#202c33] before:border-l-[#005c4b]"
@@ -309,12 +353,26 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
 
           {isTyping && (
             <motion.div
-              initial={{ opacity: 0, y: isMobile ? 0 : -90 }}
+              initial={{ opacity: 0, y: isMobile ? 0 : 15 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: isMobile ? 0 : -90 }}
+              exit={{ opacity: 0, y: isMobile ? 0 : 15 }}
             >
               <Typing />
             </motion.div>
+          )}
+          {isSendEmailButton && (
+            <div className="flex items-center justify-center">
+              <motion.button
+                initial={{ opacity: 0, y: isMobile ? 0 : 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: isMobile ? 0 : 15 }}
+                className="mt-2 rounded-md bg-[#d9fdd3] py-1 px-2 uppercase dark:bg-[#005c4b]"
+                onClick={handleEmailButtonClick}
+                whileHover={{ scale: 0.9 }}
+              >
+                Send Email
+              </motion.button>
+            </div>
           )}
           <div ref={chatEndRef}></div>
         </div>
