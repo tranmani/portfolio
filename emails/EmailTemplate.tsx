@@ -1,3 +1,4 @@
+import { WEBSITE_URL } from "@/lib/constants";
 import { Body, Container, Head, Html, Img, Preview, Section, Text } from "@react-email/components";
 import * as React from "react";
 
@@ -14,8 +15,6 @@ interface IEmailProps {
   guestMessages?: IChatMessage[];
 }
 
-const baseUrl = process.env.BASE_URL ?? "https://tranmani.com";
-
 export const EmailTemplate = ({
   guestName = "Guest",
   guestEmail = "minhhuy8137@gmail.com",
@@ -27,7 +26,7 @@ export const EmailTemplate = ({
       <Preview>Message from tranmani.com</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Img src={`${baseUrl}/face.png`} width="40" height="40" alt="tranmani face" />
+          <Img src={`${WEBSITE_URL}/face.png`} width="40" height="40" alt="tranmani face" />
           <Section>
             <Text style={text}>
               Hi Huy, {guestName} leave you a message with their email {guestEmail}
