@@ -121,7 +121,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   const [userEmail, setUserEmail] = React.useState<string>("");
   const [userName, setUserName] = React.useState<string>("");
   const [isSendEmailButton, setIsSendEmailButton] = React.useState<boolean>(false);
-  const isInView = useInView(chatBody);
+  const isInView = useInView(chatBody, { once: true });
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const scroll = () => {
