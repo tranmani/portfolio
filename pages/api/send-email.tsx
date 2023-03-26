@@ -9,13 +9,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   const { userName, userEmail, messagesToSent } = req.body;
 
-  const cleanUserEmail = userEmail.replace(" ", "");
   // Check if the email is valid
-  if (!cleanUserEmail || !userName || !messagesToSent) {
+  if (!userEmail || !userName || !messagesToSent) {
     return res.status(400).json({ message: "Empty content" });
   }
   // validate email format
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanUserEmail)) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
     return res.status(400).json({ message: "Invalid email" });
   }
 
@@ -25,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     html: render(
       EmailTemplate({
         guestName: userName || "No name",
-        guestEmail: cleanUserEmail || "No email",
+        guestEmail: userEmail || "No email",
         guestMessages: messagesToSent || [],
       }),
     ),
