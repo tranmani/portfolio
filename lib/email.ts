@@ -17,6 +17,11 @@ const smtpOptions = {
   },
 }
 
+console.log(smtpOptions.host)
+console.log(smtpOptions.port)
+console.log(smtpOptions.auth.user)
+console.log(smtpOptions.auth.pass)
+
 export const sendEmail = async (data: EmailPayload) => {
   const transporter = nodemailer.createTransport({
     ...smtpOptions,
