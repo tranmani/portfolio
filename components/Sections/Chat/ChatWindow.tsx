@@ -134,7 +134,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   React.useEffect(() => {
     if (isInView && messages.length === 0) {
       chatInputRef.current?.focus();
-      replyBack(["Hi, I'm Huy, nice to meet you", "What is your name?"]);
+      replyBack(["Hello stranger, my name is Huy", "What is your name?"]);
     }
   }, [isInView, messages]);
 
@@ -146,11 +146,11 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     // If there are 2 messages, then it's the first time the guest is chatting
     if (messages.length === 3) {
       setUserName(messages[2].content);
-      replyBack([`Hi ${messages[2].content}, nice to meet you too`, `What is your email?`]);
+      replyBack([`Hi ${messages[2].content}, nice to meet you`, `What is your email?`]);
     }
     if (messages.length === 6) {
       setUserEmail(messages[5].content);
-      replyBack([`I got your email`, `What messages do you want to leave for me?`]);
+      replyBack([`I got your email`, `What message do you want to leave for me?`]);
     }
     // Show SEND EMAIL button
     if (messages.length === 9) {
