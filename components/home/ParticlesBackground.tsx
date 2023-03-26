@@ -44,9 +44,7 @@ export const ParticlesBackground = () => {
       options={{
         fullScreen: false,
         background: {
-          color: {
-            value: "transparent",
-          },
+          opacity: 0,
         },
         fpsLimit: 120,
         interactivity: {
@@ -96,7 +94,7 @@ export const ParticlesBackground = () => {
             random: true,
             speed: 1,
             direction: "top",
-            out_mode: "out",
+            out_mode: "destroy",
           },
         },
         detectRetina: true,

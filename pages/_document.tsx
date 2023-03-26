@@ -8,6 +8,18 @@ export default class MyDocument extends Document {
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
 
+    const setInitialTheme = `
+    function getUserPreference() {
+      if(window.localStorage.getItem('theme')) {
+        return window.localStorage.getItem('theme')
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+    }
+    document.documentElement.classList.add(getUserPreference())
+  `;
+
     try {
       ctx.renderPage = () =>
         originalRenderPage({
@@ -19,6 +31,7 @@ export default class MyDocument extends Document {
         ...initialProps,
         styles: (
           <>
+            <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
             {initialProps.styles}
             {sheet.getStyleElement()}
           </>

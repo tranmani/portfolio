@@ -136,6 +136,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
       chatInputRef.current?.focus();
       replyBack(["Hello stranger, my name is Huy", "What is your name?"]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView, messages]);
 
   // Watch for new messages
@@ -166,6 +167,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     if (messages.length === 25 && isSendEmailButton) {
       replyBack([`You must be bored, I suppose?`]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -180,7 +182,9 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   const replyBack = async (messagesToSent: string[], showButton: boolean = false, resetChat: boolean = false) => {
     setIsTyping(true);
     await timeOut(isMobile ? 50 : 10);
-    scroll();
+    if (messages.length >= 10) {
+      scroll();
+    }
     await timeOut(1500);
     for (let i = 0; i < messagesToSent.length; i++) {
       setMessages((messages) => [
