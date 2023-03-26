@@ -8,6 +8,7 @@ import TailOut from "@/components/shared/icons/TailOut";
 import DeliveredIcon from "@/components/shared/icons/DeliveredIcon";
 import { ThemeContext } from "@/lib/hooks/use-dark-mode";
 import Typing from "./Typing";
+import useMediaQuery from "@/lib/hooks/use-media-query";
 
 interface IChatWindow {}
 
@@ -123,6 +124,8 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   const [userName, setUserName] = React.useState<string>("");
   const isInView = useInView(chatBody);
 
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   const scroll = () => {
     if (chatEndRef.current) {
       chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -132,13 +135,19 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   React.useEffect(() => {
     if (isInView && messages.length == 0) {
       chatInputRef.current?.focus();
+      // Promise.all([replyBack("Hi, I'm Huy, nice to meet you"), replyBack("What is your name?", 1000)]).then(
+      //   (values) => {
+      //     console.log(values);
+      //   },
+      // );
+
       replyBack("Hi, I'm Huy, nice to meet you");
       replyBack("What is your name?", 1000);
     }
   }, [isInView]);
 
   React.useEffect(() => {
-    if (messages.length >= 5) {
+    if (messages.length >= 10) {
       scroll();
     }
     console.log(messages);
@@ -164,28 +173,44 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     }
   };
 
-  const replyBack = (message: string, offset: number = 0) => {
+  const timeOut = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+  const replyBack = async (message: string, offset: number = 0) => {
     setIsTyping(true);
-    setTimeout(() => {
-      scroll();
-    }, 50);
-    setTimeout(() => {
-      setMessages((messages) => [
-        ...messages,
-        {
-          id: messages.length + 1,
-          content: message,
-          isMe: false,
-          time: getCurrentTime(),
-        },
-      ]);
-    }, 1000 + offset);
-    setTimeout(() => {
-      setIsTyping(false);
-    }, 1000 + offset);
-    setTimeout(() => {
-      scroll();
-    }, 1000 + offset + 50);
+    await timeOut(50);
+    scroll();
+    await timeOut(1500 + offset);
+    setMessages((messages) => [
+      ...messages,
+      {
+        id: messages.length + 1,
+        content: message,
+        isMe: false,
+        time: getCurrentTime(),
+      },
+    ]);
+    setIsTyping(false);
+
+    // setTimeout(() => {
+    //   scroll();
+    // }, 50);
+    // setTimeout(() => {
+    //   setMessages((messages) => [
+    //     ...messages,
+    //     {
+    //       id: messages.length + 1,
+    //       content: message,
+    //       isMe: false,
+    //       time: getCurrentTime(),
+    //     },
+    //   ]);
+    // }, 1500 + offset);
+    // setTimeout(() => {
+    //   setIsTyping(false);
+    // }, 1500 + offset);
+    // setTimeout(() => {
+    //   scroll();
+    // }, 1500 + offset + 50);
   };
 
   const getCurrentTime = () => {
@@ -223,7 +248,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
         Mock reply
       </div>
       <div className="relative h-min w-full max-w-[600px] overflow-hidden rounded-xl shadow-xl dark:shadow-none">
-        <ChatBG className="absolute top-0 left-0 h-full w-full bg-[url('/chat-bg.png')] opacity-[0.4] dark:opacity-[0.06]" />
+        <ChatBG className="absolute top-0 left-0 h-full w-full bg-[url('/chat-bg.png')] opacity-[0.8] dark:opacity-[0.1]" />
         {/* chat header */}
         <div className="relative z-[99] flex h-14 select-none justify-between bg-[#f0f2f5] py-2 px-4 dark:bg-[#202c33]">
           <div className="flex items-center">
@@ -249,7 +274,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
               return (
                 <motion.div
                   key={message.id}
-                  initial={{ opacity: 0, y: 90 }}
+                  initial={{ opacity: 0, y: isMobile ? 0 : 90 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   className={`mb-1 flex items-center gap-4 ${message.isMe ? "justify-end" : "justify-start"}`}
@@ -283,7 +308,11 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
           </AnimatePresence>
 
           {isTyping && (
-            <motion.div initial={{ opacity: 0, y: -90 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 90 }}>
+            <motion.div
+              initial={{ opacity: 0, y: isMobile ? 0 : -90 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: isMobile ? 0 : -90 }}
+            >
               <Typing />
             </motion.div>
           )}
