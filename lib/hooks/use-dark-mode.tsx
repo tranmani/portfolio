@@ -23,16 +23,16 @@ const ThemeProvider: React.FC<IProps> = (props) => {
     if (!window.matchMedia) return;
 
     if (
-      window.localStorage.theme === "dark" ||
+      window.localStorage.getItem("theme") === "dark" ||
       (!("theme" in window.localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
     ) {
       setTheme("dark");
-      window.localStorage.theme = "dark";
-      document.documentElement.classList.add("dark");
+      window.localStorage.setItem("theme", "dark");
+      // document.documentElement.classList.add("dark");
     } else {
       setTheme("light");
-      window.localStorage.theme = "light";
-      document.documentElement.classList.add("light");
+      window.localStorage.setItem("theme", "light");
+      // document.documentElement.classList.add("light");
     }
   }, []);
 
@@ -43,7 +43,7 @@ const ThemeProvider: React.FC<IProps> = (props) => {
     else {
       document.documentElement.classList.remove(theme);
       document.documentElement.classList.add(newTheme);
-      window.localStorage.theme = newTheme;
+      window.localStorage.setItem("theme", newTheme);
     }
   };
 

@@ -3,7 +3,7 @@ import Head from "next/head";
 
 export default function Meta({
   title = "tranmani",
-  description = "Minh Huy Tran",
+  description = "Huy Tran's personal website",
   image = `${WEBSITE_URL}/api/og`,
 }: {
   title?: string;

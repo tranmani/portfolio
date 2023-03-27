@@ -5,7 +5,10 @@ import cx from "classnames";
 import localFont from "@next/font/local";
 import { Inter } from "@next/font/google";
 import React from "react";
-import ThemeProvider from "@/lib/hooks/use-dark-mode";
+const ThemeProvider = dynamic(() => import("@/lib/hooks/use-dark-mode"), {
+  ssr: false,
+});
+import dynamic from "next/dynamic";
 
 const sfPro = localFont({
   src: "../styles/SF-Pro-Display-Medium.otf",

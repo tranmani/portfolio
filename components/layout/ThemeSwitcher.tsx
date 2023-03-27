@@ -14,7 +14,7 @@ const ThemeSwitcher: React.FC<IProps> = () => {
     <button
       onClick={toggleTheme}
       type="button"
-      aria-label="Use Dark Mode"
+      aria-label={`Change to ${theme} mode`}
       className="outline-link flex h-12 w-12 items-center justify-center rounded-full transition-transform hover:bg-[rgba(35,39,47,.08)] active:scale-95 hover:dark:bg-[rgba(241,246,255,0.08)]"
     >
       {!isDark ? <DarkModeIcon /> : <LightModeIcon />}

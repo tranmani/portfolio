@@ -134,13 +134,14 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   React.useEffect(() => {
     if (isInView && messages.length === 0) {
       chatInputRef.current?.focus();
-      replyBack(["Hi, I'm Huy, nice to meet you", "What is your name?"]);
+      replyBack(["Hello stranger, my name is Huy", "What is your name?"]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView, messages]);
 
   // Watch for new messages
   React.useEffect(() => {
-    if (messages.length >= 10) {
+    if (messages.length >= (isMobile ? 5 : 10)) {
       scroll();
     }
     // If there are 2 messages, then it's the first time the guest is chatting
@@ -152,11 +153,14 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     }
     if (messages.length === 6) {
       setUserEmail(messages[5].content);
-      replyBack([`I got your email`, `What messages do you want to leave for me?`]);
+      replyBack([`I got your email`, `What message do you want to leave for me?`]);
     }
     // Show SEND EMAIL button
     if (messages.length === 9) {
-      replyBack([`When you are done, press SEND EMAIL button to send your message to me`], true);
+      replyBack(
+        [`You can still write more messages, when you are done, press SEND EMAIL button to send your message to me`],
+        true,
+      );
     }
     // Remind guest to click SEND EMAIL button
     if (messages.length === 15 && isSendEmailButton) {
@@ -168,6 +172,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     if (messages.length === 25 && isSendEmailButton) {
       replyBack([`You must be bored, I suppose?`]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -182,7 +187,9 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   const replyBack = async (messagesToSent: string[], showButton: boolean = false, resetChat: boolean = false) => {
     setIsTyping(true);
     await timeOut(isMobile ? 50 : 10);
-    scroll();
+    if (messages.length >= 10) {
+      scroll();
+    }
     await timeOut(1500);
     for (let i = 0; i < messagesToSent.length; i++) {
       setMessages((messages) => [
@@ -310,7 +317,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
         </div>
         {/* chat body */}
         <div
-          className="scrollbar-hide z-[2] h-[500px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229]"
+          className="scrollbar-hide z-[2] h-[300px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229] sm:h-[500px]"
           ref={chatBody}
         >
           <AnimatePresence>

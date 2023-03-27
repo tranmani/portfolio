@@ -2,7 +2,7 @@ import { IExperience } from "./experiences";
 
 export const educations: IExperience[] = [
   {
-    title: "Bachelor of Science in Computer Science",
+    title: "B.Sc. Computer Science",
     company: "Saxion University of Applied Sciences",
     place: "Deventer, Netherlands",
     description:
