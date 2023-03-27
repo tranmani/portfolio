@@ -141,7 +141,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
 
   // Watch for new messages
   React.useEffect(() => {
-    if (messages.length >= 10) {
+    if (messages.length >= (isMobile ? 5 : 10)) {
       scroll();
     }
     // If there are 2 messages, then it's the first time the guest is chatting
