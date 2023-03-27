@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import SendButton from "@/components/shared/icons/SendButton";
 import Image from "next/image";
 import React from "react";
@@ -136,7 +137,6 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
       chatInputRef.current?.focus();
       replyBack(["Hello stranger, my name is Huy", "What is your name?"]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView, messages]);
 
   // Watch for new messages
@@ -172,7 +172,6 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     if (messages.length === 25 && isSendEmailButton) {
       replyBack([`You must be bored, I suppose?`]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
