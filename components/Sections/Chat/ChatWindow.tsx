@@ -155,7 +155,10 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     }
     // Show SEND EMAIL button
     if (messages.length === 9) {
-      replyBack([`When you are done, press SEND EMAIL button to send your message to me`], true);
+      replyBack(
+        [`You can still write more messages, when you are done, press SEND EMAIL button to send your message to me`],
+        true,
+      );
     }
     // Remind guest to click SEND EMAIL button
     if (messages.length === 15 && isSendEmailButton) {
