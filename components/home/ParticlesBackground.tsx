@@ -94,7 +94,7 @@ export const ParticlesBackground = () => {
             random: true,
             speed: 1,
             direction: "top",
-            out_mode: "destroy",
+            out_mode: "none",
           },
         },
         detectRetina: true,
