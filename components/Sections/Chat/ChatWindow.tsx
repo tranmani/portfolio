@@ -145,7 +145,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     }
     // If there are 2 messages, then it's the first time the guest is chatting
     if (messages.length === 3) {
-      const regex = /(my name is|i'm|i am|it's|it is|you can call me)\s+/g;
+      const regex = /(my name is|i'm|i am|it's|it is|you can call me)\s+/gi;
       const cleanedStr = messages[2].content.replace(regex, "");
       setUserName(cleanedStr);
       replyBack([`Hi ${cleanedStr}, nice to meet you too`, `What is your email?`]);
