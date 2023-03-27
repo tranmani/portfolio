@@ -312,7 +312,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
         </div>
         {/* chat body */}
         <div
-          className="scrollbar-hide z-[2] h-[500px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229]"
+          className="scrollbar-hide z-[2] h-[300px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229] sm:h-[500px]"
           ref={chatBody}
         >
           <AnimatePresence>
