@@ -53,7 +53,7 @@ const Technologies: React.FC = () => {
     <section className="max-w-[85vw] pb-32 md:max-w-[1200px]" id="technologies">
       <div className="mb-20 text-center">
         <div className="mb-4 flex justify-center">
-          <TechnologyIcon className="h-24 w-24" />
+          <TechnologyIcon />
         </div>
         <h2 className="mb-4 text-2xl font-bold uppercase md:text-3xl">Technologies</h2>
         <p className="text-neutral-400">Technologies I have worked with</p>

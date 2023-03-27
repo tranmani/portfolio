@@ -1,4 +1,4 @@
-import Ghost from "../shared/icons/Ghost";
+import MailIcon from "../shared/icons/MailIcon";
 import ChatWindow from "./Chat/ChatWindow";
 
 const Contact: React.FC = () => {
@@ -6,7 +6,7 @@ const Contact: React.FC = () => {
     <section className="mb-24 w-full max-w-[85vw] md:max-w-[1200px] md:px-12" id="contact">
       <div className="flex flex-col items-center justify-center">
         <div className="">
-          <Ghost className="h-24 w-24" />
+          <MailIcon />
         </div>
 
         <div className="mb-20 text-center">

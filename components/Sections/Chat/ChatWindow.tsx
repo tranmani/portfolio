@@ -149,7 +149,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
       const regex = /(my name is|i'm|i am|it's|it is|you can call me)\s+/gi;
       const cleanedStr = messages[2].content.replace(regex, "");
       setUserName(cleanedStr);
-      replyBack([`Hi ${cleanedStr}, nice to meet you too`, `What is your email?`]);
+      replyBack([`Hi ${cleanedStr}, nice to meet you!`, `What is your email?`]);
     }
     if (messages.length === 6) {
       setUserEmail(messages[5].content);
