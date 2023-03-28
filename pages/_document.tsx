@@ -21,7 +21,7 @@ export default class MyDocument extends Document {
     `;
 
     const logging = `
-      if (window.location.hostname !== 'localhost') {
+      if (window.location.hostname !== 'localhost' && window.location.hostname === 'tranmani.com' && window.location.pathname === '/') {
         fetch('https://quiet-sun-b23e.tranmani.workers.dev').then((response) => {})
       }
     `;
