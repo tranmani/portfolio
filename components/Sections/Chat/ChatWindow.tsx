@@ -240,6 +240,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     ]);
   };
 
+  // handle send email button
   const handleEmailButtonClick = async () => {
     if (isTyping) return;
     if (!userEmail) {
@@ -284,6 +285,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
       );
     } else {
       replyBack([`Unfortunately, there was an error sending your messages to me. Please try again later`]);
+      setIsSendEmailButton(true);
     }
   };
 

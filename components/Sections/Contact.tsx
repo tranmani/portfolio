@@ -21,18 +21,23 @@ const Contact: React.FC = () => {
 
         <div className="mb-16">
           <div className="flex flex-wrap items-center justify-center gap-16">
+            {/* Whatsapp */}
             <Link href="https://wa.me/+31651446211" target="_blank" className="flex flex-col items-center">
               <WhatsappIcon className="cursor-pointer transition-all ease-linear hover:text-[rgb(0,168,89)] hover:drop-shadow-[0_0px_15px_rgba(0,168,89,0.75)] hover:dark:drop-shadow-[0_0px_15px_rgba(0,168,89,0.45)]" />
               <p>Whatsapp</p>
             </Link>
+
+            {/* Gmail */}
             <Link
-              href="mailto:minhhuy8137@gmail.com?subject=We%20have%20something%20cool%20to%20tell%20you..."
+              href="mailto:huy@tranmani.com?subject=We%20have%20something%20cool%20to%20tell%20you..."
               target="_blank"
               className="flex flex-col items-center"
             >
               <GmailIcon className="cursor-pointer transition-all ease-linear hover:text-[rgb(223,76,64)] hover:drop-shadow-[0_0px_15px_rgba(223,76,64,0.75)] hover:dark:drop-shadow-[0_0px_15px_rgba(223,76,64,0.45)]" />
               <p>Email</p>
             </Link>
+
+            {/* LinkedIn */}
             <Link
               href="https://www.linkedin.com/in/minh-huy-tran/"
               target="_blank"
@@ -41,6 +46,8 @@ const Contact: React.FC = () => {
               <LinkedInIcon className="cursor-pointer transition-all ease-linear hover:text-[rgb(0,119,183)] hover:drop-shadow-[0_0px_15px_rgba(0,119,183,0.75)] hover:dark:drop-shadow-[0_0px_15px_rgba(0,119,183,0.45)]" />
               <p>LinkedIn</p>
             </Link>
+
+            {/* Github */}
             <Link href="https://github.com/tranmani" target="_blank" className="flex flex-col items-center">
               <GithubIcon className="cursor-pointer transition-all ease-linear hover:text-[rgb(218,213,142)] hover:drop-shadow-[0_0px_15px_rgba(218,213,142,0.75)] hover:dark:drop-shadow-[0_0px_15px_rgba(218,213,142,0.45)]" />
               <p>GitHub</p>
