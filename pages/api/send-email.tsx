@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   await sendEmail({
     to: "minhhuy8137@gmail.com",
-    subject: "Someone leave you a message at tranmani.com",
+    subject: req.body.subject ?? "Someone leave you a message at tranmani.com",
     html: render(
       EmailTemplate({
         guestName: userName || "No name",
