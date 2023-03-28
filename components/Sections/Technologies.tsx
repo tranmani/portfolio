@@ -18,7 +18,7 @@ const Technologies: React.FC = () => {
     return 100;
   };
 
-  const wraperVariants = {
+  const wrapperVariants = {
     hover: {
       scale: 1.1,
     },
@@ -66,7 +66,7 @@ const Technologies: React.FC = () => {
                 initial="initial"
                 whileInView="whileInView"
                 whileHover="hover"
-                variants={wraperVariants}
+                variants={wrapperVariants}
                 transition={{
                   ease: "easeOut",
                   duration: 0.3,
