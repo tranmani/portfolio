@@ -9,16 +9,22 @@ export default class MyDocument extends Document {
     const originalRenderPage = ctx.renderPage;
 
     const setInitialTheme = `
-    function getUserPreference() {
-      if(window.localStorage.getItem('theme')) {
-        return window.localStorage.getItem('theme')
+      function getUserPreference() {
+        if(window.localStorage.getItem('theme')) {
+          return window.localStorage.getItem('theme')
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+                  ? 'dark'
+                  : 'light'
       }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light'
-    }
-    document.documentElement.classList.add(getUserPreference())
-  `;
+      document.documentElement.classList.add(getUserPreference())
+    `;
+
+    const logging = `
+      if (window.location.hostname !== 'localhost') {
+        fetch('https://quiet-sun-b23e.tranmani.workers.dev').then((response) => {})
+      }
+    `;
 
     try {
       ctx.renderPage = () =>
@@ -31,6 +37,7 @@ export default class MyDocument extends Document {
         ...initialProps,
         styles: (
           <>
+            <script dangerouslySetInnerHTML={{ __html: logging }} />
             <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
             {initialProps.styles}
             {sheet.getStyleElement()}
