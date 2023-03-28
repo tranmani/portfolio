@@ -12,7 +12,7 @@ export const experiences: IExperience[] = [
     company: "SevginWeb",
     place: "Deventer, Netherlands",
     description: "Further develop the deposit page of the application",
-    date: "February 2023 - Present",
+    date: "January 2023 - Present",
   },
   {
     title: "Web Developer Intern",

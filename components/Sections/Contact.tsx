@@ -14,7 +14,7 @@ const Contact: React.FC = () => {
           <MailIcon />
         </div>
 
-        <div className="mb-20 text-center">
+        <div className="mb-16 text-center">
           <h2 className="mb-4 text-2xl font-bold uppercase md:text-3xl">How to contact me?</h2>
           <p className="text-neutral-400">Well there are several ways you can reach me</p>
         </div>
