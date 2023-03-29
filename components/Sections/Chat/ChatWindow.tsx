@@ -152,7 +152,8 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
       replyBack([`Hi ${cleanedStr}, nice to meet you!`, `What is your email?`]);
     }
     if (messages.length === 6) {
-      setUserEmail(messages[5].content);
+      const cleanedEmail = messages[5].content.replace(" ", "");
+      setUserEmail(cleanedEmail);
       replyBack([`I got your email`, `What message do you want to leave for me?`]);
     }
     // Show SEND EMAIL button
