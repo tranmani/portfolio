@@ -76,33 +76,16 @@ const Technologies: React.FC = () => {
     setType(type);
   };
 
-  const getButtonWidth = (type: FilterType) => {
-    switch (type) {
-      case "all":
-        return buttonRef1.current?.offsetWidth || 0;
-      case "frontend":
-        return buttonRef2.current?.offsetWidth || 0;
-      case "backend":
-        return buttonRef3.current?.offsetWidth || 0;
-      case "other":
-        return buttonRef4.current?.offsetWidth || 0;
-      default:
-        return 0;
-    }
-  };
-
   const getStyle = (type: FilterType) => {
     switch (type) {
       case "all":
-        return `before:w-[${getButtonWidth(type)}px] before:left-0`;
+        return `before:w-[41px] before:left-0`;
       case "frontend":
-        return `before:w-[${getButtonWidth(type)}px] before:left-[${getButtonWidth("all")}px]`;
+        return `before:w-[87px] before:left-[41px]`;
       case "backend":
-        return `before:w-[${getButtonWidth(type)}px] before:left-[${
-          getButtonWidth("all") + getButtonWidth("frontend")
-        }px]`;
+        return `before:w-[83px] before:left-[128px]`;
       case "other":
-        return `before:w-[${getButtonWidth(type)}px] before:left-[211px]`;
+        return `before:w-[63px] before:left-[211px]`;
       default:
         return 0;
     }
