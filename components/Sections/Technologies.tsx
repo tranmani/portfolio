@@ -107,28 +107,28 @@ const Technologies: React.FC = () => {
           >
             <StyledButton
               onClick={handleChangeType("all")}
-              className={`rounded-l-lg border-r-[1px] border-slate-300 hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
+              className={`w-[41px] rounded-l-lg border-r-[1px] border-slate-300 hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
               ref={buttonRef1}
             >
               All
             </StyledButton>
             <StyledButton
               onClick={handleChangeType("frontend")}
-              className={`border-r-[1px] border-slate-300 hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
+              className={`w-[87px] border-r-[1px] border-slate-300 hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
               ref={buttonRef2}
             >
               Frontend
             </StyledButton>
             <StyledButton
               onClick={handleChangeType("backend")}
-              className={`border-r-[1px] border-slate-300 hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
+              className={`w-[83px] border-r-[1px] border-slate-300 hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
               ref={buttonRef3}
             >
               Backend
             </StyledButton>
             <StyledButton
               onClick={handleChangeType("other")}
-              className={`rounded-r-lg hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
+              className={`w-[63px] rounded-r-lg hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
               ref={buttonRef4}
             >
               Other
