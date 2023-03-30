@@ -3,6 +3,7 @@ export interface ITechnology {
   logo: string;
   className: string;
   style: React.CSSProperties;
+  type: "frontend" | "backend" | "other";
 }
 
 export const technologies: ITechnology[] = [
@@ -13,6 +14,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(167, 159, 253) -10%, rgb(227, 190, 233) 40%, rgb(244, 168, 154) 70%)",
     },
+    type: "frontend",
   },
   {
     name: "Next.js",
@@ -21,6 +23,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(46, 131, 255) -10%, rgb(235, 125, 159) 50%, rgb(255, 203, 190) 100%)",
     },
+    type: "frontend",
   },
   {
     name: "Node.js",
@@ -29,6 +32,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(120deg, rgb(254, 173, 166) 0%, rgb(245, 239, 239) 100%)",
     },
+    type: "backend",
   },
   {
     name: "MongoDB",
@@ -38,6 +42,7 @@ export const technologies: ITechnology[] = [
       background:
         "linear-gradient(90deg,#6d9ee7 12.5%,#adbfe3 26.04%,#f0c9b4 39.06%,#f4ba6e 56.96%,#ffc178 70.83%,#e58334 92.71%)",
     },
+    type: "backend",
   },
   {
     name: "TailwindCSS",
@@ -46,6 +51,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(167, 159, 253) -10%, rgb(227, 190, 233) 40%, rgb(244, 168, 154) 70%)",
     },
+    type: "frontend",
   },
   {
     name: "Git",
@@ -54,6 +60,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(46, 131, 255) -10%, rgb(235, 125, 159) 50%, rgb(255, 203, 190) 100%)",
     },
+    type: "other",
   },
   {
     name: "React",
@@ -62,6 +69,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(120deg, rgb(254, 173, 166) 0%, rgb(245, 239, 239) 100%)",
     },
+    type: "frontend",
   },
   {
     name: "Github",
@@ -71,6 +79,7 @@ export const technologies: ITechnology[] = [
       background:
         "linear-gradient(90deg,#6d9ee7 12.5%,#adbfe3 26.04%,#f0c9b4 39.06%,#f4ba6e 56.96%,#ffc178 70.83%,#e58334 92.71%)",
     },
+    type: "other",
   },
   {
     name: "HTML",
@@ -79,6 +88,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(167, 159, 253) -10%, rgb(227, 190, 233) 40%, rgb(244, 168, 154) 70%)",
     },
+    type: "frontend",
   },
   {
     name: "CSS",
@@ -87,6 +97,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(46, 131, 255) -10%, rgb(235, 125, 159) 50%, rgb(255, 203, 190) 100%)",
     },
+    type: "frontend",
   },
   {
     name: "JavaScript",
@@ -95,6 +106,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(120deg, rgb(254, 173, 166) 0%, rgb(245, 239, 239) 100%)",
     },
+    type: "frontend",
   },
   {
     name: "Python",
@@ -104,6 +116,7 @@ export const technologies: ITechnology[] = [
       background:
         "linear-gradient(90deg,#6d9ee7 12.5%,#adbfe3 26.04%,#f0c9b4 39.06%,#f4ba6e 56.96%,#ffc178 70.83%,#e58334 92.71%)",
     },
+    type: "backend",
   },
   {
     name: "Kubernetes",
@@ -112,6 +125,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(167, 159, 253) -10%, rgb(227, 190, 233) 40%, rgb(244, 168, 154) 70%)",
     },
+    type: "other",
   },
   {
     name: "MySQL",
@@ -120,6 +134,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(46, 131, 255) -10%, rgb(235, 125, 159) 50%, rgb(255, 203, 190) 100%)",
     },
+    type: "backend",
   },
   {
     name: "GraphQL",
@@ -128,6 +143,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(120deg, rgb(254, 173, 166) 0%, rgb(245, 239, 239) 100%)",
     },
+    type: "backend",
   },
   {
     name: "Docker",
@@ -137,6 +153,7 @@ export const technologies: ITechnology[] = [
       background:
         "linear-gradient(90deg,#6d9ee7 12.5%,#adbfe3 26.04%,#f0c9b4 39.06%,#f4ba6e 56.96%,#ffc178 70.83%,#e58334 92.71%)",
     },
+    type: "other",
   },
   {
     name: "Vercel",
@@ -145,6 +162,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(167, 159, 253) -10%, rgb(227, 190, 233) 40%, rgb(244, 168, 154) 70%)",
     },
+    type: "other",
   },
   {
     name: "Netlify",
@@ -153,6 +171,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(46, 131, 255) -10%, rgb(235, 125, 159) 50%, rgb(255, 203, 190) 100%)",
     },
+    type: "other",
   },
   {
     name: "Golang",
@@ -161,6 +180,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(120deg, rgb(254, 173, 166) 0%, rgb(245, 239, 239) 100%)",
     },
+    type: "backend",
   },
   {
     name: "Azure DevOps",
@@ -170,6 +190,7 @@ export const technologies: ITechnology[] = [
       background:
         "linear-gradient(90deg,#6d9ee7 12.5%,#adbfe3 26.04%,#f0c9b4 39.06%,#f4ba6e 56.96%,#ffc178 70.83%,#e58334 92.71%)",
     },
+    type: "other",
   },
   {
     name: "Gitlab",
@@ -178,6 +199,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(167, 159, 253) -10%, rgb(227, 190, 233) 40%, rgb(244, 168, 154) 70%)",
     },
+    type: "other",
   },
   {
     name: "MUI",
@@ -186,6 +208,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(46, 131, 255) -10%, rgb(235, 125, 159) 50%, rgb(255, 203, 190) 100%)",
     },
+    type: "frontend",
   },
   {
     name: "Quasar",
@@ -194,6 +217,7 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(120deg, rgb(254, 173, 166) 0%, rgb(245, 239, 239) 100%)",
     },
+    type: "frontend",
   },
   {
     name: "Vue.js",
@@ -203,6 +227,7 @@ export const technologies: ITechnology[] = [
       background:
         "linear-gradient(90deg,#6d9ee7 12.5%,#adbfe3 26.04%,#f0c9b4 39.06%,#f4ba6e 56.96%,#ffc178 70.83%,#e58334 92.71%)",
     },
+    type: "frontend",
   },
   {
     name: "Figma",
@@ -211,5 +236,6 @@ export const technologies: ITechnology[] = [
     style: {
       background: "linear-gradient(90deg, rgb(167, 159, 253) -10%, rgb(227, 190, 233) 40%, rgb(244, 168, 154) 70%)",
     },
+    type: "other",
   },
 ];

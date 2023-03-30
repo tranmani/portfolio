@@ -116,13 +116,14 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   const [message, setMessage] = React.useState<string>("");
   const [messages, setMessages] = React.useState<IChatMessage[]>([]);
   const chatEndRef = React.useRef<HTMLDivElement>(null);
-  const chatBody = React.useRef<HTMLDivElement>(null);
+  const chatBodyRef = React.useRef<HTMLDivElement>(null);
   const chatInputRef = React.useRef<HTMLInputElement>(null);
   const [isTyping, setIsTyping] = React.useState<boolean>(false);
   const [userEmail, setUserEmail] = React.useState<string>("");
   const [userName, setUserName] = React.useState<string>("");
   const [isSendEmailButton, setIsSendEmailButton] = React.useState<boolean>(false);
-  const isInView = useInView(chatBody, { once: true });
+  const isInView = useInView(chatBodyRef, { once: true });
+  const isChatInputInView = useInView(chatInputRef, { once: true });
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const scroll = () => {
@@ -134,8 +135,9 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   // Send first messages to guest
   React.useEffect(() => {
     if (isInView && messages.length === 0) {
-      chatInputRef.current?.focus();
-      replyBack(["Hello stranger, my name is Huy", "What is your name?"]);
+      replyBack(["Hello stranger, my name is Huy", "What is your name?"]).then(() => {
+        if (isChatInputInView) chatInputRef.current?.focus();
+      });
     }
   }, [isInView, messages]);
 
@@ -292,13 +294,6 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
 
   return (
     <>
-      {/* <div
-        onClick={() => {
-          replyBack(["I'm fine too", "I'm fine too222222222"]);
-        }}
-      >
-        Mock reply
-      </div> */}
       <div className="relative h-min w-full max-w-[600px] overflow-hidden rounded-xl shadow-xl dark:shadow-none">
         {/* Chat background */}
         <ChatBG className="absolute top-0 left-0 h-full w-full bg-[url('/chat-bg.png')] opacity-[0.8] dark:opacity-[0.1]" />
@@ -320,7 +315,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
         {/* chat body */}
         <div
           className="scrollbar-hide z-[2] h-[300px] overflow-y-scroll overscroll-contain bg-[#efeae2] px-6 py-2 dark:bg-[#182229] sm:h-[500px]"
-          ref={chatBody}
+          ref={chatBodyRef}
         >
           <AnimatePresence>
             {messages.map((message) => {

@@ -2,13 +2,22 @@ import Image from "next/image";
 import React from "react";
 import Tooltip from "../shared/tooltip";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import TechnologyIcon from "../shared/icons/TechnologyIcon";
 import { technologies } from "@/lib/technologies";
 import useWindowSize from "@/lib/hooks/use-window-size";
 
+type FilterType = "all" | "frontend" | "backend" | "other";
+
 const Technologies: React.FC = () => {
   const { isMobile } = useWindowSize();
+  const [filteredTechnologies, setFilteredTechnologies] = React.useState(technologies);
+  const [type, setType] = React.useState<FilterType>("all");
+
+  const buttonRef1 = React.useRef<HTMLButtonElement>(null);
+  const buttonRef2 = React.useRef<HTMLButtonElement>(null);
+  const buttonRef3 = React.useRef<HTMLButtonElement>(null);
+  const buttonRef4 = React.useRef<HTMLButtonElement>(null);
 
   const imgSize = (className: string) => {
     if (className === "col-span-2") return 200;
@@ -24,9 +33,15 @@ const Technologies: React.FC = () => {
     },
     initial: {
       scale: 0,
+      opacity: 0,
     },
     whileInView: {
       scale: 1,
+      opacity: 1,
+    },
+    exit: {
+      scale: 0,
+      opacity: 0,
     },
   };
 
@@ -49,58 +64,143 @@ const Technologies: React.FC = () => {
     },
   };
 
+  React.useEffect(() => {
+    if (type === "all") {
+      setFilteredTechnologies(technologies);
+    } else {
+      setFilteredTechnologies(technologies.filter((technology) => technology.type === type));
+    }
+  }, [type]);
+
+  const handleChangeType = (type: FilterType) => () => {
+    setType(type);
+  };
+
+  const getButtonWidth = (type: FilterType) => {
+    switch (type) {
+      case "all":
+        return buttonRef1.current?.offsetWidth || 0;
+      case "frontend":
+        return buttonRef2.current?.offsetWidth || 0;
+      case "backend":
+        return buttonRef3.current?.offsetWidth || 0;
+      case "other":
+        return buttonRef4.current?.offsetWidth || 0;
+      default:
+        return 0;
+    }
+  };
+
+  const getStyle = (type: FilterType) => {
+    switch (type) {
+      case "all":
+        return `before:w-[${getButtonWidth(type)}px] before:left-0`;
+      case "frontend":
+        return `before:w-[${getButtonWidth(type)}px] before:left-[${getButtonWidth("all")}px]`;
+      case "backend":
+        return `before:w-[${getButtonWidth(type)}px] before:left-[${
+          getButtonWidth("all") + getButtonWidth("frontend")
+        }px]`;
+      case "other":
+        return `before:w-[${getButtonWidth(type)}px] before:left-[211px]`;
+      default:
+        return 0;
+    }
+  };
+
   return (
     <section className="max-w-[85vw] pb-32 md:max-w-[1200px]" id="technologies">
-      <div className="mb-20 text-center">
+      <div className="text-center">
         <div className="mb-4 flex justify-center">
           <TechnologyIcon />
         </div>
-        <h2 className="mb-4 text-2xl font-bold uppercase md:text-3xl">Technologies</h2>
+        <h2 className="text-2xl font-bold uppercase md:text-3xl">Technologies</h2>
         <p className="text-neutral-400">Technologies I have worked with</p>
+        <div className="my-12 flex justify-center">
+          <div
+            className={`relative flex w-fit justify-center overflow-hidden rounded-xl before:absolute before:z-[-1] before:h-full before:bg-[rgba(105,90,166,0.4)] before:transition-all before:duration-300 before:ease-linear before:content-[''] dark:before:bg-[rgba(105,90,166,1)] ${getStyle(
+              type,
+            )}`}
+          >
+            <StyledButton
+              onClick={handleChangeType("all")}
+              className={`rounded-l-lg border-r-[1px] border-slate-300 hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
+              ref={buttonRef1}
+            >
+              All
+            </StyledButton>
+            <StyledButton
+              onClick={handleChangeType("frontend")}
+              className={`border-r-[1px] border-slate-300 hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
+              ref={buttonRef2}
+            >
+              Frontend
+            </StyledButton>
+            <StyledButton
+              onClick={handleChangeType("backend")}
+              className={`border-r-[1px] border-slate-300 hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
+              ref={buttonRef3}
+            >
+              Backend
+            </StyledButton>
+            <StyledButton
+              onClick={handleChangeType("other")}
+              className={`rounded-r-lg hover:shadow-[inset_0_0_4px_rgba(105,90,166,0.4)] dark:border-slate-600 dark:hover:shadow-[inset_0_0_4px_rgba(105,90,166,1)]`}
+              ref={buttonRef4}
+            >
+              Other
+            </StyledButton>
+          </div>
+        </div>
       </div>
-      <div className="flex justify-center">
+      <div className="flex flex-wrap justify-center">
         <div className="grid auto-rows-auto grid-cols-3 gap-4 md:grid-cols-6 md:gap-6 md:px-12">
-          {technologies.map((technology, index) => (
-            <Tooltip content={technology.name} key={index}>
-              <Wrapper
-                initial="initial"
-                whileInView="whileInView"
-                whileHover="hover"
-                variants={wrapperVariants}
-                transition={{
-                  ease: "easeOut",
-                  duration: 0.3,
-                }}
-                className={`flex h-full flex-col items-center justify-center rounded-lg border bg-[rgba(233,231,234,0.5)] p-4 dark:border-[rgba(255,255,255,.09)] dark:bg-[rgb(110,110,110)] ${technology.className}`}
-              >
-                <Glow
-                  variants={glowVariants}
-                  transition={{
-                    ease: "easeIn",
-                    delay: 0.05,
-                  }}
-                  style={technology.style}
-                />
-                <Card
-                  variants={cardVariants}
+          <AnimatePresence>
+            {filteredTechnologies.map((technology, index) => (
+              <Tooltip content={technology.name} key={index}>
+                <Wrapper
+                  key={index}
+                  initial="initial"
+                  whileInView="whileInView"
+                  whileHover="hover"
+                  variants={wrapperVariants}
                   transition={{
                     ease: "easeOut",
-                    delay: 0.15,
                     duration: 0.5,
                   }}
+                  exit="exit"
+                  layout
+                  className={`flex h-full flex-col items-center justify-center rounded-lg border bg-[rgba(233,231,234,0.5)] p-4 dark:border-[rgba(255,255,255,.09)] dark:bg-[rgb(110,110,110)] ${technology.className}`}
                 >
-                  <Image
-                    src={technology.logo}
-                    alt={technology.name}
-                    height={isMobile ? 100 : imgSize(technology.className.split(" ")[1])}
-                    width={isMobile ? 100 : imgSize(technology.className.split(" ")[0])}
-                    aria-label={technology.name}
-                    style={{ objectFit: "contain" }}
+                  <Glow
+                    variants={glowVariants}
+                    transition={{
+                      ease: "easeIn",
+                      delay: 0.05,
+                    }}
+                    style={technology.style}
                   />
-                </Card>
-              </Wrapper>
-            </Tooltip>
-          ))}
+                  <Card
+                    variants={cardVariants}
+                    transition={{
+                      ease: "easeOut",
+                      delay: 0.15,
+                      duration: 0.5,
+                    }}
+                  >
+                    <Image
+                      src={technology.logo}
+                      alt={technology.name}
+                      height={isMobile ? 100 : imgSize(technology.className.split(" ")[1])}
+                      width={isMobile ? 100 : imgSize(technology.className.split(" ")[0])}
+                      aria-label={technology.name}
+                      style={{ objectFit: "contain" }}
+                    />
+                  </Card>
+                </Wrapper>
+              </Tooltip>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
     </section>
@@ -127,3 +227,10 @@ const Glow = styled(motion.div)`
 `;
 
 const Card = styled(motion.div)``;
+
+const StyledButton = styled("button")`
+  padding: 0.5rem 0.7rem;
+  // background-color: rgba(105, 90, 166, 0.4);
+  transition: all 0.2s ease-in-out;
+  z-index: 4;
+`;
