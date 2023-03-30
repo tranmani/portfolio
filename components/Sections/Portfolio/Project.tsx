@@ -33,7 +33,13 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
     >
       <div className="basis-[100%] md:basis-1/2">
         <Link href={project.link} target={project.link.substring(0, 1) === "#" ? "_top" : "_blank"}>
-          <Image src={project.image || "/logo.webp"} height={550} width={550} alt={`${project.title} image`} />
+          <Image
+            src={project.image || "/logo.webp"}
+            height={550}
+            width={550}
+            alt={`${project.title} image`}
+            className="rounded-lg"
+          />
         </Link>
       </div>
       {/* Project info */}
