@@ -9,6 +9,7 @@ const ThemeProvider = dynamic(() => import("@/lib/hooks/use-dark-mode"), {
   ssr: false,
 });
 import dynamic from "next/dynamic";
+import { Analytics } from "@vercel/analytics/react";
 
 const sfPro = localFont({
   src: "../styles/SF-Pro-Display-Medium.otf",
@@ -27,6 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <div className={cx(sfPro.variable, inter.variable)}>
           <Component {...pageProps} />
         </div>
+        <Analytics />
       </RWBProvider>
     </ThemeProvider>
   );
