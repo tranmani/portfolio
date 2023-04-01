@@ -35,6 +35,10 @@ export const projects: IProject[] = [
         color: "white",
         technology: "Vercel",
       },
+      {
+        color: "rgba(255,117,117,70%)",
+        technology: "Framer Motion",
+      },
     ],
   },
 ];

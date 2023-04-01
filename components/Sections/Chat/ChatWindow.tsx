@@ -39,11 +39,13 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   // Send first messages to guest
   React.useEffect(() => {
     if (isInView && messages.length === 0) {
-      replyBack(["Hello stranger, my name is Huy", "What is your name?"]).then(() => {
-        if (isChatInputInView) chatInputRef.current?.focus();
-      });
+      replyBack(["Hello stranger, my name is Huy", "What is your name?"]);
     }
   }, [isInView, messages]);
+
+  React.useEffect(() => {
+    chatInputRef.current?.focus();
+  }, [isChatInputInView]);
 
   // Watch for new messages
   React.useEffect(() => {
