@@ -44,7 +44,9 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
   }, [isInView, messages]);
 
   React.useEffect(() => {
-    chatInputRef.current?.focus();
+    if (isChatInputInView) {
+      chatInputRef.current?.focus();
+    }
   }, [isChatInputInView]);
 
   // Watch for new messages
