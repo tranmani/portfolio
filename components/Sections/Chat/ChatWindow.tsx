@@ -19,13 +19,15 @@ export interface IChatMessage {
 const ChatWindow: React.FC<IChatWindow> = ({}) => {
   const [message, setMessage] = React.useState<string>("");
   const [messages, setMessages] = React.useState<IChatMessage[]>([]);
-  const chatEndRef = React.useRef<HTMLDivElement>(null);
-  const chatBodyRef = React.useRef<HTMLDivElement>(null);
-  const chatInputRef = React.useRef<HTMLInputElement>(null);
   const [isTyping, setIsTyping] = React.useState<boolean>(false);
   const [userEmail, setUserEmail] = React.useState<string>("");
   const [userName, setUserName] = React.useState<string>("");
   const [isSendEmailButton, setIsSendEmailButton] = React.useState<boolean>(false);
+
+  const chatEndRef = React.useRef<HTMLDivElement>(null);
+  const chatBodyRef = React.useRef<HTMLDivElement>(null);
+  const chatInputRef = React.useRef<HTMLInputElement>(null);
+
   const isInView = useInView(chatBodyRef, { once: true });
   const isChatInputInView = useInView(chatInputRef, { once: true });
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -68,10 +70,7 @@ const ChatWindow: React.FC<IChatWindow> = ({}) => {
     }
     // Show SEND EMAIL button
     if (messages.length === 9) {
-      replyBack(
-        [`You can still write more messages, when you are done, press SEND EMAIL button to send your message to me`],
-        true,
-      );
+      replyBack([`You can still write more messages, when you are done, press SEND EMAIL button`], true);
     }
     // Remind guest to click SEND EMAIL button
     if (messages.length === 15 && isSendEmailButton) {

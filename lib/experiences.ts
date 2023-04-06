@@ -11,7 +11,7 @@ export const experiences: IExperience[] = [
     title: "Junior Web Developer",
     company: "SevginWeb",
     place: "Deventer, Netherlands",
-    description: "Further develop the deposit page of the application",
+    description: "- Further develop and responsible for the payment service of the application.|- Provided timely support to users for payment-related issues.|- Evaluated and improved payment service continuously.",
     date: "January 2023 - Present",
   },
   {
