@@ -44,7 +44,7 @@ export const projects: IProject[] = [
       "As part of my part-time job, I created a satellite blog website with a main focus on SEO using Next.js and MUI. I believe that creating a website optimized for SEO can provide significant benefits for businesses, including increased traffic, leads, and revenue. I chose to use Next.js and MUI because they are powerful tools that enable server-side rendering, improve page load times, and offer pre-built components and styles for a visually appealing and user-friendly website. By creating a website with a main focus on SEO, I was able to demonstrate my ability to build a website that is optimized for search engine rankings, and I am excited about the opportunity to continue learning and expanding my skills in this area.",
     image: "/projects/project2.png",
     link: "https://casinosinvietnam.com",
-    github: "https://github.com/tranmani/portfolio",
+    github: "https://github.com/tranmani",
     noFollow: true,
     technologies: [
       {
@@ -54,6 +54,28 @@ export const projects: IProject[] = [
       {
         color: "white",
         technology: "Next.js",
+      },
+      {
+        color: "rgba(0, 176, 255, 70%)",
+        technology: "MUI",
+      },
+    ],
+  },
+  {
+    title: "Blog layout for headless WordPress",
+    description:
+      "As part of the integration process for a blog function, I developed a layout in React that leveraged the power of headless WordPress. This enabled content writers to create blog content easily without requiring significant communication with the developer. I was responsible for setting up the headless WordPress and integrating it with the layout, which was then seamlessly integrated into a Next.js project to ensure optimal performance and functionality.",
+    image: "/projects/project3.png",
+    link: "https://test-blog.tranmani.com/",
+    github: "https://github.com/tranmani/test-blog",
+    technologies: [
+      {
+        color: "rgba(97,218,251, 70%)",
+        technology: "React",
+      },
+      {
+        color: "rgb(31, 111, 147, 70%)",
+        technology: "Wordpress",
       },
       {
         color: "rgba(0, 176, 255, 70%)",
