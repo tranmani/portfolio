@@ -22,8 +22,9 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
       whileInView={{
         opacity: 1,
         x: 0,
-        transition: { type: "spring", delay: 0.05 },
+        transition: { type: "spring", delay: 0.15 },
       }}
+      viewport={{ once: true }}
       className={`flex ${
         index % 2 === 0 ? "flex-row-reverse" : ""
       } flex-wrap gap-4 rounded-lg bg-neutral-100 p-4 dark:bg-neutral-800 md:flex-nowrap md:gap-12 md:p-12`}

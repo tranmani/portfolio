@@ -151,6 +151,7 @@ const Technologies: React.FC = () => {
                     ease: "easeOut",
                     duration: 0.5,
                   }}
+                  viewport={{ once: true }}
                   exit="exit"
                   layout
                   className={`flex h-full flex-col items-center justify-center rounded-lg border bg-[rgba(233,231,234,0.5)] p-4 dark:border-[rgba(255,255,255,.09)] dark:bg-[rgb(110,110,110)] ${technology.className}`}
