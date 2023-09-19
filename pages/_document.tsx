@@ -37,7 +37,7 @@ export default class MyDocument extends Document {
         ...initialProps,
         styles: (
           <>
-            <script dangerouslySetInnerHTML={{ __html: logging }} />
+            {/* <script dangerouslySetInnerHTML={{ __html: logging }} /> */}
             <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
             {initialProps.styles}
             {sheet.getStyleElement()}
