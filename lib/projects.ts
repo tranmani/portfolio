@@ -3,7 +3,7 @@ export interface IProject {
   description: string;
   image: string;
   link: string;
-  github: string;
+  github?: string;
   noFollow?: boolean;
   technologies: {
     color: string;
@@ -12,6 +12,19 @@ export interface IProject {
 }
 
 export const projects: IProject[] = [
+  {
+    title: "Beauty Art Pro",
+    description:
+      "I designed and developed a WordPress website for a local business in Geneva, Switzerland. My responsibilities included researching a suitable cloud provider, setting up a multi-language content, booking and payment system. Enabling the client to easily manage their content and make changes to the website without requiring any technical knowledge. The website is primarily focused on SEO and providing ease for customers to book their appointments. As a result, it quickly ranked in the top 5 of local Google search results within just a few months.",
+    image: "/projects/project4.png",
+    link: "https://beautyartpro.eu/?utm_source=portfolio",
+    technologies: [
+      {
+        color: "rgba(41,129,255,70%)",
+        technology: "Wordpress",
+      }
+    ],
+  },
   {
     title: "This website",
     description:

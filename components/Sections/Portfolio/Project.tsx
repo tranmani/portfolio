@@ -78,9 +78,11 @@ const Project: React.FC<ProjectProps> = ({ project, index, technologies }) => {
               </span>
             </div>
           </Link>
-          <Link href={project.github} target={project.link.substring(0, 1) === "#" ? "_top" : "_blank"}>
-            <span>Github</span>
-          </Link>
+          {project.github && (
+            <Link href={project.github} target={project.link.substring(0, 1) === "#" ? "_top" : "_blank"}>
+              <span>Github</span>
+            </Link>
+          )}
         </div>
       </div>
     </motion.div>
