@@ -15,10 +15,10 @@ interface IEmailProps {
   guestMessages?: IChatMessage[];
 }
 
-export const EmailTemplate = ({
+export const GuestVisit = ({
   guestName = "Guest",
   guestEmail = "minhhuy8137@gmail.com",
-  guestMessages = messagesRaw,
+  guestMessages = [],
 }: IEmailProps) => {
   return (
     <Html>
@@ -45,7 +45,7 @@ export const EmailTemplate = ({
   );
 };
 
-export default EmailTemplate;
+export default GuestVisit;
 
 const main = {
   backgroundColor: "#f6f9fc",
@@ -94,100 +94,3 @@ const button = {
   width: "210px",
   padding: "14px 7px",
 };
-
-const anchor = {
-  textDecoration: "underline",
-};
-
-const messagesRaw: IChatMessage[] = [
-  {
-    id: 1,
-    content: "Hello",
-    isMe: true,
-    time: "12:00",
-  },
-  {
-    id: 2,
-    content: "Hi",
-    isMe: false,
-    time: "12:00",
-  },
-  {
-    id: 3,
-    content: "How are you?",
-    isMe: true,
-    time: "12:00",
-  },
-  {
-    id: 4,
-    content: "I'm fine, thank you",
-    isMe: false,
-    time: "12:00",
-  },
-  {
-    id: 5,
-    content: "What about you?",
-    isMe: true,
-    time: "12:00",
-  },
-  {
-    id: 6,
-    content: "I'm fine too",
-    isMe: false,
-    time: "12:00",
-  },
-  {
-    id: 7,
-    content: "What are you doing?",
-    isMe: true,
-    time: "12:00",
-  },
-  {
-    id: 8,
-    content: "I'm coding",
-    isMe: false,
-    time: "12:00",
-  },
-  {
-    id: 9,
-    content: "What are you coding?",
-    isMe: true,
-    time: "12:00",
-  },
-  {
-    id: 10,
-    content: "I'm coding a chat app",
-    isMe: false,
-    time: "12:00",
-  },
-  {
-    id: 11,
-    content: "Wow, that's cool",
-    isMe: true,
-    time: "12:00",
-  },
-  {
-    id: 12,
-    content: "Yeah, it is",
-    isMe: false,
-    time: "12:00",
-  },
-  {
-    id: 13,
-    content: "Can I see it?",
-    isMe: true,
-    time: "12:00",
-  },
-  {
-    id: 14,
-    content: "Sure, here is the link",
-    isMe: false,
-    time: "12:00",
-  },
-  {
-    id: 15,
-    content: "https://tranmani.com",
-    isMe: false,
-    time: "12:00",
-  },
-];
