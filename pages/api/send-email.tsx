@@ -13,11 +13,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
-  const { userName, userEmail, messagesToSent, type, subject, createdTime, coupon } = req.body;
+  const { userName, userEmail, messagesToSent, type, subject, createdTime, code } = req.body;
 
   if (type === EmailType.SALON_GOOGLE_COUPON) {
     // Check if the email is valid
-    if (!userName || !coupon || !createdTime) {
+    if (!userName || !code || !createdTime) {
       return res.status(400).json({ message: "Empty content" });
     }
 
@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       html: render(
         GoogleReviewWithCoupon({
           guestName: userName,
-          coupon,
+          coupon: code,
           createdTime,
         }),
       ),
