@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     await sendEmail({
-      to: "minhhuy8137@gmail.com",
+      to: "info@beautyartpro.ch",
       subject: subject ?? "Someone leave you a review on google and here is the coupon code!",
       html: render(
         GoogleReviewWithCoupon({
