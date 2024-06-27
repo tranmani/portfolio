@@ -14,6 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: "Method not allowed" });
   }
   const { userName, userEmail, messagesToSent, type, subject, createdTime, code } = req.body;
+  if (!type) {
+    return res.status(400).json({ message: "should have type" });
+  }
 
   if (type === EmailType.SALON_GOOGLE_COUPON) {
     // Check if the email is valid
@@ -22,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     await sendEmail({
-      to: "info@beautyartpro.ch",
+      to: "minhhuy8137@gmail.com",
       subject: subject ?? "Someone leave you a review on google and here is the coupon code!",
       html: render(
         GoogleReviewWithCoupon({
