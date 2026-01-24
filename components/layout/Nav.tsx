@@ -13,7 +13,7 @@ const Nav: React.FC = () => {
         <Link href="/" className="flex items-center gap-2 group">
           <div className="w-5 h-5 bg-terminal-green rotate-45 group-hover:scale-110 transition-transform" />
           <span className="font-bold tracking-tighter text-lg uppercase hidden sm:inline-block">
-            ENGINEER_CLI_v2
+            {portfolioConfig.profile.projectName}
           </span>
         </Link>
       </div>

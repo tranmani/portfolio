@@ -2,6 +2,7 @@ import { generateAscii } from "./ascii";
 
 export const portfolioConfig = {
   profile: {
+    projectName: "ENGINEER_CLI",
     name: "Huy",
     title: "SOFTWARE ENGINEER",
     asciiTitle: generateAscii("Huy Tran"),
@@ -13,6 +14,7 @@ export const portfolioConfig = {
   },
   navigation: [
     { label: "/home", path: "/" },
+    { label: "/experience", path: "/experience" },
     { label: "/projects", path: "/projects" },
     { label: "/stack", path: "/stack" },
     { label: "/contact", path: "/contact" },
@@ -26,30 +28,34 @@ export const portfolioConfig = {
     {
       title: "Full-stack Developer",
       company: "SevginWeb",
-      place: "Deventer, Netherlands",
-      description: "Further develop and responsible for the payment service of the application. Provided timely support to users for payment-related issues. Evaluated and improved payment service continuously.",
+      place: "Deventer, Netherlands (Remote)",
+      description: "Revamped the payment process using modern design and functionality, improving user satisfaction and increasing the conversion rate by ~15% in the first few months post-deployment. Optimize the CI/CD pipeline of the application for a reliable deployment. Delivered a comprehensive notification service by implementing frontend and backend components, streamlining user communication and system alerts.",
       date: "Jan 2023 - Present",
+      active: true,
     },
     {
-      title: "Full-stack Developer",
+      title: "Full-stack Developer Intern",
       company: "Accenture",
       place: "Amsterdam, Netherlands",
-      description: "Interviewing stakeholders in order to create the front-end designs. Developing the microservice with Go. Deploying the microservice to GCP with Azure Pipeline, utilized Docker and Kubernetes.",
+      description: "Researched and engineered microservices using Golang, Python, and React, ensuring scalable and efficient system performance. Deployed microservices on GCP via Azure Pipeline, leveraging Docker and Kubernetes to enable seamless and reliable operations. Enhanced user experience by redesigning the dashboard, improving the logical flow and intuitive presentation of information.",
       date: "May 2022 - Nov 2022",
+      active: false,
     },
     {
       title: "Part-time Full-stack Developer",
       company: "SevginWeb",
-      place: "Remote",
-      description: "Building a number of blogs from scratch with Nextjs and headless WordPress with a focus on SEO. Creating serverless scripts using Cloudflare Worker. Experiencing working in the iGaming industry.",
+      place: "Deventer, Netherlands (Remote)",
+      description: "Developed SEO-focused blogs using Next.js and headless WordPress, boosting the click-through rate to the main site by ~20% within four months. Implemented a Geo-detection feature with Cloudflare Workers, reducing the bounce rate and improving user engagement over time.",
       date: "Aug 2021 - Dec 2022",
+      active: false,
     },
     {
       title: "Full-stack Developer Intern",
       company: "Code.rehab",
       place: "Enschede, Netherlands",
-      description: "Helping further develop an online magazine platform - Greenzeen.io",
+      description: "Developed Front-end using React and GraphQL. Created microservices with Nodejs using AWS serverless for an online magazine platform. Implemented CI/CD pipeline between Jira and AWS.",
       date: "Feb 2021 - Jul 2021",
+      active: false,
     },
   ],
   education: [

@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { ParticlesBackground } from "../home/ParticlesBackground";
 import Meta from "./meta";
 import Nav from "./Nav";
 import cx from "classnames";
@@ -29,7 +28,7 @@ export default function Layout({
       </main>
 
       <footer className="mt-auto py-8 text-center border-t border-terminal-border text-[10px] text-terminal-green/30 uppercase tracking-[0.2em]">
-        &copy; {year} SENIOR_ENGINEER_CORE // SYSTEM_VERSION_4.2.0
+        &copy; {year} SOFTWARE_ENGINEER_CORE // SYSTEM_VERSION_4.2.0
       </footer>
     </div>
   );
