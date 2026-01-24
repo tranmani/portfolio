@@ -106,7 +106,7 @@ const Nav: React.FC = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 w-4/5 sm:w-72 bg-black border-l border-terminal-border z-[270] md:hidden p-8 pt-24 shadow-[-10px_0_30px_rgba(0,0,0,0.5)] h-[100svh]"
+              className="fixed top-0 right-0 bottom-0 w-4/5 sm:w-72 bg-black border-l border-terminal-border z-[270] md:hidden p-8 pt-24 shadow-[-10px_0_30px_rgba(0,0,0,0.5)] h-[100dvh]"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex flex-col gap-6 relative z-[280]">
