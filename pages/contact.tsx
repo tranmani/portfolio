@@ -4,6 +4,8 @@ import TerminalWindow from "@/components/TerminalWindow";
 import DotMap from "@/components/DotMap";
 import YamlForm from "@/components/YamlForm";
 import cx from "classnames";
+import { portfolioConfig } from "@/lib/config";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 
 
@@ -91,9 +93,34 @@ const Contact: React.FC = () => {
                 <div className="space-y-6 w-full lg:w-auto">
                     {/* Icons */}
                     <div className="flex justify-center lg:justify-end gap-12 text-terminal-green/40">
-                        <button className="hover:text-terminal-green transition-colors text-lg italic">@</button>
-                        <button className="hover:text-terminal-green transition-colors text-lg font-bold">⌘</button>
-                        <button className="hover:text-terminal-green transition-colors text-lg">◮</button>
+                        <a 
+                          href={`mailto:${portfolioConfig.contact.email}`}
+                          className="hover:text-terminal-green transition-all flex flex-col items-center gap-1 group"
+                          title="Send Email"
+                        >
+                            <Mail size={20} />
+                            <span className="text-[8px] opacity-0 group-hover:opacity-100 uppercase tracking-tighter transition-opacity font-mono">Mail_Node</span>
+                        </a>
+                        <a 
+                          href={portfolioConfig.contact.linkedIn}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-terminal-green transition-all flex flex-col items-center gap-1 group"
+                          title="LinkedIn Profile"
+                        >
+                            <Linkedin size={20} />
+                            <span className="text-[8px] opacity-0 group-hover:opacity-100 uppercase tracking-tighter transition-opacity font-mono">LinkedIn</span>
+                        </a>
+                        <a 
+                          href={portfolioConfig.contact.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-terminal-green transition-all flex flex-col items-center gap-1 group"
+                          title="GitHub Profile"
+                        >
+                            <Github size={20} />
+                            <span className="text-[8px] opacity-0 group-hover:opacity-100 uppercase tracking-tighter transition-opacity font-mono">Github_Repo</span>
+                        </a>
                     </div>
 
                     {/* Status Grids */}

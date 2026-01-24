@@ -109,8 +109,10 @@ export const portfolioConfig = {
     },
   ],
   contact: {
-    email: "you@domain.com",
-    subject: "collaboration_proposal"
+    email: "minhhuy8137@gmail.com",
+    subject: "collaboration_proposal",
+    linkedIn: "https://www.linkedin.com/in/minh-huy-tran/",
+    github: "https://github.com/tranmani",
   },
   stackData: [
     { name: "React", category: "FRONTEND_UI" },
