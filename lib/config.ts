@@ -3,7 +3,7 @@ import { generateAscii } from "./ascii";
 export const portfolioConfig = {
   profile: {
     name: "Huy",
-    title: "SENIOR ENGINEER",
+    title: "SOFTWARE ENGINEER",
     asciiTitle: generateAscii("Huy Tran"),
     location: "Amsterdam, NL (AWS-01)",
     yearsXp: "5+",

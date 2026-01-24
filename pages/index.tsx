@@ -5,6 +5,7 @@ import TerminalWindow from "@/components/TerminalWindow";
 import CommandLine from "@/components/CommandLine";
 import QuickAction from "@/components/QuickAction";
 import AsciiText from "@/components/AsciiText";
+import StatBox from "@/components/StatBox";
 
 
 const Home: React.FC = () => {
@@ -30,35 +31,34 @@ const Home: React.FC = () => {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-            <div className="border border-terminal-border p-4 bg-terminal-green-faint relative group overflow-hidden">
-              <div className="text-[10px] uppercase text-terminal-green/40 mb-1">SENIOR_STATUS</div>
-              <div className="text-2xl font-bold">{profile.yearsXp} Years XP</div>
-              <div className="absolute top-2 right-2 opacity-20 group-hover:opacity-100 transition-opacity">
-                (i)
-              </div>
-            </div>
+            <StatBox 
+              label="SENIOR_STATUS" 
+              value={profile.yearsXp} 
+              unit="Years XP" 
+              icon={<span className="text-xl">🛡️</span>}
+            />
             
-            <div className="border border-terminal-border p-4 bg-terminal-green-faint relative group overflow-hidden">
-              <div className="text-[10px] uppercase text-terminal-green/40 mb-1">ACTIVE_DEPLOYMENTS</div>
-              <div className="text-2xl font-bold">{profile.projectsCount} Major Projs</div>
-              <div className="absolute top-2 right-2 text-terminal-green opacity-40">
-                ★
-              </div>
-            </div>
+            <StatBox 
+              label="ACTIVE_DEPLOYMENTS" 
+              value={profile.projectsCount} 
+              unit="Major Projs" 
+              icon={<span className="text-xl">🕸️</span>}
+            />
 
-            <div className="border border-terminal-border p-4 bg-terminal-green-faint relative overflow-hidden">
-              <div className="text-[10px] uppercase text-terminal-green/40 mb-1">CURRENT_STACK</div>
+            <StatBox 
+              label="CURRENT_STACK" 
+              value={profile.currentStack.length.toString()} 
+              unit="Core Techs"
+              icon={<span className="text-xl">⚙️</span>}
+            >
               <div className="flex gap-2 flex-wrap mt-1">
-                {profile.currentStack.map(tech => (
+                {profile.currentStack.map((tech: string) => (
                   <span key={tech} className="px-1.5 py-0.5 bg-terminal-green text-background text-[10px] font-bold">
                     {tech}
                   </span>
                 ))}
               </div>
-              <div className="absolute top-2 right-2 opacity-20">
-                ⚙
-              </div>
-            </div>
+            </StatBox>
           </div>
 
           {/* Profile Summary Section */}
@@ -73,7 +73,7 @@ const Home: React.FC = () => {
           <div>
             <div className="text-[10px] uppercase text-terminal-green/40 mb-3">QUICK_ACTIONS</div>
             <div className="flex flex-wrap gap-4">
-              {quickActions.map(action => (
+              {quickActions.map((action: any) => (
                 <QuickAction key={action.label} label={action.label} path={action.path} />
               ))}
             </div>

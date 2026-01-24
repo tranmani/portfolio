@@ -10,10 +10,10 @@ module.exports = {
     extend: {
       colors: {
         background: "#050505",
-        "terminal-green": "#00FF41",
-        "terminal-green-dim": "rgba(0, 255, 65, 0.4)",
-        "terminal-green-faint": "rgba(0, 255, 65, 0.1)",
-        "terminal-border": "rgba(0, 255, 65, 0.2)",
+        "terminal-green": "#13ec5b",
+        "terminal-green-dim": "rgba(19, 236, 91, 0.4)",
+        "terminal-green-faint": "rgba(19, 236, 91, 0.1)",
+        "terminal-border": "rgba(19, 236, 91, 0.2)",
       },
       fontFamily: {
         mono: ["'JetBrains Mono'", "monospace"],

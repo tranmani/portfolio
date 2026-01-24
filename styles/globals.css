@@ -11,7 +11,7 @@ html, body {
 @layer base {
   body {
     @apply bg-background text-terminal-green font-mono overflow-x-hidden min-h-screen;
-    text-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
+    text-shadow: 0 0 5px rgba(19, 236, 91, 0.4);
   }
 
   ::selection {
@@ -55,6 +55,11 @@ html, body {
       rgba(0, 255, 65, 0.5) 50%,
       transparent
     );
+  }
+
+  .stat-grid-pattern {
+    background-image: radial-gradient(rgba(0, 255, 65, 0.2) 1px, transparent 0);
+    background-size: 4px 4px;
   }
 }
 
