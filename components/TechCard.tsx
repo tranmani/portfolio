@@ -9,9 +9,25 @@ interface TechCardProps {
 
 const TechCard: React.FC<TechCardProps> = ({ name, category }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Generate some "fake" metadata for the HUD look
   const hexId = (name.length * 1234).toString(16).toUpperCase().padStart(4, '0');
+  
+  const bitReadout = React.useMemo(() => {
+    if (!mounted) return "0x00000000";
+    return `0x${Math.random().toString(16).slice(2, 10).toUpperCase()}`;
+  }, [mounted]);
+
+  // Stable random durations to prevent hydration issues in motion props
+  const randomDurations = React.useMemo(() => {
+    if (!mounted) return [1, 1, 1, 1, 1];
+    return [0, 1, 2, 3, 4].map(() => 0.5 + Math.random() * 0.5);
+  }, [mounted]);
   
   return (
     <motion.div
@@ -98,7 +114,7 @@ const TechCard: React.FC<TechCardProps> = ({ name, category }) => {
                 } : { opacity: 0.4, scale: 1 }}
                 transition={isHovered ? { 
                   repeat: Infinity, 
-                  duration: 0.5 + Math.random() * 0.5,
+                  duration: randomDurations[i],
                   delay: i * 0.1
                 } : {}}
                 className="w-1.5 h-1.5 bg-terminal-green/60 shadow-[0_0_3px_rgba(19,236,91,0.5)]"
@@ -117,7 +133,7 @@ const TechCard: React.FC<TechCardProps> = ({ name, category }) => {
                 exit={{ opacity: 0 }}
                 className="text-[7px] text-terminal-green/60 font-mono tracking-tighter"
               >
-                0x{Math.random().toString(16).slice(2, 10).toUpperCase()}
+                {bitReadout}
               </motion.div>
             )}
           </AnimatePresence>

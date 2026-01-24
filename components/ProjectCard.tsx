@@ -7,7 +7,7 @@ interface ProjectCardProps {
   project: {
     title: string;
     description: string;
-    link: string;
+    link?: string;
     tags: string[];
   };
   index: number;
@@ -15,10 +15,23 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
   
   // Generate tactical metadata
   const projectId = (project.title.length * 777).toString(16).toUpperCase().padStart(4, '0');
-  const sessionKey = Math.random().toString(16).slice(2, 8).toUpperCase();
+  const sessionKey = React.useMemo(() => {
+    if (!mounted) return "LOADING";
+    return Math.random().toString(16).slice(2, 8).toUpperCase();
+  }, [mounted]);
+
+  const glitchData = React.useMemo(() => {
+    if (!mounted) return [];
+    return Array.from({ length: 40 }).map(() => Math.random().toString(16));
+  }, [mounted]);
 
   return (
     <motion.div
@@ -58,7 +71,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               </div>
             </div>
             
-            <motion.a 
+            {project.link&&<motion.a 
               href={project.link} 
               target="_blank" 
               rel="noopener noreferrer"
@@ -70,7 +83,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               )}
             >
               Access_Node
-            </motion.a>
+            </motion.a>}
           </div>
           
           <p className="text-sm text-terminal-green/70 leading-relaxed border-l border-terminal-border/40 pl-4 py-1 italic">
@@ -135,8 +148,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
             >
               <div className="font-mono text-[6px] text-terminal-green break-all leading-none p-2">
-                {Array.from({ length: 40 }).map((_, i) => (
-                  <span key={i}>{Math.random().toString(16)}</span>
+                {glitchData.map((data, i) => (
+                  <span key={i}>{data}</span>
                 ))}
               </div>
             </motion.div>

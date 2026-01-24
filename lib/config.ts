@@ -21,7 +21,7 @@ export const portfolioConfig = {
   ],
   quickActions: [
     { label: "./view_projects", path: "/projects" },
-    { label: "./read_about_me", path: "/#about" },
+    { label: "./read_experience", path: "/experience" },
     { label: "./download_cv", path: "/cv" },
   ],
   experiences: [
@@ -69,14 +69,12 @@ export const portfolioConfig = {
   projects: [
     {
       title: "CI/CD Pipeline Project",
-      description: "Implemented a multi-cloud CI/CD pipeline using Azure DevOps, Docker, and GKE with Terraform-managed infrastructure and optimized self-hosted agents.",
-      link: "#",
+      description: "Designed and implemented a multi-cloud CI/CD pipeline using Azure DevOps to build, containerize, and deploy a production Next.js application with Docker to Google Cloud Artifact Registry and Kubernetes (GKE), with cloud resources provisioned using Terraform. \nProvisioned and operated infrastructure and self-hosted CI agents via Terraform, implementing secure service-account authentication, Docker cache and storage optimization, and automated cleanup to ensure reliable, scalable deployments. ",
       tags: ["Azure DevOps", "Terraform", "Docker", "GKE", "K8s"],
     },
     {
       title: "Managed Public Cloud",
-      description: "Operate a public cloud infrastructure using OpenStack, hosting multiple WordPress sites and a self-hosted n8n automation system.",
-      link: "#",
+      description: "Managed a public cloud infrastructure using OpenStack, hosting approximately 10 WordPress websites and counting and a selfhosted n8n automation system. \nGained hands-on experience with Linux and cloud infrastructure-as-a-service, enhancing system management and troubleshooting skills. Ensured reliable performance and uptime for hosted services.",
       tags: ["OpenStack", "Linux", "n8n", "Wordpress", "Cloud"],
     },
     {
@@ -86,15 +84,15 @@ export const portfolioConfig = {
       tags: ["Wordpress", "SEO"],
     },
     {
-      title: "Casinos in Vietnam",
-      description: "Satellite blog website with main focus on SEO using Next.js and MUI.",
-      link: "https://casinosinvietnam.com",
+      title: "Casino Review Website",
+      description: "I developed an SEO-optimized satellite blog using Next.js and MUI to maximize search rankings, traffic, and lead generation for the business. This project leveraged server-side rendering and premium UI components to deliver a high-performance, visually appealing user experience.",
+      link: "https://review.tranmani.com/?utm_source=portfolio",
       tags: ["React", "Next.js", "MUI"],
     },
     {
       title: "Headless WP Blog",
       description: "Developed a layout in React leveraging the power of headless WordPress for content writers.",
-      link: "https://test-blog.tranmani.com/",
+      link: "https://test-blog.tranmani.com/?utm_source=portfolio",
       tags: ["React", "Wordpress", "Next.js"],
     },
   ],

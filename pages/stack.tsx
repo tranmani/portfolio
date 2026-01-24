@@ -9,6 +9,16 @@ import cx from "classnames";
 
 const TelemetryItem: React.FC<{ metric: any }> = ({ metric }) => {
   const [isHovered, setIsHovered] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const randomDurations = React.useMemo(() => {
+    if (!mounted) return [...Array(10)].map(() => 2);
+    return [...Array(10)].map(() => 2 + Math.random() * 2);
+  }, [mounted]);
   
   return (
     <motion.div 
@@ -34,7 +44,7 @@ const TelemetryItem: React.FC<{ metric: any }> = ({ metric }) => {
             }}
             transition={{ 
               repeat: Infinity, 
-              duration: 2 + Math.random() * 2,
+              duration: randomDurations[i],
               delay: i * 0.15
             }}
             className="w-3 h-3 border border-terminal-green/30 bg-terminal-green/40 shadow-[0_0_2px_rgba(19,236,91,0.2)]"
