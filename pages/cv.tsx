@@ -12,12 +12,12 @@ const CVPage: React.FC = () => {
             <span className="w-2 h-2 bg-terminal-green/30 animate-pulse" />
             root / credentials / HuyTran_CV2.pdf
           </div>
-          <div className="flex justify-between items-end">
-            <h1 className="text-3xl font-bold tracking-tighter text-terminal-green uppercase">PERSONNEL_DOSSIER</h1>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+            <h1 className="text-3xl font-bold tracking-tighter text-terminal-green uppercase leading-none">PERSONNEL_DOSSIER</h1>
             <a 
               href="/HuyTran_CV2.pdf" 
               download
-              className="text-[10px] bg-terminal-green/10 text-terminal-green border border-terminal-green/30 px-3 py-1 hover:bg-terminal-green hover:text-black transition-all font-bold uppercase"
+              className="text-[10px] bg-terminal-green/10 text-terminal-green border border-terminal-green/30 px-3 py-1 hover:bg-terminal-green hover:text-black transition-all font-bold uppercase whitespace-nowrap"
             >
               DOWNLOAD_HARD_COPY
             </a>
