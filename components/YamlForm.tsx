@@ -70,7 +70,7 @@ const YamlForm: React.FC = () => {
       </div>
       <div className="flex gap-4">
         <span className="text-terminal-green/50 w-4 select-none">4</span>
-        <div className="pl-4 flex items-center gap-2 text-wrap">
+        <div className="pl-4 flex flex-col sm:flex-row sm:items-center gap-2 text-wrap">
           <span className="text-terminal-green">name:</span> 
           <input 
             type="text" 
@@ -79,7 +79,7 @@ const YamlForm: React.FC = () => {
             onChange={handleChange}
             required
             placeholder="sender-identity"
-            className="bg-transparent border border-dashed border-terminal-border px-2 py-0.5 outline-none focus:outline-none focus:ring-0 focus:border-terminal-green transition-colors text-terminal-green/80 w-48"
+            className="bg-transparent border border-dashed border-terminal-border px-2 py-0.5 outline-none focus:outline-none focus:ring-0 focus:border-terminal-green transition-colors text-terminal-green/80 w-full sm:w-48"
           />
         </div>
       </div>
@@ -89,9 +89,9 @@ const YamlForm: React.FC = () => {
       </div>
       <div className="flex gap-4">
         <span className="text-terminal-green/50 w-4 select-none">6</span>
-        <div className="pl-4 flex items-center gap-2 text-wrap grow">
+        <div className="pl-4 flex flex-col sm:flex-row sm:items-center gap-2 text-wrap grow">
           <span className="text-terminal-green">sender_email:</span> 
-          <div className="flex items-center gap-2 border border-dashed border-terminal-border px-2 py-0.5 focus-within:border-terminal-green transition-colors grow max-w-sm">
+          <div className="flex items-center gap-2 border border-dashed border-terminal-border px-2 py-0.5 focus-within:border-terminal-green transition-colors grow max-w-full sm:max-w-sm">
             <input 
               type="email" 
               name="email"
@@ -109,7 +109,7 @@ const YamlForm: React.FC = () => {
       </div>
       <div className="flex gap-4">
         <span className="text-terminal-green/50 w-4 select-none">7</span>
-        <div className="pl-4 flex items-center gap-2 text-wrap">
+        <div className="pl-4 flex flex-col sm:flex-row sm:items-center gap-2 text-wrap">
           <span className="text-terminal-green">subject:</span> 
           <input 
             type="text" 
@@ -117,7 +117,7 @@ const YamlForm: React.FC = () => {
             value={formData.subject}
             onChange={handleChange}
             placeholder="collaboration_proposal"
-            className="bg-transparent border border-dashed border-terminal-border px-2 py-0.5 outline-none focus:outline-none focus:ring-0 focus:border-terminal-green transition-colors text-terminal-green/80 w-64"
+            className="bg-transparent border border-dashed border-terminal-border px-2 py-0.5 outline-none focus:outline-none focus:ring-0 focus:border-terminal-green transition-colors text-terminal-green/80 w-full sm:w-64"
           />
         </div>
       </div>
