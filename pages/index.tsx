@@ -4,7 +4,8 @@ import { portfolioConfig } from "@/lib/config";
 import TerminalWindow from "@/components/TerminalWindow";
 import CommandLine from "@/components/CommandLine";
 import QuickAction from "@/components/QuickAction";
-import cx from "classnames";
+import AsciiText from "@/components/AsciiText";
+
 
 const Home: React.FC = () => {
   const { profile, quickActions } = portfolioConfig;
@@ -22,11 +23,9 @@ const Home: React.FC = () => {
           title="init_session.sh — bash — 120x40" 
           className="min-h-[500px]"
         >
-          {/* Large Senior Engineer Title */}
-          <div className="mb-12 mt-4">
-            <h1 className="text-4xl md:text-6xl font-display text-terminal-green leading-tight filter drop-shadow-[0_0_10px_rgba(0,255,65,0.5)]">
-              {profile.title}
-            </h1>
+          {/* Customizable Selectable Title */}
+          <div className="mb-12 mt-2 overflow-hidden flex justify-center lg:justify-start">
+            <AsciiText text={profile.asciiTitle || profile.title} />
           </div>
 
           {/* Stats Grid */}

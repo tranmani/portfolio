@@ -1,10 +1,13 @@
+import { generateAscii } from "./ascii";
+
 export const portfolioConfig = {
   profile: {
     name: "Huy",
     title: "SENIOR ENGINEER",
+    asciiTitle: generateAscii("Huy Tran"),
     location: "Amsterdam, NL (AWS-01)",
-    yearsXp: "12+",
-    projectsCount: "48",
+    yearsXp: "5+",
+    projectsCount: "10+",
     currentStack: ["K8S", "AWS", "NODE", "TS"],
     summary: "High-availability engineer specializing in distributed systems, cloud-native infrastructure, and performance-critical full-stack applications. Bridging the gap between complex DevOps workflows and elegant frontend experiences.",
   },
