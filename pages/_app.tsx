@@ -23,14 +23,10 @@ const inter = Inter({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider>
-      <RWBProvider>
-        <div className={cx(sfPro.variable, inter.variable)}>
-          <Component {...pageProps} />
-        </div>
-        <Analytics />
-      </RWBProvider>
-    </ThemeProvider>
+    <RWBProvider>
+      <Component {...pageProps} />
+      <Analytics />
+    </RWBProvider>
   );
 }
 export default MyApp;

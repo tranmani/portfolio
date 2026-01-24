@@ -1,75 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Press+Start+2P&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.dark {
-  @apply bg-[#1d1d1d] text-zinc-50;
-  -webkit-transition: background-color 200ms linear;
-  -ms-transition: background-color 200ms linear;
-  transition: background-color 200ms linear;
-}
-
-.light {
-  @apply bg-white text-gray-800;
-  -webkit-transition: background-color 200ms linear;
-  -ms-transition: background-color 200ms linear;
-  transition: background-color 200ms linear;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-/* For Webkit-based browsers (Chrome, Safari and Opera) */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* For IE, Edge and Firefox */
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-.typing {
-  width: 4.5em;
-  height: 1.9em;
-  position: relative;
-  padding: 10px;
-  border-radius: 20px;
-}
-
-.typing__dot {
-  float: left;
-  width: 8px;
-  height: 8px;
-  margin: 0 4px;
-  background: #8d8c91;
-  border-radius: 50%;
-  opacity: 0;
-  animation: loadingFade 1s infinite;
-}
-
-.typing__dot:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.typing__dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.typing__dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes loadingFade {
-  0% {
-    opacity: 0;
+@layer base {
+  body {
+    @apply bg-background text-terminal-green font-mono overflow-x-hidden;
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
   }
-  50% {
-    opacity: 0.8;
+
+  ::selection {
+    @apply bg-terminal-green text-background;
   }
-  100% {
-    opacity: 0;
+}
+
+@layer components {
+  .terminal-window {
+    @apply border border-terminal-border bg-black/80 backdrop-blur-sm rounded-md overflow-hidden relative shadow-[0_0_20px_rgba(0,255,65,0.05)];
   }
+
+  .terminal-header {
+    @apply border-b border-terminal-border px-4 py-2 flex items-center justify-between text-xs font-bold bg-neutral-900/50;
+  }
+
+  .terminal-body {
+    @apply p-6 overflow-auto;
+  }
+
+  .scanline {
+    @apply pointer-events-none absolute inset-0 z-50;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.1) 50%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.02),
+      rgba(0, 255, 0, 0.01),
+      rgba(0, 0, 255, 0.02)
+    );
+    background-size: 100% 4px, 3px 100%;
+  }
+
+  .scanline-overlay {
+    @apply pointer-events-none fixed inset-0 z-[100] opacity-[0.03] animate-scanline;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 255, 65, 0.5) 50%,
+      transparent
+    );
+  }
+}
+
+.crt-effect {
+  @apply relative overflow-hidden;
+}
+
+.crt-effect::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06)
+    );
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
 }

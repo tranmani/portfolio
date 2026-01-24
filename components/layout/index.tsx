@@ -16,19 +16,18 @@ export default function Layout({
   children: ReactNode;
 }) {
   return (
-    <div>
+    <div className="min-h-screen crt-effect">
       <Meta {...meta} />
-
-      {/* Nav */}
+      <div className="scanline-overlay" />
       <Nav />
-
-      {/* Main */}
-      <main className={cx("overflow-hidden")}>
-        <ParticlesBackground />
+      
+      <main className={cx("pt-24 pb-12 px-6 max-w-7xl mx-auto")}>
         {children}
       </main>
 
-      {/* Footer */}
+      <footer className="mt-auto py-8 text-center border-t border-terminal-border text-[10px] text-terminal-green/30 uppercase tracking-[0.2em]">
+        &copy; 2024 SENIOR_ENGINEER_CORE // SYSTEM_VERSION_4.2.0
+      </footer>
     </div>
   );
 }
