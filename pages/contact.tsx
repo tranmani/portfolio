@@ -5,6 +5,28 @@ import DotMap from "@/components/DotMap";
 import YamlForm from "@/components/YamlForm";
 
 const Contact: React.FC = () => {
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    
+    if (progress < 100) {
+      timer = setInterval(() => {
+        setProgress((prev) => Math.min(prev + 1, 100));
+      }, 50); // 5 seconds to reach 100%
+    } else {
+      // Stay at 100% for 5 seconds
+      timer = setTimeout(() => {
+        setProgress(0);
+      }, 5000);
+    }
+
+    return () => {
+      clearInterval(timer);
+      clearTimeout(timer);
+    };
+  }, [progress]);
+
   return (
     <Layout meta={{ title: "Contact // ENGINEER_CLI_v2" }}>
       <div className="space-y-8">
@@ -31,9 +53,12 @@ const Contact: React.FC = () => {
                 <div className="flex items-center gap-4 text-terminal-green/60">
                    [INFO] Pushing payload: 
                    <div className="w-48 h-1 bg-terminal-green-faint relative">
-                      <div className="absolute inset-0 bg-terminal-green w-[67%]" />
+                      <div 
+                        className="absolute inset-0 bg-terminal-green transition-all duration-75 ease-linear" 
+                        style={{ width: `${progress}%` }} 
+                      />
                    </div>
-                   <span>67%</span>
+                   <span className="tabular-nums">{progress}%</span>
                 </div>
                 <div className="text-terminal-green animate-pulse">Waiting for user input trigger...</div>
               </div>
