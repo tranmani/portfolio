@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
-    domains: ["tranmani.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "tranmani.com",
+      },
+    ],
   },
   compiler: {
     styledComponents: true,
