@@ -6,6 +6,15 @@ const DotMap: React.FC = () => {
   const mousePosRef = useRef({ x: 0, y: 0 });
   const isHoveredRef = useRef(false);
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -152,7 +161,7 @@ const DotMap: React.FC = () => {
         <div>
           <div className="text-terminal-green/20 mb-1">LOCAL_TIMESTAMP</div>
           <div className="text-terminal-green/80 tabular-nums font-bold">
-            {new Date().toLocaleTimeString('en-GB')}
+            {currentTime.toLocaleTimeString('en-GB')}
           </div>
         </div>
         <div className="text-right">
