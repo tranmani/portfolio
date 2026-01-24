@@ -22,6 +22,7 @@ const Projects: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
+              className="h-full"
             >
               <ProjectCard project={project} index={idx} />
             </motion.div>

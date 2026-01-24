@@ -73,6 +73,12 @@ export const portfolioConfig = {
       tags: ["Azure DevOps", "Terraform", "Docker", "GKE", "K8s"],
     },
     {
+      title: "Portfolio Website v2",
+      description: "I updated my portfolio website to update my skills and projects.",
+      link: "https://tranmani.com/?utm_source=portfolio",
+      tags: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
+    },
+    {
       title: "Managed Public Cloud",
       description: "Managed a public cloud infrastructure using OpenStack, hosting approximately 10 WordPress websites and counting and a selfhosted n8n automation system. \nGained hands-on experience with Linux and cloud infrastructure-as-a-service, enhancing system management and troubleshooting skills. Ensured reliable performance and uptime for hosted services.",
       tags: ["OpenStack", "Linux", "n8n", "Wordpress", "Cloud"],
@@ -82,6 +88,12 @@ export const portfolioConfig = {
       description: "WordPress website for a local business in Geneva, Switzerland. Ranked top 5 in local Google search results within months.",
       link: "https://beautyartpro.eu/?utm_source=portfolio",
       tags: ["Wordpress", "SEO"],
+    },
+    {
+      title: "Portfolio Website",
+      description: "I created this website to showcase my best work and make it easy for others to access my resume. It's an invaluable tool for networking and job searching, as it allows me to connect with potential employers and showcase my expertise. On my website, I've included a selection of my best work, along with a summary of my education and qualifications and contact information for those interested in connecting with me.",
+      link: "https://v1.tranmani.com/?utm_source=portfolio",
+      tags: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
     },
     {
       title: "Casino Review Website",

@@ -37,16 +37,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     <motion.div
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className="relative"
+      className="relative h-full"
     >
       <TerminalWindow 
         title={`project_node_0${index + 1}.json`}
         className={cx(
-          "transition-all duration-300 group overflow-hidden relative",
+          "transition-all duration-300 group overflow-hidden relative h-full flex flex-col",
           isHovered ? "border-terminal-green shadow-[0_0_20px_rgba(19,236,91,0.1)]" : "border-terminal-border"
         )}
+        bodyClassName="flex-grow flex flex-col h-full"
       >
-        <div className="space-y-4 relative z-10">
+        <div className="space-y-4 relative z-10 flex flex-col h-full">
           <div className="flex justify-between items-start">
             <div className="space-y-1">
               <h3 className={cx(
@@ -89,6 +90,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
           <p className="text-sm text-terminal-green/70 leading-relaxed border-l border-terminal-border/40 pl-4 py-1 italic">
             &quot;{project.description}&quot;
           </p>
+
+          {/* Spacer to push tags and HUD to bottom */}
+          <div className="flex-grow" />
 
           <div className="pt-4 flex flex-wrap gap-2">
             {project.tags.map(tag => (
