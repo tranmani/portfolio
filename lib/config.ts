@@ -83,5 +83,25 @@ export const portfolioConfig = {
   contact: {
     email: "you@domain.com",
     subject: "collaboration_proposal"
-  }
+  },
+  stackData: [
+    { name: "React", category: "FRONTEND_UI" },
+    { name: "Next.js", category: "META_FRAMEWORK" },
+    { name: "TypeScript", category: "TYPE_SYSTEM" },
+    { name: "Node.js", category: "RUNTIME_ENV" },
+    { name: "TailwindCSS", category: "STYLING_ENGINE" },
+    { name: "AWS", category: "CLOUD_INFRA" },
+    { name: "Kubernetes", category: "ORCHESTRATION" },
+    { name: "Docker", category: "CONTAINERIZATION" },
+    { name: "PostgreSQL", category: "DATA_STORAGE" },
+    { name: "MUI", category: "COMPONENT_LIB" },
+    { name: "Framer Motion", category: "ANIMATION_SDK" },
+    { name: "MongoDB", category: "NOSQL_DB" },
+    { name: "Redis", category: "CACHE_DB" },  
+    { name: "GraphQL", category: "API_QUERY_LANG" },
+    { name: "REST", category: "API_ARCH" },
+    { name: "Cloudflare Worker", category: "SERVERLESS" },
+    { name: "Azure Pipeline", category: "CI/CD"},
+    { name: "GitHub Actions", category: "CI/CD"}
+  ] 
 };

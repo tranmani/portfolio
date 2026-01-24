@@ -3,6 +3,9 @@ import Layout from "@/components/layout";
 import TerminalWindow from "@/components/TerminalWindow";
 import DotMap from "@/components/DotMap";
 import YamlForm from "@/components/YamlForm";
+import cx from "classnames";
+
+
 
 const Contact: React.FC = () => {
   const [progress, setProgress] = React.useState(0);
@@ -52,13 +55,18 @@ const Contact: React.FC = () => {
                 <div className="text-terminal-green/60">[INFO] Validating YAML syntax ... OK</div>
                 <div className="flex items-center gap-4 text-terminal-green/60">
                    [INFO] Pushing payload: 
-                   <div className="w-48 h-1 bg-terminal-green-faint relative">
-                      <div 
-                        className="absolute inset-0 bg-terminal-green transition-all duration-75 ease-linear" 
-                        style={{ width: `${progress}%` }} 
-                      />
+                   <div className="flex gap-1 items-center">
+                      {[...Array(12)].map((_, i) => (
+                        <div 
+                          key={i}
+                          className={cx(
+                            "w-2.5 h-3 border border-terminal-green/20 transition-all duration-300",
+                            progress > (i * 8.33) ? "bg-terminal-green/80 shadow-[0_0_5px_rgba(19,236,91,0.5)]" : "bg-transparent"
+                          )}
+                        />
+                      ))}
                    </div>
-                   <span className="tabular-nums">{progress}%</span>
+                   <span className="tabular-nums font-bold text-terminal-green">{progress}%</span>
                 </div>
                 <div className="text-terminal-green animate-pulse">Waiting for user input trigger...</div>
               </div>
