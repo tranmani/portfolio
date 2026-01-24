@@ -68,6 +68,18 @@ export const portfolioConfig = {
   ],
   projects: [
     {
+      title: "CI/CD Pipeline Project",
+      description: "Implemented a multi-cloud CI/CD pipeline using Azure DevOps, Docker, and GKE with Terraform-managed infrastructure and optimized self-hosted agents.",
+      link: "#",
+      tags: ["Azure DevOps", "Terraform", "Docker", "GKE", "K8s"],
+    },
+    {
+      title: "Managed Public Cloud",
+      description: "Operate a public cloud infrastructure using OpenStack, hosting multiple WordPress sites and a self-hosted n8n automation system.",
+      link: "#",
+      tags: ["OpenStack", "Linux", "n8n", "Wordpress", "Cloud"],
+    },
+    {
       title: "Beauty Art Pro",
       description: "WordPress website for a local business in Geneva, Switzerland. Ranked top 5 in local Google search results within months.",
       link: "https://beautyartpro.eu/?utm_source=portfolio",
@@ -84,7 +96,7 @@ export const portfolioConfig = {
       description: "Developed a layout in React leveraging the power of headless WordPress for content writers.",
       link: "https://test-blog.tranmani.com/",
       tags: ["React", "Wordpress", "Next.js"],
-    }
+    },
   ],
   contact: {
     email: "you@domain.com",
