@@ -90,15 +90,15 @@ const Contact: React.FC = () => {
 
                     {/* Status Grids */}
                     <div className="grid grid-cols-3 gap-4">
-                        <div className="text-right">
+                        <div className="text-center lg:text-right">
                             <div className="text-[8px] text-terminal-green/30 uppercase">Status</div>
                             <div className="text-[10px] font-bold">200 OK</div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-center lg:text-right">
                             <div className="text-[8px] text-terminal-green/30 uppercase">Encryption</div>
                             <div className="text-[10px] font-bold">SSL/TLS</div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-center lg:text-right">
                             <div className="text-[8px] text-terminal-green/30 uppercase">Source</div>
                             <div className="text-[10px] font-bold">0.0.0.0</div>
                         </div>

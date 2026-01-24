@@ -89,18 +89,18 @@ const Home: React.FC = () => {
         </TerminalWindow>
 
         {/* System Info Footer line */}
-        <div className="grid grid-cols-3 gap-4 px-2 text-[10px] text-terminal-green/50 uppercase">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-2 text-[10px] text-terminal-green/50 uppercase">
+          <div className="flex justify-between md:block">
             <span className="text-terminal-green/20 mr-2">ENVIRONMENT</span>
-            PRODUCTION
+            <span>PRODUCTION</span>
           </div>
-          <div className="text-center">
+          <div className="flex justify-between md:block md:text-center">
             <span className="text-terminal-green/20 mr-2">REGION</span>
-            EU-WEST-3 (NL)
+            <span>EU-WEST-3 (NL)</span>
           </div>
-          <div className="text-right">
+          <div className="flex justify-between md:block md:text-right">
             <span className="text-terminal-green/20 mr-2">SESSION_ID</span>
-            R8F-02X-001
+            <span>R8F-02X-001</span>
           </div>
         </div>
       </div>
