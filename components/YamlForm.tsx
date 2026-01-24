@@ -79,7 +79,7 @@ const YamlForm: React.FC = () => {
             onChange={handleChange}
             required
             placeholder="sender-identity"
-            className="bg-transparent border border-dashed border-terminal-border px-2 py-0.5 outline-none focus:border-terminal-green transition-colors text-terminal-green/80 w-48"
+            className="bg-transparent border border-dashed border-terminal-border px-2 py-0.5 outline-none focus:outline-none focus:ring-0 focus:border-terminal-green transition-colors text-terminal-green/80 w-48"
           />
         </div>
       </div>
@@ -99,7 +99,7 @@ const YamlForm: React.FC = () => {
               onChange={handleChange}
               required
               placeholder="you@domain.com"
-              className="bg-transparent outline-none text-terminal-green/80 w-full"
+              className="bg-transparent outline-none focus:outline-none focus:ring-0 border-none p-0 text-terminal-green/80 w-full"
             />
             <div className="flex items-center bg-red-500 px-1 rounded-sm flex-shrink-0">
                <span className="text-[8px] text-black font-bold tracking-tighter">***|</span>
@@ -117,7 +117,7 @@ const YamlForm: React.FC = () => {
             value={formData.subject}
             onChange={handleChange}
             placeholder="collaboration_proposal"
-            className="bg-transparent border border-dashed border-terminal-border px-2 py-0.5 outline-none focus:border-terminal-green transition-colors text-terminal-green/80 w-64"
+            className="bg-transparent border border-dashed border-terminal-border px-2 py-0.5 outline-none focus:outline-none focus:ring-0 focus:border-terminal-green transition-colors text-terminal-green/80 w-64"
           />
         </div>
       </div>
@@ -125,14 +125,14 @@ const YamlForm: React.FC = () => {
         <span className="text-terminal-green/50 w-4 select-none">8</span>
         <div className="pl-4 grow">
           <span className="text-terminal-green">message:</span> 
-          <div className="mt-2 border border-dashed border-terminal-border p-4 relative min-h-[150px]">
+          <div className="mt-2 border border-dashed border-terminal-border p-4 relative min-h-[150px] focus-within:border-terminal-green transition-colors">
             <textarea 
               name="message"
               value={formData.message}
               onChange={handleChange}
               required
               placeholder="Enter your message payload here ..."
-              className="bg-transparent w-full h-32 outline-none resize-none text-terminal-green/80"
+              className="bg-transparent w-full h-32 outline-none focus:outline-none focus:ring-0 border-none p-0 resize-none text-terminal-green/80"
             />
           </div>
         </div>
