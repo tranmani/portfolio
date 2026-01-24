@@ -12,16 +12,16 @@ const Contact: React.FC = () => {
           root / cluster-01 / contact.yaml
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-stretch">
           {/* Main Form Terminal */}
-          <div className="lg:col-span-3 space-y-8">
-            <TerminalWindow title="contact.yaml" path="root / cluster-01 / contact.yaml">
+          <div className="lg:col-span-3 flex flex-col gap-8">
+            <TerminalWindow title="contact.yaml" path="root / cluster-01 / contact.yaml" className="flex-grow">
               <YamlForm />
             </TerminalWindow>
 
             {/* Terminal Output Sample as seen in mock */}
             <TerminalWindow title="terminal — output" className="opacity-80">
-              <div className="font-mono text-xs space-y-1">
+              <div className="font-mono text-[10px] space-y-1">
                 <div className="flex gap-2">
                   <span className="text-terminal-green">$</span>
                   <span>./deploy_message.sh</span>
@@ -33,7 +33,7 @@ const Contact: React.FC = () => {
                    <div className="w-48 h-1 bg-terminal-green-faint relative">
                       <div className="absolute inset-0 bg-terminal-green w-[67%]" />
                    </div>
-                   <span className="text-[10px]">67%</span>
+                   <span>67%</span>
                 </div>
                 <div className="text-terminal-green animate-pulse">Waiting for user input trigger...</div>
               </div>
@@ -41,32 +41,45 @@ const Contact: React.FC = () => {
           </div>
 
           {/* Node Map / Sidebar */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 flex flex-col">
             <DotMap />
-            
-            {/* Social Links / Footer Icons as seen in mock */}
-            <div className="flex justify-center gap-8 py-4 border border-terminal-border bg-black/40 rounded-sm">
-                <button className="text-terminal-green/60 hover:text-terminal-green transition-colors text-xl">@</button>
-                <button className="text-terminal-green/60 hover:text-terminal-green transition-colors text-xl">⌘</button>
-                <button className="text-terminal-green/60 hover:text-terminal-green transition-colors text-xl">◮</button>
-            </div>
-
-            {/* Status indicators */}
-            <div className="grid grid-cols-3 gap-2">
-                <div className="border border-terminal-border p-2 text-center">
-                    <div className="text-[8px] text-terminal-green/30">200 OK</div>
-                    <div className="text-[10px] font-bold">ENDPOINT STATUS</div>
-                </div>
-                <div className="border border-terminal-border p-2 text-center">
-                    <div className="text-[8px] text-terminal-green/30">SSL/TLS</div>
-                    <div className="text-[10px] font-bold">SECURE</div>
-                </div>
-                <div className="border border-terminal-border p-2 text-center">
-                    <div className="text-[8px] text-terminal-green/30">0.0.0.0</div>
-                    <div className="text-[10px] font-bold">SHIELD</div>
-                </div>
-            </div>
           </div>
+        </div>
+
+        {/* Unified Bottom Info Bar */}
+        <div className="mt-12 pt-8 border-t border-terminal-border/30">
+            <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-12">
+                {/* Left side Status */}
+                <div className="hidden lg:block text-[10px] text-terminal-green/20 uppercase tracking-widest self-center">
+                    SYSTEM_LINK_ACTIVE // ENCRYPTION: AES-256-GCM
+                </div>
+
+                {/* Right side group */}
+                <div className="space-y-6 w-full lg:w-auto">
+                    {/* Icons */}
+                    <div className="flex justify-center lg:justify-end gap-12 text-terminal-green/40">
+                        <button className="hover:text-terminal-green transition-colors text-lg italic">@</button>
+                        <button className="hover:text-terminal-green transition-colors text-lg font-bold">⌘</button>
+                        <button className="hover:text-terminal-green transition-colors text-lg">◮</button>
+                    </div>
+
+                    {/* Status Grids */}
+                    <div className="grid grid-cols-3 gap-4">
+                        <div className="text-right">
+                            <div className="text-[8px] text-terminal-green/30 uppercase">Status</div>
+                            <div className="text-[10px] font-bold">200 OK</div>
+                        </div>
+                        <div className="text-right">
+                            <div className="text-[8px] text-terminal-green/30 uppercase">Encryption</div>
+                            <div className="text-[10px] font-bold">SSL/TLS</div>
+                        </div>
+                        <div className="text-right">
+                            <div className="text-[8px] text-terminal-green/30 uppercase">Source</div>
+                            <div className="text-[10px] font-bold">0.0.0.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </Layout>

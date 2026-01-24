@@ -4,9 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  @apply h-full cursor-default;
+}
+
 @layer base {
   body {
-    @apply bg-background text-terminal-green font-mono overflow-x-hidden;
+    @apply bg-background text-terminal-green font-mono overflow-x-hidden min-h-screen;
     text-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
   }
 

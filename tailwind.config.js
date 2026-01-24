@@ -26,6 +26,7 @@ module.exports = {
         "slide-down-fade": "slide-down-fade 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
         "flicker": "flicker 0.15s infinite",
         "scanline": "scanline 8s linear infinite",
+        "scan": "scan 3s linear infinite",
         "blink": "blink 1s step-end infinite",
       },
       keyframes: {
@@ -63,6 +64,10 @@ module.exports = {
         "scanline": {
           "0%": { transform: "translateY(-100%)" },
           "100%": { transform: "translateY(100%)" },
+        },
+        "scan": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
         },
         "blink": {
           "from, to": { opacity: 1 },
