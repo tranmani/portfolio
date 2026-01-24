@@ -5,12 +5,18 @@ const DotMap: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mousePosRef = useRef({ x: 0, y: 0 });
   const isHoveredRef = useRef(false);
+  const packetsRef = useRef<{ x: number, y: number, tx: number, ty: number, speed: number, size: number }[]>([]);
+  const ripplesRef = useRef<{ x: number, y: number, r: number, o: number }[]>([]);
+  const logsRef = useRef<string[]>(["SYSTEM READY", "ENCRYPTION ACTIVE", "NODE LINK ESTABLISHED"]);
 
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
+      // Add random logs
+      const randomLogs = ["TRACE ROUTE...", "PING 127.0.0.1", "PACKET RECV", "BUFFER CLEAR", "UI_SYNC_OK"];
+      logsRef.current = [randomLogs[Math.floor(Math.random() * randomLogs.length)], ...logsRef.current.slice(0, 5)];
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -42,6 +48,16 @@ const DotMap: React.FC = () => {
     const spacing = 20;
     const dotSize = 1;
 
+    // Initialize packets
+    packetsRef.current = Array.from({ length: 12 }).map(() => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      tx: width * 0.5,
+      ty: height * 0.45,
+      speed: 0.5 + Math.random() * 1.5,
+      size: 1 + Math.random() * 2
+    }));
+
     const draw = (time: number) => {
       ctx.clearRect(0, 0, width, height);
       
@@ -69,7 +85,45 @@ const DotMap: React.FC = () => {
         }
       }
 
-      // Almere, NL Coordinates (Approximate visually center for the effect)
+      // Draw Ripples
+      ripplesRef.current = ripplesRef.current.filter(r => r.o > 0);
+      ripplesRef.current.forEach(r => {
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(0, 255, 65, ${r.o})`;
+        ctx.stroke();
+        r.r += 2;
+        r.o -= 0.02;
+      });
+
+      // Draw Packets (Moving Data)
+      packetsRef.current.forEach(p => {
+        const dx = p.tx - p.x;
+        const dy = p.ty - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < 5) {
+          p.x = Math.random() > 0.5 ? (Math.random() > 0.5 ? 0 : width) : Math.random() * width;
+          p.y = Math.random() > 0.5 ? (Math.random() > 0.5 ? 0 : height) : Math.random() * height;
+        } else {
+          p.x += (dx / dist) * p.speed;
+          p.y += (dy / dist) * p.speed;
+        }
+
+        ctx.fillStyle = "#00FF41";
+        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+        
+        // Link lines for packets near target
+        if (dist < 100) {
+           ctx.beginPath();
+           ctx.moveTo(p.x, p.y);
+           ctx.lineTo(p.tx, p.ty);
+           ctx.strokeStyle = `rgba(0, 255, 65, ${0.2 * (1 - dist / 100)})`;
+           ctx.stroke();
+        }
+      });
+
+      // Almere, NL Coordinates
       const nodeX = width * 0.5;
       const nodeY = height * 0.45;
       
@@ -89,19 +143,19 @@ const DotMap: React.FC = () => {
       ctx.stroke();
 
       // Status Info Box
-      const boxW = 150;
-      const boxH = 50;
+      const boxW = 160;
+      const boxH = 55;
       ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
-      ctx.fillRect(nodeX + 20, nodeY + 20, boxW, boxH);
+      ctx.fillRect(nodeX + 30, nodeY - 80, boxW, boxH);
       ctx.strokeStyle = "#00FF41";
-      ctx.strokeRect(nodeX + 20, nodeY + 20, boxW, boxH);
+      ctx.strokeRect(nodeX + 30, nodeY - 80, boxW, boxH);
 
       ctx.fillStyle = "#00FF41";
       ctx.font = "bold 10px 'JetBrains Mono'";
-      ctx.fillText("NODE: ALMERE_HOME_01", nodeX + 28, nodeY + 35);
+      ctx.fillText("NODE: ALMERE_HOME_01", nodeX + 38, nodeY - 65);
       ctx.font = "9px 'JetBrains Mono'";
-      ctx.fillText("LAT: 52.3702° N", nodeX + 28, nodeY + 48);
-      ctx.fillText("LON: 5.2231° E", nodeX + 28, nodeY + 60);
+      ctx.fillText("LAT: 52.3702° N", nodeX + 38, nodeY - 50);
+      ctx.fillText("LON: 5.2231° E", nodeX + 38, nodeY - 38);
       
       animationFrameId = requestAnimationFrame(draw);
     };
@@ -111,7 +165,7 @@ const DotMap: React.FC = () => {
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
     };
-  }, []); // Empty dependencies ensure the loop is set up once
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const rect = canvasRef.current?.getBoundingClientRect();
@@ -123,12 +177,25 @@ const DotMap: React.FC = () => {
     }
   };
 
+  const handleClick = (e: React.MouseEvent) => {
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (rect) {
+      ripplesRef.current.push({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        r: 0,
+        o: 0.8
+      });
+    }
+  };
+
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-full min-h-[450px] border border-terminal-border bg-black/40 rounded-sm overflow-hidden group cursor-crosshair flex"
+      className="relative w-full h-full min-h-[500px] border border-terminal-border bg-black/40 rounded-sm overflow-hidden group cursor-crosshair flex"
       onMouseEnter={() => { isHoveredRef.current = true; }}
       onMouseLeave={() => { isHoveredRef.current = false; }}
+      onClick={handleClick}
     >
       <div className="absolute top-4 left-4 z-10 pointer-events-none">
         <div className="flex items-center gap-2 text-terminal-green text-shadow-none">
@@ -140,9 +207,20 @@ const DotMap: React.FC = () => {
         </div>
       </div>
 
+      <div className="absolute top-4 right-4 z-10 pointer-events-none text-right font-mono">
+         <div className="text-[8px] text-terminal-green/40 mb-2 font-bold uppercase tracking-tighter">EVENT_LOG</div>
+         <div className="space-y-1">
+            {logsRef.current.map((log, i) => (
+               <div key={i} className="text-[9px] text-terminal-green uppercase" style={{ opacity: 1 - i * 0.2 }}>
+                  {log}
+               </div>
+            ))}
+         </div>
+      </div>
+
       <canvas 
         ref={canvasRef} 
-        className="w-full h-full opacity-90"
+        className="w-full h-full opacity-90 transition-opacity group-active:opacity-100"
         onMouseMove={handleMouseMove}
       />
       
@@ -152,7 +230,7 @@ const DotMap: React.FC = () => {
             <div className="absolute inset-0 bg-terminal-green translate-x-[-100%] animate-[scan_2s_linear_infinite]" />
          </div>
          <div className="text-[8px] mt-2 flex justify-between uppercase">
-            <span>Scanning...</span>
+            <span>Scanning_All_Nodes...</span>
             <span>Freq: 4.8 GHz</span>
          </div>
       </div>
@@ -166,7 +244,9 @@ const DotMap: React.FC = () => {
         </div>
         <div className="text-right">
           <div className="text-terminal-green/20 mb-1">LATENCY_STATUS</div>
-          <div className="text-terminal-green/80">0ms (INTERNAL)</div>
+          <div className="text-terminal-green/80">
+             {Math.floor(Math.random() * 5)}ms (STABLE)
+          </div>
         </div>
       </div>
     </div>
