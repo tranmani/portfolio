@@ -5,7 +5,7 @@ const DotMap: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mousePosRef = useRef({ x: 0, y: 0 });
   const isHoveredRef = useRef(false);
-  const packetsRef = useRef<{ x: number, y: number, tx: number, ty: number, speed: number, size: number }[]>([]);
+  const packetsRef = useRef<{ x: number, y: number, speed: number, size: number }[]>([]);
   const ripplesRef = useRef<{ x: number, y: number, r: number, o: number }[]>([]);
   const logsRef = useRef<string[]>(["SYSTEM READY", "ENCRYPTION ACTIVE", "NODE LINK ESTABLISHED"]);
 
@@ -50,10 +50,8 @@ const DotMap: React.FC = () => {
 
     // Initialize packets
     packetsRef.current = Array.from({ length: 12 }).map(() => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      tx: width * 0.5,
-      ty: height * 0.45,
+      x: Math.random() * (canvas.width || 600),
+      y: Math.random() * (canvas.height || 400),
       speed: 0.5 + Math.random() * 1.5,
       size: 1 + Math.random() * 2
     }));
@@ -64,6 +62,10 @@ const DotMap: React.FC = () => {
       const mouseX = mousePosRef.current.x;
       const mouseY = mousePosRef.current.y;
       const isHovered = isHoveredRef.current;
+
+      // Almere, NL Coordinates (Dynamic center for resizing stability)
+      const nodeX = width * 0.5;
+      const nodeY = height * 0.45;
 
       // Draw Dot Grid
       for (let x = 0; x < width; x += spacing) {
@@ -80,7 +82,7 @@ const DotMap: React.FC = () => {
             size = dotSize * (2 - dist / 120);
           }
 
-          ctx.fillStyle = `rgba(0, 255, 65, ${opacity})`;
+          ctx.fillStyle = `rgba(19, 236, 91, ${opacity})`;
           ctx.fillRect(x - size/2, y - size/2, size, size);
         }
       }
@@ -90,16 +92,16 @@ const DotMap: React.FC = () => {
       ripplesRef.current.forEach(r => {
         ctx.beginPath();
         ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(0, 255, 65, ${r.o})`;
+        ctx.strokeStyle = `rgba(19, 236, 91, ${r.o})`;
         ctx.stroke();
         r.r += 2;
         r.o -= 0.02;
       });
 
-      // Draw Packets (Moving Data)
+      // Draw Packets (Moving Data - always homing to dynamic crosshair)
       packetsRef.current.forEach(p => {
-        const dx = p.tx - p.x;
-        const dy = p.ty - p.y;
+        const dx = nodeX - p.x;
+        const dy = nodeY - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         
         if (dist < 5) {
@@ -110,25 +112,21 @@ const DotMap: React.FC = () => {
           p.y += (dy / dist) * p.speed;
         }
 
-        ctx.fillStyle = "#00FF41";
+        ctx.fillStyle = "#13ec5b";
         ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
         
         // Link lines for packets near target
         if (dist < 100) {
            ctx.beginPath();
            ctx.moveTo(p.x, p.y);
-           ctx.lineTo(p.tx, p.ty);
-           ctx.strokeStyle = `rgba(0, 255, 65, ${0.2 * (1 - dist / 100)})`;
+           ctx.lineTo(nodeX, nodeY);
+           ctx.strokeStyle = `rgba(19, 236, 91, ${0.2 * (1 - dist / 100)})`;
            ctx.stroke();
         }
       });
 
-      // Almere, NL Coordinates
-      const nodeX = width * 0.5;
-      const nodeY = height * 0.45;
-      
       // Draw Target Crosshair
-      ctx.strokeStyle = "rgba(0, 255, 65, 0.4)";
+      ctx.strokeStyle = "rgba(19, 236, 91, 0.4)";
       ctx.lineWidth = 1;
       
       ctx.beginPath();
@@ -147,10 +145,10 @@ const DotMap: React.FC = () => {
       const boxH = 55;
       ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
       ctx.fillRect(nodeX + 30, nodeY - 80, boxW, boxH);
-      ctx.strokeStyle = "#00FF41";
+      ctx.strokeStyle = "#13ec5b";
       ctx.strokeRect(nodeX + 30, nodeY - 80, boxW, boxH);
 
-      ctx.fillStyle = "#00FF41";
+      ctx.fillStyle = "#13ec5b";
       ctx.font = "bold 10px 'JetBrains Mono'";
       ctx.fillText("NODE: ALMERE_HOME_01", nodeX + 38, nodeY - 65);
       ctx.font = "9px 'JetBrains Mono'";
