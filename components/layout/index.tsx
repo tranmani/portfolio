@@ -6,6 +6,7 @@ import cx from "classnames";
 export default function Layout({
   meta,
   children,
+  showEffects = true,
 }: {
   meta?: {
     title?: string;
@@ -13,14 +14,15 @@ export default function Layout({
     image?: string;
   };
   children: ReactNode;
+  showEffects?: boolean;
 }) {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   
   return (
-    <div className="min-h-screen crt-effect flex flex-col">
+    <div className={cx("min-h-screen flex flex-col", showEffects && "crt-effect")}>
       <Meta {...meta} />
-      <div className="scanline-overlay" />
+      {showEffects && <div className="scanline-overlay" />}
       <Nav />
       
       <main className={cx("pt-24 pb-12 px-6 max-w-7xl mx-auto w-full flex-grow")}>
