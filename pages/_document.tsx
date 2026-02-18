@@ -20,12 +20,6 @@ export default class MyDocument extends Document {
       document.documentElement.classList.add(getUserPreference())
     `;
 
-    const logging = `
-      if (window.location.hostname !== 'localhost' && window.location.hostname === 'tranmani.com' && window.location.pathname === '/') {
-        fetch('https://quiet-sun-b23e.tranmani.workers.dev').then((response) => {})
-      }
-    `;
-
     const clarityTracking = `
       (function(c,l,a,r,i,t,y){
           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -45,7 +39,6 @@ export default class MyDocument extends Document {
         ...initialProps,
         styles: (
           <>
-            <script dangerouslySetInnerHTML={{ __html: logging }} />
             <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
             <script dangerouslySetInnerHTML={{ __html: clarityTracking }} />
             {initialProps.styles}
