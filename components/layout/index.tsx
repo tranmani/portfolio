@@ -2,8 +2,11 @@ import React, { ReactNode } from "react";
 import Meta from "./meta";
 import Nav from "./Nav";
 import cx from "classnames";
-
 import { useGamification } from "@/lib/context/GamificationContext";
+import dynamic from 'next/dynamic';
+
+const MatrixRain = dynamic(() => import('../MatrixRain'), { ssr: false });
+const RecruiterWidget = dynamic(() => import('../RecruiterWidget'), { ssr: false });
 
 export default function Layout({
   meta,
@@ -31,25 +34,25 @@ export default function Layout({
   const [hasNotifiedRoot, setHasNotifiedRoot] = React.useState(false);
   React.useEffect(() => {
     if (level === "root" && !hasNotifiedRoot) {
-      // Small timeout to allow the UI to render the progress bar filling up first
-      setTimeout(() => {
-        alert("SYSTEM OVERRIDE: ROOT PRIVILEGES GRANTED.\nYou now have full access to the system.");
-      }, 500);
+      // Allow visual effects (Matrix/Recruiter button) to trigger 
+      // instead of blocking browser thread with alert, so we removed it
       setHasNotifiedRoot(true);
     }
   }, [level, hasNotifiedRoot]);
   
   return (
-    <div className={cx("min-h-screen flex flex-col", showEffects && "crt-effect")}>
+    <div className={cx("min-h-screen flex flex-col relative", showEffects && "crt-effect")}>
+      {level === "root" && <MatrixRain />}
+      
       <Meta {...meta} />
-      {showEffects && <div className="scanline-overlay" />}
+      {showEffects && <div className="scanline-overlay pointer-events-none" />}
       <Nav />
       
-      <main className={cx("pt-24 pb-12 px-6 max-w-7xl mx-auto w-full flex-grow")}>
+      <main className={cx("pt-24 pb-12 px-6 max-w-7xl mx-auto w-full flex-grow relative z-10")}>
         {children}
       </main>
 
-      <footer className="mt-auto py-8 flex flex-col items-center justify-center gap-4 border-t border-terminal-border text-[10px] text-terminal-green/40 uppercase tracking-[0.2em]">
+      <footer className="mt-auto py-8 flex flex-col items-center justify-center gap-4 border-t border-terminal-border text-[10px] text-terminal-green/40 uppercase tracking-[0.2em] relative z-10 bg-background/80 backdrop-blur-sm">
         <div className="flex flex-wrap justify-center gap-4 sm:gap-8 items-center bg-terminal-green/5 px-4 py-2 border border-terminal-green/10 rounded">
             <span>[PRIVILEGE: {level}]</span>
             <span>XP: {xp}</span>
@@ -59,6 +62,8 @@ export default function Layout({
             &copy; {year} SOFTWARE_ENGINEER_CORE // SYSTEM_VERSION_4.2.0
         </div>
       </footer>
+
+      {level === "root" && <RecruiterWidget />}
     </div>
   );
 }
