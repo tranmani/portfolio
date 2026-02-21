@@ -5,10 +5,12 @@ import { portfolioConfig } from "@/lib/config";
 import Image from "next/image";
 import cx from "classnames";
 import { motion, AnimatePresence } from "framer-motion";
+import { useGamification } from "@/lib/context/GamificationContext";
 
 const Nav: React.FC = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { level, isMatrixEnabled, toggleMatrix } = useGamification();
 
   return (
     <>
@@ -45,13 +47,32 @@ const Nav: React.FC = () => {
             );
           })}
           
+          {level === 'root' && (
+            <button
+              onClick={toggleMatrix}
+              className={cx(
+                "px-2 py-1 border rounded-sm font-mono text-[10px] uppercase transition-all flex items-center gap-2",
+                isMatrixEnabled 
+                  ? "border-terminal-green text-terminal-green bg-terminal-green/10 shadow-[0_0_10px_rgba(57,255,20,0.2)]"
+                  : "border-terminal-green/30 text-terminal-green/50 hover:border-terminal-green/60"
+              )}
+              title="Toggle Matrix Background"
+            >
+              <div className={cx(
+                "w-1.5 h-1.5 rounded-full",
+                isMatrixEnabled ? "bg-terminal-green shadow-[0_0_5px_currentColor] animate-pulse" : "bg-terminal-green/30"
+              )} />
+              MATRIX
+            </button>
+          )}
+
           <Link
             href="/cv"
             className="bg-terminal-green text-background px-3 py-1 font-bold rounded-sm hover:bg-white transition-colors text-xs"
           >
             DOWNLOAD_CV
           </Link>
-          
+
           <div className="w-8 h-8 rounded-full overflow-hidden border border-terminal-border">
             <Image 
               src="/face.png" 
@@ -134,7 +155,25 @@ const Nav: React.FC = () => {
                   );
                 })}
                 
-                <div className="pt-6 border-t border-terminal-border">
+                <div className="pt-6 border-t border-terminal-border flex flex-col gap-4">
+                  {level === 'root' && (
+                    <button
+                      onClick={toggleMatrix}
+                      className={cx(
+                        "flex items-center justify-center gap-3 px-4 py-2 border rounded-sm font-mono text-sm uppercase transition-all w-full",
+                        isMatrixEnabled 
+                          ? "border-terminal-green text-terminal-green bg-terminal-green/10 shadow-[0_0_15px_rgba(57,255,20,0.15)]"
+                          : "border-terminal-green/30 text-terminal-green/50 hover:border-terminal-green/60"
+                      )}
+                    >
+                      <div className={cx(
+                        "w-2 h-2 rounded-full",
+                        isMatrixEnabled ? "bg-terminal-green shadow-[0_0_5px_currentColor] animate-pulse" : "bg-terminal-green/30"
+                      )} />
+                      TOGGLE MATRIX
+                    </button>
+                  )}
+                  
                   <Link
                     href="/cv"
                     onClick={() => setIsMenuOpen(false)}

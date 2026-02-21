@@ -2,9 +2,11 @@ import React from "react";
 import Layout from "@/components/layout";
 import TerminalWindow from "@/components/TerminalWindow";
 import { portfolioConfig } from "@/lib/config";
+import { useGamification } from "@/lib/context/GamificationContext";
 import { motion } from "framer-motion";
 
 const Experience: React.FC = () => {
+  const { level } = useGamification();
   // Calculate dynamic uptime based on the first experience start date
   const uptimeHours = React.useMemo(() => {
     const experiences = portfolioConfig.experiences;
@@ -27,7 +29,7 @@ const Experience: React.FC = () => {
         <header className="space-y-2">
           <div className="text-[10px] text-terminal-green/50 font-mono flex items-center gap-2">
             <span className="w-2 h-2 bg-terminal-green/30 animate-pulse" />
-            root / cluster-01 / logs / service_history.log
+            {level} / cluster-01 / logs / service_history.log
           </div>
           <h1 className="text-3xl font-bold tracking-tighter text-terminal-green">SERVICE_RECORDS</h1>
           <p className="text-xs text-terminal-green/60 font-mono">

@@ -23,7 +23,7 @@ export default function Layout({
 }) {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
-  const { level, xp, progressToNextLevel } = useGamification();
+  const { level, xp, progressToNextLevel, isMatrixEnabled } = useGamification();
   
   // Calculate a 10-character progress bar
   const segments = 10;
@@ -42,7 +42,7 @@ export default function Layout({
   
   return (
     <div className={cx("min-h-screen flex flex-col relative", showEffects && "crt-effect")}>
-      {level === "root" && <MatrixRain />}
+      {level === "root" && isMatrixEnabled && <MatrixRain />}
       
       <Meta {...meta} />
       {showEffects && <div className="scanline-overlay pointer-events-none" />}

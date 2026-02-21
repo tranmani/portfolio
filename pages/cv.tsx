@@ -2,15 +2,17 @@ import React from "react";
 import Layout from "@/components/layout";
 import TerminalWindow from "@/components/TerminalWindow";
 import { motion } from "framer-motion";
+import { useGamification } from "@/lib/context/GamificationContext";
 
 const CVPage: React.FC = () => {
+  const { level } = useGamification();
   return (
     <Layout meta={{ title: "CV // ENGINEER_CLI_v2" }} showEffects={false}>
       <div className="space-y-6 h-[85vh] flex flex-col">
         <header className="space-y-2 shrink-0">
           <div className="text-[10px] text-terminal-green/50 font-mono flex items-center gap-2">
             <span className="w-2 h-2 bg-terminal-green/30 animate-pulse" />
-            root / credentials / HuyTran_CV2.pdf
+            {level} / credentials / HuyTran_CV2.pdf
           </div>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
             <h1 className="text-3xl font-bold tracking-tighter text-terminal-green uppercase leading-none">PERSONNEL_DOSSIER</h1>

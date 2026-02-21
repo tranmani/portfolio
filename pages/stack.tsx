@@ -4,7 +4,7 @@ import TerminalWindow from "@/components/TerminalWindow";
 import { motion, AnimatePresence } from "framer-motion";
 import TechCard from "@/components/TechCard";
 import { portfolioConfig } from "@/lib/config";
-import cx from "classnames";
+import { useGamification } from "@/lib/context/GamificationContext";
 
 
 const TelemetryItem: React.FC<{ metric: any }> = ({ metric }) => {
@@ -68,11 +68,13 @@ const TelemetryItem: React.FC<{ metric: any }> = ({ metric }) => {
 };
 
 const Stack: React.FC = () => {
+  const { level } = useGamification();
+
   return (
     <Layout meta={{ title: "Stack // ENGINEER_CLI_v2" }}>
       <div className="space-y-8">
         <div className="text-[10px] text-terminal-green/50 font-mono mb-4">
-          guest@engineer-node:~$ systemctl status tech-stack.service --all
+          {level}@engineer-node:~$ systemctl status tech-stack.service --all
         </div>
 
         <TerminalWindow title="tech-stack.service — active (running)">

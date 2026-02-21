@@ -9,6 +9,8 @@ interface GamificationState {
   visitedPages: Set<string>;
   visitPage: (path: string) => void;
   progressToNextLevel: number; // 0 to 100
+  isMatrixEnabled: boolean;
+  toggleMatrix: () => void;
 }
 
 const GamificationContext = createContext<GamificationState | undefined>(undefined);
@@ -17,6 +19,7 @@ export const GamificationProvider = ({ children }: { children: ReactNode }) => {
   const [xp, setXP] = useState(0);
   const [level, setLevel] = useState<AccessLevel>("guest");
   const [visitedPages, setVisitedPages] = useState<Set<string>>(new Set());
+  const [isMatrixEnabled, setIsMatrixEnabled] = useState(true);
   const router = useRouter();
 
   const calculateLevel = (currentXP: number): AccessLevel => {
@@ -83,6 +86,9 @@ export const GamificationProvider = ({ children }: { children: ReactNode }) => {
         setXP(parsed.xp || 0);
         setLevel(parsed.level || "guest");
         setVisitedPages(new Set(parsed.visitedPages || []));
+        if (parsed.isMatrixEnabled !== undefined) {
+          setIsMatrixEnabled(parsed.isMatrixEnabled);
+        }
       } catch (e) {}
     }
   }, []);
@@ -93,10 +99,11 @@ export const GamificationProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem("gamification_state", JSON.stringify({
             xp,
             level,
-            visitedPages: Array.from(visitedPages)
+            visitedPages: Array.from(visitedPages),
+            isMatrixEnabled
         }));
     }
-  }, [xp, level, visitedPages]);
+  }, [xp, level, visitedPages, isMatrixEnabled]);
 
   const value = {
     xp,
@@ -104,6 +111,8 @@ export const GamificationProvider = ({ children }: { children: ReactNode }) => {
     visitedPages,
     visitPage,
     progressToNextLevel: calculateProgress(xp, level),
+    isMatrixEnabled,
+    toggleMatrix: () => setIsMatrixEnabled(prev => !prev),
   };
 
   return (

@@ -4,15 +4,18 @@ import TerminalWindow from "@/components/TerminalWindow";
 import { portfolioConfig } from "@/lib/config";
 import { motion } from "framer-motion";
 import ProjectCard from "@/components/ProjectCard";
+import { useGamification } from "@/lib/context/GamificationContext";
 
 
 const Projects: React.FC = () => {
+  const { level } = useGamification();
+  
   return (
     <Layout meta={{ title: "Projects // ENGINEER_CLI_v2" }}>
       <div className="space-y-8">
         <div className="text-[10px] text-terminal-green/50 font-mono mb-4 flex items-center gap-2">
           <span className="w-2 h-2 bg-terminal-green animate-pulse rounded-full" />
-          guest@engineer-node:~$ ls -la ./manifest/projects --view=tactical
+          {level}@engineer-node:~$ ls -la ./manifest/projects --view=tactical
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -6,10 +6,12 @@ import YamlForm from "@/components/YamlForm";
 import cx from "classnames";
 import { portfolioConfig } from "@/lib/config";
 import { Github, Linkedin, Mail } from "lucide-react";
+import { useGamification } from "@/lib/context/GamificationContext";
 
 
 
 const Contact: React.FC = () => {
+  const { level } = useGamification();
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
@@ -36,13 +38,13 @@ const Contact: React.FC = () => {
     <Layout meta={{ title: "Contact // ENGINEER_CLI_v2" }}>
       <div className="space-y-8">
         <div className="text-[10px] text-terminal-green/50 font-mono mb-4">
-          root / cluster-01 / contact.yaml
+          {level} / cluster-01 / contact.yaml
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-stretch">
           {/* Main Form Terminal */}
           <div className="lg:col-span-3 flex flex-col gap-8">
-            <TerminalWindow title="contact.yaml" path="root / cluster-01 / contact.yaml" className="flex-grow">
+            <TerminalWindow title="contact.yaml" path={`${level} / cluster-01 / contact.yaml`} className="flex-grow">
               <YamlForm />
             </TerminalWindow>
 
