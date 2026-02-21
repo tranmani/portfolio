@@ -3,6 +3,8 @@ import Meta from "./meta";
 import Nav from "./Nav";
 import cx from "classnames";
 
+import { useGamification } from "@/lib/context/GamificationContext";
+
 export default function Layout({
   meta,
   children,
@@ -18,6 +20,24 @@ export default function Layout({
 }) {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
+  const { level, xp, progressToNextLevel } = useGamification();
+  
+  // Calculate a 10-character progress bar
+  const segments = 10;
+  const filledSegments = Math.round((progressToNextLevel / 100) * segments);
+  const progressBar = "[" + "#".repeat(filledSegments) + "-".repeat(segments - filledSegments) + "]";
+
+  // Root access notification
+  const [hasNotifiedRoot, setHasNotifiedRoot] = React.useState(false);
+  React.useEffect(() => {
+    if (level === "root" && !hasNotifiedRoot) {
+      // Small timeout to allow the UI to render the progress bar filling up first
+      setTimeout(() => {
+        alert("SYSTEM OVERRIDE: ROOT PRIVILEGES GRANTED.\nYou now have full access to the system.");
+      }, 500);
+      setHasNotifiedRoot(true);
+    }
+  }, [level, hasNotifiedRoot]);
   
   return (
     <div className={cx("min-h-screen flex flex-col", showEffects && "crt-effect")}>
@@ -29,8 +49,15 @@ export default function Layout({
         {children}
       </main>
 
-      <footer className="mt-auto py-8 text-center border-t border-terminal-border text-[10px] text-terminal-green/30 uppercase tracking-[0.2em]">
-        &copy; {year} SOFTWARE_ENGINEER_CORE // SYSTEM_VERSION_4.2.0
+      <footer className="mt-auto py-8 flex flex-col items-center justify-center gap-4 border-t border-terminal-border text-[10px] text-terminal-green/40 uppercase tracking-[0.2em]">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 items-center bg-terminal-green/5 px-4 py-2 border border-terminal-green/10 rounded">
+            <span>[PRIVILEGE: {level}]</span>
+            <span>XP: {xp}</span>
+            <span>{progressBar} {progressToNextLevel.toFixed(0)}% TO NEXT TIER</span>
+        </div>
+        <div className="text-terminal-green/30">
+            &copy; {year} SOFTWARE_ENGINEER_CORE // SYSTEM_VERSION_4.2.0
+        </div>
       </footer>
     </div>
   );

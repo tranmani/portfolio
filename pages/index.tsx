@@ -8,15 +8,18 @@ import AsciiText from "@/components/AsciiText";
 import StatBox from "@/components/StatBox";
 
 
+import { useGamification } from "@/lib/context/GamificationContext";
+
 const Home: React.FC = () => {
   const { profile, quickActions } = portfolioConfig;
+  const { level } = useGamification();
 
   return (
     <Layout>
       <div className="space-y-8">
         {/* Terminal Header Info */}
         <div className="text-xs text-terminal-green/50 font-mono mb-4">
-          guest@engineer-node:~$ ./init_session.sh --verbose
+          {level}@engineer-node:~$ ./init_session.sh --verbose
         </div>
 
         {/* Hero Section Terminal */}
