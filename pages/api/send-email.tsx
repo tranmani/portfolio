@@ -1,11 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import React from "react";
-// Use require for @react-email/render to fix ESM interop issues with its CJS dependencies (js-beautify)
-const { render } = require("@react-email/render");
+import { renderToStaticMarkup } from "react-dom/server";
 import GuestVisit from "../../emails/GuestVisit";
 import { sendEmail } from "../../lib/email";
 import GoogleReviewWithCoupon from "../../emails/GoogleReviewWithCoupon";
 import { portfolioConfig } from "@/lib/config";
+
+// Helper to wrap with doctype as @react-email/render would
+const renderEmail = (component: React.ReactElement) => {
+  const doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+  const markup = renderToStaticMarkup(component);
+  return `${doctype}${markup}`;
+};
 
 enum EmailType {
   SALON_GOOGLE_COUPON = "salon-google-coupon",
@@ -32,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await sendEmail({
         to: "info@beautyartpro.ch",
         subject: subject ?? "Someone left a review and here is the coupon code!",
-        html: render(
+        html: renderEmail(
           <GoogleReviewWithCoupon
             guestName={userName}
             coupon={code}
@@ -52,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await sendEmail({
         to: portfolioConfig.contact.email,
         subject: subject ?? `Message from ${userName} via ${portfolioConfig.profile.projectName}`,
-        html: render(
+        html: renderEmail(
           <GuestVisit
             guestName={userName}
             guestEmail={userEmail}
