@@ -64,8 +64,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     return res.status(200).json({ message: "Email sent successfully" });
-  } catch (error) {
-    console.error("Email API Error:", error);
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: any) {
+    console.error("Email API Error - Type:", error?.name, "Message:", error?.message, "Stack:", error?.stack);
+    
+    // Attempt to return a slightly more descriptive error message in the response if it's safe
+    const errorMessage = error?.message || "Internal server error";
+    return res.status(500).json({ message: `Internal server error: ${errorMessage}` });
   }
 }

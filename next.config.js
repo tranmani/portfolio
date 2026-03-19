@@ -12,6 +12,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  experimental: {
+    serverComponentsExternalPackages: ['@react-email/render', 'js-beautify'],
+  },
 };
 
 module.exports = nextConfig;
