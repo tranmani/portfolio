@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import React from "react";
-import { render } from "@react-email/render";
+// Use require for @react-email/render to fix ESM interop issues with its CJS dependencies (js-beautify)
+const { render } = require("@react-email/render");
 import GuestVisit from "../../emails/GuestVisit";
 import { sendEmail } from "../../lib/email";
 import GoogleReviewWithCoupon from "../../emails/GoogleReviewWithCoupon";
