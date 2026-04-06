@@ -68,6 +68,12 @@ export const portfolioConfig = {
   ],
   projects: [
     {
+      title: "FamMedley",
+      description: "Fammedley is a Go-powered backend supporting a cross-platform Expo application for family medical and daily coordination, featuring AI-driven wellness insights and real-time task management. Built on a clean, layered architecture, it utilizes a sophisticated synchronization engine and a robust gamification economy to drive engagement through collaborative rewards and streaks. The project employs an automated CI/CD pipeline via GitHub Actions for containerized deployment, with infrastructure orchestrated by Terraform and a full observability stack using Prometheus, Grafana, and Loki.",
+      link: "https://fammedley.com/?utm_source=portfolio",
+      tags: ["Go", "Expo", "React Native", "PostgreSQL", "Redis", "Google Cloud Platform", "Docker", "K8s", "GitHub Actions", "Terraform", "Prometheus", "Grafana", "Loki"],
+    },
+    {
       title: "CI/CD Pipeline Project",
       description: "Designed and implemented a multi-cloud CI/CD pipeline using Azure DevOps to build, containerize, and deploy a production Next.js application with Docker to Google Cloud Artifact Registry and Kubernetes (GKE), with cloud resources provisioned using Terraform. \nProvisioned and operated infrastructure and self-hosted CI agents via Terraform, implementing secure service-account authentication, Docker cache and storage optimization, and automated cleanup to ensure reliable, scalable deployments. ",
       tags: ["Azure DevOps", "Terraform", "Docker", "GKE", "K8s"],
