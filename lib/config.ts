@@ -26,12 +26,20 @@ export const portfolioConfig = {
   ],
   experiences: [
     {
+      title: "DevOps Engineer",
+      company: "In The Zone",
+      place: "Amsterdam, Netherlands (Hybrid)",
+      description: "The life toolkit for bipolar, designed for those who live it, and for those who stand beside them through it.",
+      date: "April 2026 - Present",
+      active: true,
+    },
+    {
       title: "Full-stack Developer",
       company: "SevginWeb",
       place: "Deventer, Netherlands (Remote)",
       description: "Revamped the payment process using modern design and functionality, improving user satisfaction and increasing the conversion rate by ~15% in the first few months post-deployment. Optimize the CI/CD pipeline of the application for a reliable deployment. Delivered a comprehensive notification service by implementing frontend and backend components, streamlining user communication and system alerts.",
-      date: "Jan 2023 - Present",
-      active: true,
+      date: "Jan 2023 - March 2026",
+      active: false,
     },
     {
       title: "Full-stack Developer Intern",
@@ -69,9 +77,9 @@ export const portfolioConfig = {
   projects: [
     {
       title: "FamMedley",
-      description: "Fammedley is a Go-powered backend supporting a cross-platform Expo application for family medical and daily coordination, featuring AI-driven wellness insights and real-time task management. Built on a clean, layered architecture, it utilizes a sophisticated synchronization engine and a robust gamification economy to drive engagement through collaborative rewards and streaks. The project employs an automated CI/CD pipeline via GitHub Actions for containerized deployment, with infrastructure orchestrated by Terraform and a full observability stack using Prometheus, Grafana, and Loki.",
+      description: "A high-end family care coordination and safety platform featuring a Go-powered API supporting a cross-platform Expo (React Native) application. Features an AI-driven Meal Planner (with Tinder-style swiping), real-time collaborative Whiteboard, WebSocket-driven shared shopping lists with live presence tracking, and high-fidelity location mapping. Engineered with a highly resilient, offline-first SQLite sync engine with automatic mutation queue optimizations, and a premium UI/UX following 'The Kinetic Hearth' design principles. Integrated with RevenueCat for subscription entitlement, built with TypeScript, and deployed via containerized CI/CD to GCP",
       link: "https://fammedley.com/?utm_source=portfolio",
-      tags: ["Go", "Expo", "React Native", "PostgreSQL", "Redis", "Google Cloud Platform", "Docker", "K8s", "GitHub Actions", "Terraform", "Prometheus", "Grafana", "Loki"],
+      tags: ["Go", "Expo", "React Native", "TypeScript", "PostgreSQL", "SQLite", "WebSockets", "RevenueCat", "Google Cloud Platform", "Docker", "GitHub Actions"],
     },
     {
       title: "CI/CD Pipeline Project",
@@ -133,11 +141,11 @@ export const portfolioConfig = {
     { name: "MUI", category: "COMPONENT_LIB" },
     { name: "Framer Motion", category: "ANIMATION_SDK" },
     { name: "MongoDB", category: "NOSQL_DB" },
-    { name: "Redis", category: "CACHE_DB" },  
+    { name: "Redis", category: "CACHE_DB" },
     { name: "GraphQL", category: "API_QUERY_LANG" },
     { name: "REST", category: "API_ARCH" },
     { name: "Cloudflare Worker", category: "SERVERLESS" },
-    { name: "Azure Pipeline", category: "CI/CD"},
-    { name: "GitHub Actions", category: "CI/CD"}
-  ] 
+    { name: "Azure Pipeline", category: "CI/CD" },
+    { name: "GitHub Actions", category: "CI/CD" }
+  ]
 };
