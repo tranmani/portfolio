@@ -38,7 +38,7 @@
     "react-markdown": "^8.0.4",
     "react-tsparticles": "^2.9.3",
     "react-wrap-balancer": "^0.3.0",
-    "styled-components": "^6.0.0",
+    "styled-components": "^6.1.0",
     "tsparticles": "^2.9.3",
     "typescript": "5.9.3",
     "use-debounce": "^9.0.3"
