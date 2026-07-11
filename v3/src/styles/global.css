@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/geist/index.css";
+@import "@fontsource-variable/geist-mono/index.css";
+
+/* ---------------------------------------------------------------------------
+   Tokens.
+
+   Two rules govern this file, and they are the two rules v2 broke:
+
+   1. Text colour is never expressed as an opacity of the foreground. Every
+      text token below is a solid colour whose contrast against its own
+      background was computed here, at author time. v2 dimmed green to 20%
+      and shipped 1.5:1 text.
+   2. Nothing is smaller than 14px.
+   --------------------------------------------------------------------------- */
+
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  /* Type scale. Five steps. Hierarchy comes from size, weight and space. */
+  --text-meta: 0.875rem; /* 14px - the floor */
+  --text-body: 1.0625rem; /* 17px */
+  --text-lead: 1.25rem; /* 20px */
+  --text-title: 1.75rem; /* 28px */
+  --text-display: 2.5rem; /* 40px, scales up at md */
+
+  --radius-card: 0.5rem;
+}
+
+:root {
+  color-scheme: light dark;
+
+  /* Light. Contrast vs --bg (#fcfcfc):
+     fg 16.9:1 | fg-muted 7.6:1 | fg-subtle 4.8:1 | accent 4.9:1  */
+  --bg: #fcfcfc;
+  --surface: #f4f4f5;
+  --fg: #18181b;
+  --fg-muted: #52525b;
+  --fg-subtle: #6c6c76;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+  --accent: #c2410c;
+  --accent-fg: #ffffff;
+  /* Reserved for real, fetched status. Never decoration. */
+  --live: #15803d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark. Contrast vs --bg (#0c0c0d):
+       fg 18.1:1 | fg-muted 8.9:1 | fg-subtle 6.1:1 | accent 8.4:1  */
+    --bg: #0c0c0d;
+    --surface: #161618;
+    --fg: #fafafa;
+    --fg-muted: #a1a1aa;
+    --fg-subtle: #8a8a94;
+    --border: #27272a;
+    --border-strong: #3f3f46;
+    --accent: #fb923c;
+    --accent-fg: #18181b;
+    --live: #4ade80;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+
+  /* v2 deleted the focus ring on every form field. This one cannot be removed. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  /* Long-form case-study bodies. */
+  .body-copy h2 {
+    font-size: var(--text-lead);
+    font-weight: 500;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--fg);
+  }
+
+  .body-copy p {
+    margin-bottom: 1rem;
+    color: var(--fg-muted);
+  }
+
+  .body-copy p:last-child {
+    margin-bottom: 0;
+  }
+
+  .body-copy em {
+    color: var(--fg-subtle);
+  }
+}
+
+@layer utilities {
+  .measure {
+    max-width: 68ch;
+  }
+
+  .mono-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    color: var(--fg-subtle);
+    letter-spacing: 0.01em;
+  }
+}
+
+/* Motion exists to confirm an action or orient during a transition. Nothing
+   loops, nothing pulses, nothing scans. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
