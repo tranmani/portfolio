@@ -26,12 +26,20 @@ export const portfolioConfig = {
   ],
   experiences: [
     {
+      title: "AI Engineer",
+      company: "Studio WIP",
+      place: "Amsterdam, Netherlands (Hybrid)",
+      description: "Impact venture studio taking ventures from problem to proof. Building an agentic RAG platform where the organisation's vetted claims are the agent's only source of truth: documents are parsed, chunked and embedded locally into Postgres/pgvector, and answers are grounded with inline citations or refused outright when the knowledge base cannot support them. Retrieval is gated server-side by role, collection and document clearance level, with a guardrail that detects and logs attempts to reach material above a user's access.",
+      date: "July 2026 - Present",
+      active: true,
+    },
+    {
       title: "DevOps Engineer",
       company: "In The Zone",
       place: "Amsterdam, Netherlands (Hybrid)",
-      description: "The life toolkit for bipolar, designed for those who live it, and for those who stand beside them through it.",
-      date: "April 2026 - Present",
-      active: true,
+      description: "The life toolkit for bipolar, designed for those who live it, and for those who stand beside them through it. Owned the DevOps side while also maintaining the Expo mobile app and building the internal analytics/CMS dashboard, plus an agentic dashboard that answers questions about company operations and the app from internal data.",
+      date: "April 2026 - June 2026",
+      active: false,
     },
     {
       title: "Full-stack Developer",
