@@ -130,12 +130,6 @@ export const portfolioConfig = {
       tags: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
     },
     {
-      title: "Casino Review Website",
-      description: "I developed an SEO-optimized satellite blog using Next.js and MUI to maximize search rankings, traffic, and lead generation for the business. This project leveraged server-side rendering and premium UI components to deliver a high-performance, visually appealing user experience.",
-      link: "https://review.tranmani.com/?utm_source=portfolio",
-      tags: ["React", "Next.js", "MUI"],
-    },
-    {
       title: "Headless WP Blog",
       description: "Developed a layout in React leveraging the power of headless WordPress for content writers.",
       link: "https://test-blog.tranmani.com/?utm_source=portfolio",

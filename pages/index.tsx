@@ -29,7 +29,10 @@ const Home: React.FC = () => {
         >
           {/* Customizable Selectable Title */}
           <div className="mb-12 mt-2 overflow-hidden flex justify-center lg:justify-start">
-            <AsciiText text={profile.asciiTitle || profile.title} />
+            <AsciiText
+              text={profile.asciiTitle || profile.title}
+              label={`${profile.name} Tran — ${profile.title}`}
+            />
           </div>
 
           {/* Stats Grid */}

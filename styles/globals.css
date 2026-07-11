@@ -19,6 +19,26 @@ html, body {
   }
 }
 
+/* The site is built out of infinite loops: scanlines, a CRT flicker, matrix rain,
+   pulsing HUD bars. All of it is decorative, and none of it is worth making a
+   visitor with vestibular sensitivity close the tab. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .scanline-overlay,
+  .scanline,
+  .crt-effect::before {
+    display: none !important;
+  }
+}
+
 @layer components {
   .terminal-window {
     @apply border border-terminal-border bg-black/80 backdrop-blur-sm rounded-md overflow-hidden relative shadow-[0_0_20px_rgba(0,255,65,0.05)];

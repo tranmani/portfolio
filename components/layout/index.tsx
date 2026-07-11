@@ -63,7 +63,7 @@ export default function Layout({
         </div>
       </footer>
 
-      {level === "root" && <RecruiterWidget />}
+      <RecruiterWidget />
     </div>
   );
 }

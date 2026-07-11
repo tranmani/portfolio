@@ -3,79 +3,97 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import GuestVisit from "../../emails/GuestVisit";
 import { sendEmail } from "../../lib/email";
-import GoogleReviewWithCoupon from "../../emails/GoogleReviewWithCoupon";
 import { portfolioConfig } from "@/lib/config";
 
-// Helper to wrap with doctype as @react-email/render would
 const renderEmail = (component: React.ReactElement) => {
-  const doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-  const markup = renderToStaticMarkup(component);
-  return `${doctype}${markup}`;
+  const doctype =
+    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+  return `${doctype}${renderToStaticMarkup(component)}`;
 };
 
-enum EmailType {
-  SALON_GOOGLE_COUPON = "salon-google-coupon",
-  CONTACT_FORM = "tranmani-view",
-}
+const MAX_NAME = 100;
+const MAX_MESSAGE = 2000;
+const WINDOW_MS = 60 * 60 * 1000;
+const MAX_PER_WINDOW = 3;
+
+// Best-effort in-process limiter. It resets on cold start, which is acceptable
+// here: it exists to blunt casual abuse of an endpoint that sends mail, not to
+// be an authoritative quota. A durable store is the right answer if this moves.
+const hits = new Map<string, number[]>();
+
+const isRateLimited = (ip: string) => {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
+  if (recent.length >= MAX_PER_WINDOW) {
+    hits.set(ip, recent);
+    return true;
+  }
+  recent.push(now);
+  hits.set(ip, recent);
+  return false;
+};
+
+const clientIp = (req: NextApiRequest) => {
+  const fwd = req.headers["x-forwarded-for"];
+  const raw = Array.isArray(fwd) ? fwd[0] : fwd?.split(",")[0];
+  return (raw || req.socket.remoteAddress || "unknown").trim();
+};
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const { userName, userEmail, messagesToSent, type, subject, createdTime, code } = req.body;
+  if (isRateLimited(clientIp(req))) {
+    return res.status(429).json({ message: "Too many requests. Try again later." });
+  }
 
-  if (!type) {
-    return res.status(400).json({ message: "Missing email type" });
+  const { userName, userEmail, messagesToSent, website } = req.body ?? {};
+
+  // Honeypot: a real browser leaves this hidden field empty.
+  if (website) {
+    return res.status(200).json({ message: "Email sent successfully" });
+  }
+
+  if (typeof userName !== "string" || typeof userEmail !== "string" || !messagesToSent?.length) {
+    return res.status(400).json({ message: "Empty content" });
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail) || userEmail.length > MAX_NAME) {
+    return res.status(400).json({ message: "Invalid email" });
+  }
+
+  if (!Array.isArray(messagesToSent)) {
+    return res.status(400).json({ message: "Empty content" });
+  }
+
+  // Rebuild each message from scratch rather than forwarding the client's object,
+  // so nothing unexpected reaches the email template.
+  const messages = messagesToSent.slice(0, 50).map((m: any, i: number) => ({
+    id: Number(m?.id ?? i),
+    content: String(m?.content ?? "").slice(0, MAX_MESSAGE),
+    isMe: Boolean(m?.isMe),
+    time: m?.time ? String(m.time).slice(0, 32) : undefined,
+  }));
+
+  const totalLength = messages.reduce((n, m) => n + m.content.length, 0);
+
+  if (userName.length > MAX_NAME || totalLength > MAX_MESSAGE) {
+    return res.status(400).json({ message: "Content too long" });
   }
 
   try {
-    if (type === EmailType.SALON_GOOGLE_COUPON) {
-      if (!userName || !code || !createdTime) {
-        return res.status(400).json({ message: "Empty content" });
-      }
-
-      await sendEmail({
-        to: "info@beautyartpro.ch",
-        subject: subject ?? "Someone left a review and here is the coupon code!",
-        html: renderEmail(
-          <GoogleReviewWithCoupon
-            guestName={userName}
-            coupon={code}
-            createdTime={createdTime}
-          />
-        ),
-      });
-    } else if (type === EmailType.CONTACT_FORM) {
-      if (!userEmail || !userName || !messagesToSent) {
-        return res.status(400).json({ message: "Empty content" });
-      }
-
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
-        return res.status(400).json({ message: "Invalid email" });
-      }
-
-      await sendEmail({
-        to: portfolioConfig.contact.email,
-        subject: subject ?? `Message from ${userName} via ${portfolioConfig.profile.projectName}`,
-        html: renderEmail(
-          <GuestVisit
-            guestName={userName}
-            guestEmail={userEmail}
-            guestMessages={messagesToSent || []}
-          />
-        ),
-      });
-    } else {
-      return res.status(400).json({ message: "Unsupported email type" });
-    }
+    await sendEmail({
+      to: portfolioConfig.contact.email,
+      subject: `Message from ${userName} via tranmani.com`,
+      html: renderEmail(
+        <GuestVisit guestName={userName} guestEmail={userEmail} guestMessages={messages} />,
+      ),
+    });
 
     return res.status(200).json({ message: "Email sent successfully" });
   } catch (error: any) {
-    console.error("Email API Error - Type:", error?.name, "Message:", error?.message, "Stack:", error?.stack);
-    
-    // Attempt to return a slightly more descriptive error message in the response if it's safe
-    const errorMessage = error?.message || "Internal server error";
-    return res.status(500).json({ message: `Internal server error: ${errorMessage}` });
+    console.error("Email API error:", error?.name, error?.message);
+    return res.status(500).json({ message: "Could not send the message. Please email me directly." });
   }
 }
