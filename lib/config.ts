@@ -76,6 +76,18 @@ export const portfolioConfig = {
   ],
   projects: [
     {
+      title: "Lorenly",
+      description: "Multi-tenant SaaS for salons: booking, client CRM, gift cards, and an inline-editable site per tenant. Next.js on Cloudflare Workers (OpenNext) with host-based tenant resolution, a shared Supabase/Postgres schema, one-click data import from 9 competing booking systems, and an Expo companion app with push notifications on the App Store.",
+      link: "https://lorenly.com/?utm_source=portfolio",
+      tags: ["Next.js", "TypeScript", "Cloudflare Workers", "Supabase", "PostgreSQL", "Expo", "React Native", "Docker", "Multi-tenant"],
+    },
+    {
+      title: "Perron",
+      description: "Location-gated chat for Dutch train stations: you can only join a platform's room while physically standing on it. Expo client on a Cloudflare Workers backend, live departures from open CC0 GTFS-RT feeds instead of a vendor API, native push, and a subscription verified through the App Store Server API.",
+      link: "https://perron.tranmani.com/?utm_source=portfolio",
+      tags: ["Expo", "React Native", "TypeScript", "Cloudflare Workers", "GTFS-RT", "Push Notifications", "IAP"],
+    },
+    {
       title: "FamMedley",
       description: "A high-end family care coordination and safety platform featuring a Go-powered API supporting a cross-platform Expo (React Native) application. Features an AI-driven Meal Planner (with Tinder-style swiping), real-time collaborative Whiteboard, WebSocket-driven shared shopping lists with live presence tracking, and high-fidelity location mapping. Engineered with a highly resilient, offline-first SQLite sync engine with automatic mutation queue optimizations, and a premium UI/UX following 'The Kinetic Hearth' design principles. Integrated with RevenueCat for subscription entitlement, built with TypeScript, and deployed via containerized CI/CD to GCP",
       link: "https://fammedley.com/?utm_source=portfolio",
