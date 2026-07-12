@@ -1,8 +1,30 @@
 @import "tailwindcss";
 
-@import "@fontsource-variable/space-grotesk/index.css";
-@import "@fontsource-variable/newsreader/index.css";
-@import "@fontsource-variable/geist-mono/index.css";
+/* Latin only, self-hosted at a stable path so the display face can be preloaded.
+   The fontsource index stylesheets pull five alphabets we never set. */
+@font-face {
+  font-family: "Space Grotesk Variable";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/space-grotesk-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Newsreader Variable";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/fonts/newsreader-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Geist Mono Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/geist-mono-latin.woff2") format("woff2");
+}
 
 /* Colour values. Ratios are asserted by tests/contrast.test.ts, which fails the
    build if any text token drops below 4.5:1 or any UI boundary below 3:1. */

@@ -35,6 +35,15 @@ const personSchema = {
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.ico" />
 
+    {/* The display face renders the h1, which is the LCP element. */}
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/space-grotesk-latin.woff2"
+    />
+
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
