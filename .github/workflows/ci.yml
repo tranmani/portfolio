@@ -8,9 +8,6 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: v3
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
