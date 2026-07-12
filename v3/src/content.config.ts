@@ -9,33 +9,35 @@ import { glob } from "astro/loaders";
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
   schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      /** The idea a human repeats at lunch. One line. */
-      hook: z.string().max(140),
-      /** The real constraint, stated honestly. */
-      problem: z.string(),
-      role: z.string(),
-      year: z.number(),
-      order: z.number(),
-      stack: z.array(z.string()).min(1).max(5),
-      cover: image().optional(),
-      coverAlt: z.string().optional(),
-      /** Every link must resolve. No dead Vercel preview branches. */
-      links: z
-        .array(
-          z.object({
-            label: z.string(),
-            href: z.string().url(),
-          }),
-        )
-        .default([]),
-      /**
-       * Verifiable facts only. If a number cannot be substantiated it does not
-       * go on the page. This is the field v2 filled with `LATENCY: 14ms`.
-       */
-      proof: z.array(z.string()).default([]),
-    }),
+    z
+      .object({
+        title: z.string(),
+        hook: z.string().max(160),
+        problem: z.string(),
+        role: z.string(),
+        year: z.number().int().min(2000).max(2100),
+        order: z.number().int(),
+        stack: z.array(z.string()).min(1).max(5),
+        /** Shipping status, where it is not obvious. Stated, never implied. */
+        status: z.string().optional(),
+        cover: image().optional(),
+        coverAlt: z.string().optional(),
+        links: z
+          .array(z.object({ label: z.string(), href: z.string().url() }))
+          .default([]),
+        proof: z.array(z.string()).default([]),
+      })
+      // An image with an empty alt declares a meaningful screenshot decorative.
+      // axe cannot catch that, so the build does.
+      .superRefine((data, ctx) => {
+        if (data.cover && !data.coverAlt?.trim()) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["coverAlt"],
+            message: "A project with a cover image must describe it in coverAlt.",
+          });
+        }
+      }),
 });
 
 const roles = defineCollection({

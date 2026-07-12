@@ -1,0 +1,87 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Rail from "../components/Rail.astro";
+import { site } from "../lib/site";
+
+/**
+ * The CV is generated from the same content collections as the homepage, so it
+ * cannot drift out of date behind a stale PDF. Print this page to get the PDF.
+ */
+const roles = (await getCollection("roles")).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+
+const rolesRendered = await Promise.all(
+  roles.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+---
+
+<Base title={`CV - ${site.name}, ${site.role}`} description={site.description}>
+  <section class="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+    <h1 class="text-title font-medium">{site.name}</h1>
+    <p class="mt-2 text-lead text-fg-muted">{site.role}, {site.location}</p>
+    <p class="measure body-copy mt-6">{site.intro}</p>
+    <p class="mono-meta mt-6">
+      {site.email} / <a href={site.cta.github} class="link-accent">github.com/tranmani</a>
+    </p>
+
+    <h2 class="mt-16 text-lead font-medium">Experience</h2>
+    <ul class="mt-6 flex list-none flex-col p-0">
+      {
+        rolesRendered.map(({ entry, Content }) => (
+          <li class="border-t border-edge py-6 first:border-t-0 first:pt-0">
+            <Rail>
+              <Fragment slot="rail">
+                <span>
+                  {entry.data.start} to {entry.data.end}
+                </span>
+                <span>{entry.data.place}</span>
+              </Fragment>
+              <div class="flex flex-wrap items-baseline gap-x-2">
+                <h3 class="font-medium">{entry.data.title}</h3>
+                <span class="text-fg-muted">at {entry.data.company}</span>
+              </div>
+              <div class="measure body-copy mt-2">
+                <Content />
+              </div>
+            </Rail>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2 class="mt-16 text-lead font-medium">Selected work</h2>
+    <ul class="mt-6 flex list-none flex-col p-0">
+      {
+        projects.map((p) => (
+          <li class="border-t border-edge py-6 first:border-t-0 first:pt-0">
+            <Rail>
+              <Fragment slot="rail">
+                <span>{p.data.stack.join(" / ")}</span>
+              </Fragment>
+              <h3 class="font-medium">{p.data.title}</h3>
+              <p class="measure body-copy mt-1">{p.data.hook}</p>
+              {p.data.status && <p class="mono-meta mt-2">{p.data.status}</p>}
+            </Rail>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2 class="mt-16 text-lead font-medium">Education</h2>
+    <div class="mt-6 border-t border-edge pt-6">
+      <Rail>
+        <Fragment slot="rail">
+          <span>2018 to 2022</span>
+          <span>Deventer</span>
+        </Fragment>
+        <h3 class="font-medium">BSc Computer Science</h3>
+        <p class="text-fg-muted">Saxion University of Applied Sciences</p>
+      </Rail>
+    </div>
+
+    <p class="mono-meta mt-16 border-t border-edge pt-6">
+      Print this page to save it as a PDF.
+    </p>
+  </section>
+</Base>

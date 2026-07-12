@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: v3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Typecheck
+        run: npm run check
+      - name: Palette contrast and content invariants
+        run: npm run test
+      - name: Build
+        run: npm run build
+      - name: Accessibility (axe, light and dark)
+        run: node scripts/a11y.mjs

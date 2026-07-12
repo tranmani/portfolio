@@ -43,4 +43,14 @@ When a reader tries to reach material above their clearance, the system does not
 refuse. It records the attempt. A retrieval system that silently declines teaches you
 nothing about who is probing it.
 
-*Built at Studio WIP. Described here at the level of the pattern rather than the corpus.*
+## What it costs
+
+Refusal has a price, and the price is over-refusal. A system tuned to decline whenever
+grounding is thin will also decline questions it could have answered from a passage it
+ranked fourth, and a reader who is told "I cannot support that" twice stops asking. The
+tuning is a trade between a false answer and a useless one, and I would rather be
+interrogated about the second.
+
+*I am building the retrieval and refusal path: chunking and embedding, the clearance
+filter in the query, binding citations to line ranges, and the refusal behaviour. Current
+work at Studio WIP. Described at the level of the pattern; the corpus is the client's.*

@@ -3,9 +3,11 @@ title: Lorenly
 hook: Salon software you can actually switch to, because it imports your history out of the nine systems you might be leaving.
 problem: >-
   You cannot win a salon that already has four years of clients and bookings sitting
-  inside a competitor's product. The switching cost is the whole market. So the migration
-  path is not a feature of the go to market, it is the go to market, and it means
-  normalising nine hostile export formats full of dirty, duplicated, half valid data.
+  inside a competitor's product. The switching cost is the whole market, so the import
+  has to be good enough to be the reason they move. That means nine export formats,
+  each with its own column names, date formats, duplicate clients spelled three ways,
+  bookings pointing at services that no longer exist, and gift card balances that do
+  not reconcile.
 role: Solo. Product, platform, mobile app, infrastructure.
 year: 2026
 order: 3
@@ -44,3 +46,10 @@ That is not glamorous engineering. It is the reason a salon can say yes.
 One shared Postgres schema, tenants resolved from the request host at the edge, running
 Next.js on Cloudflare Workers through OpenNext. Each tenant gets a site they can edit
 inline, in place, on the page, rather than through a form that describes the page.
+
+## What it costs
+
+A shared schema means a shared blast radius. One tenant's runaway query is every
+tenant's slow afternoon, and a migration that is wrong is wrong for all of them at once,
+which is a real operational bill I pay for not running a database per salon. It is the
+right trade at this size and it is the first thing that breaks at ten times this size.

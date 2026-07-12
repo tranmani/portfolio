@@ -1,34 +1,40 @@
 /**
- * Generates public/og.png at build time. v2's og:image pointed at /api/og,
- * a route that did not exist, so every share of the site rendered a grey box.
- * Run: node scripts/og.mjs
+ * Generates public/og.png. Runs as `prebuild`, so the card cannot drift away
+ * from the copy it is quoting. Fonts are read from node_modules, not a CDN.
  */
 import { chromium } from "playwright";
+import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { createRequire } from "node:module";
+import { site } from "../src/lib/site.ts";
 
+const require = createRequire(import.meta.url);
 const here = dirname(fileURLToPath(import.meta.url));
 const out = resolve(here, "../public/og.png");
 
-const html = `<!doctype html>
-<html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/geist/index.css">
-<style>
+const font = async (pkg) =>
+  (await readFile(require.resolve(pkg))).toString("base64");
+
+const grotesk = await font("@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2");
+const mono = await font("@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2");
+
+const html = `<!doctype html><html><head><meta charset="utf-8"><style>
+  @font-face { font-family: G; src: url(data:font/woff2;base64,${grotesk}) format('woff2'); }
+  @font-face { font-family: M; src: url(data:font/woff2;base64,${mono}) format('woff2'); }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    width:1200px; height:630px; background:#fcfcfc; color:#18181b;
-    font-family:"Geist Variable", system-ui, sans-serif;
-    display:flex; flex-direction:column; justify-content:center;
-    padding:80px; border-bottom:14px solid #c2410c;
+    width:1200px; height:630px; background:#faf9f6; color:#1c1917;
+    font-family:G, sans-serif; display:flex; flex-direction:column;
+    justify-content:center; padding:80px; border-bottom:14px solid #b3301f;
   }
-  h1 { font-size:76px; font-weight:500; letter-spacing:-0.03em; line-height:1.05; }
-  h1 span { display:block; color:#6c6c76; }
-  p { margin-top:32px; font-size:28px; color:#52525b; max-width:900px; line-height:1.45; }
-  .foot { margin-top:auto; font-size:22px; color:#6c6c76; font-family:ui-monospace, monospace; }
-</style></head>
-<body>
-  <h1>Huy Tran<span>Product engineer, Amsterdam</span></h1>
-  <p>Multi tenant SaaS, offline first mobile apps, and agentic retrieval that cites its sources or refuses to answer.</p>
+  h1 { font-size:80px; font-weight:500; letter-spacing:-0.03em; line-height:1.03; }
+  h1 span { display:block; color:#6b6560; }
+  p { margin-top:34px; font-size:27px; color:#57534e; max-width:940px; line-height:1.45; }
+  .foot { margin-top:auto; font-family:M, monospace; font-size:21px; color:#6b6560; }
+</style></head><body>
+  <h1>${site.name}<span>${site.role}, ${site.location}</span></h1>
+  <p>${site.description.replace(/^Huy Tran is a product engineer in Amsterdam\.\s*/, "")}</p>
   <div class="foot">tranmani.com</div>
 </body></html>`;
 

@@ -1,0 +1,21 @@
+---
+/**
+ * The metadata rail. Dates, role, stack and links hang in the left column on
+ * desktop and collapse above the content on mobile. Selected work and Experience
+ * share this grammar so the page has one spine instead of two.
+ */
+interface Props {
+  sticky?: boolean;
+}
+const { sticky = false } = Astro.props;
+---
+
+<div class="grid gap-4 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-10">
+  {/* top-20 clears the sticky header, which is ~56px tall. */}
+  <div class:list={["mono-meta flex flex-col gap-2", sticky && "md:sticky md:top-20 md:self-start"]}>
+    <slot name="rail" />
+  </div>
+  <div class="min-w-0">
+    <slot />
+  </div>
+</div>
