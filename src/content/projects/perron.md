@@ -11,7 +11,6 @@ role: Solo. Design, mobile app, backend, infrastructure.
 year: 2026
 order: 1
 stack: ["Expo", "TypeScript", "Cloudflare Workers", "GTFS-RT"]
-status: In TestFlight. Not yet on the App Store.
 figure:
   value: "250 m"
   label: "the geofence, and it is a deliberate error in one direction"
