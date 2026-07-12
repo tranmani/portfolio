@@ -25,6 +25,12 @@ const rolesRendered = await Promise.all(
       {site.email} / <a href={site.cta.github} class="link-accent">github.com/tranmani</a>
     </p>
 
+    {/* Offered before the CV rather than only after it, so a reader who wants the
+        file does not have to read the page to find out they can have it. */}
+    <div class="no-print mt-8">
+      <a href="/Huy-Tran-CV.pdf" class="btn btn-secondary" download>Download as PDF</a>
+    </div>
+
     <h2 class="mt-16 text-lead font-medium">Experience</h2>
     <ul class="mt-6 flex list-none flex-col p-0">
       {
@@ -81,9 +87,9 @@ const rolesRendered = await Promise.all(
       </Rail>
     </div>
 
-    <p class="mono-meta mt-16 border-t border-edge pt-6">
-      <a href="/Huy-Tran-CV.pdf" class="link-accent" download>Download as PDF</a>. Generated
-      from this page, so the two cannot disagree.
-    </p>
+    {/* No point printing a button that offers a download. */}
+    <div class="no-print mt-16 border-t border-edge pt-8">
+      <a href="/Huy-Tran-CV.pdf" class="btn btn-secondary" download>Download as PDF</a>
+    </div>
   </section>
 </Base>
