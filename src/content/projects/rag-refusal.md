@@ -6,7 +6,7 @@ problem: >-
   failure rather than a UX glitch. And retrieval leaks: a reader must never receive a
   passage from a document above their clearance, not summarised, not paraphrased, not
   quietly folded into an answer that sounds harmless.
-role: AI Engineer at Studio WIP
+role: "AI Engineer at Studio WIP. Solo: retrieval, chat, admin, evals, ingestion, deployment."
 year: 2026
 order: 2
 stack: ["TypeScript", "Next.js", "Postgres + pgvector", "Transformers.js", "Claude"]
@@ -25,6 +25,12 @@ Studio WIP is an impact venture studio. It runs on documents: research, evidence
 interviews, the things a venture has actually established to be true. The agent lets a
 person interrogate that body of work without quietly inventing the parts it does not
 have.
+
+I built the whole surface, and most of it is the surface you would expect: multi user chat,
+shared sessions, collections, an ingestion queue, an admin dashboard for roles and
+documents, an eval harness, a containerised deploy. None of that is why the project is
+interesting. The rest of this is about the one decision inside it that was not obvious, and
+about which of its guarantees are real.
 
 ## The query is deliberately not filtered
 
