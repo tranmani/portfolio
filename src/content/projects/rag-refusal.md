@@ -1,60 +1,81 @@
 ---
-title: An agent that refuses to answer
-hook: Retrieval grounded in an organisation's vetted claims, with citations, a clearance boundary, and the right to say no.
+title: An agent that declines
+hook: Retrieval over an organisation's vetted claims, where every chunk clears four access checks before the model sees it, and the failures are the intrusion signal.
 problem: >-
-  When the corpus is an organisation's vetted claims, a hallucination is not a UX
-  glitch, it is a compliance failure. And retrieval leaks: a reader must never receive
-  a passage from a document above their clearance, not even summarised, not even
-  paraphrased into an answer that sounds harmless.
+  When the corpus is an organisation's vetted claims, a hallucination is a compliance
+  failure rather than a UX glitch. And retrieval leaks: a reader must never receive a
+  passage from a document above their clearance, not summarised, not paraphrased, not
+  quietly folded into an answer that sounds harmless.
 role: AI Engineer at Studio WIP
 year: 2026
 order: 2
-stack: ["TypeScript", "Postgres + pgvector", "Anthropic API", "Next.js"]
+stack: ["TypeScript", "Next.js", "Postgres + pgvector", "Transformers.js", "Claude"]
 figure:
-  value: "0"
-  label: "answers that are not grounded in a cited passage"
+  value: "4"
+  label: "independent access checks every chunk clears before the model is shown it: clearance, collection, company, department"
 links: []
 proof:
-  - Answers cite the source document and line range, or the agent declines
-  - Retrieval filtered server side by role, collection and document clearance
-  - Escalation attempts are detected and written to an audit log
+  - "Documents are parsed, chunked at 1200 characters with 150 of overlap, and embedded on the box with a local 384 dimension model. No text leaves for a third party embedder"
+  - "Retrieval is hybrid: pgvector cosine and Postgres full text, fused with reciprocal rank, capped at three hits per file"
+  - "Citations carry a real line range, recovered by locating each chunk back in the source, and the reader can open the document at exactly that range"
+  - "Denied chunks that scored highly are written to an audit log as an access attempt, with the failing dimension named"
 ---
 
 Studio WIP is an impact venture studio. It runs on documents: research, evidence,
-interviews, the things a venture has actually established to be true. The agent's job is
-to let a person interrogate that body of work without it quietly inventing the parts it
-does not have.
+interviews, the things a venture has actually established to be true. The agent lets a
+person interrogate that body of work without quietly inventing the parts it does not
+have.
 
-## Grounding is a contract, not a prompt
+## The query is deliberately not filtered
 
-Documents are parsed, chunked and embedded locally into Postgres with pgvector. No
-passage, no answer. When the knowledge base cannot support a claim the agent says so
-instead of reaching for the model's own priors, and every answer it does give cites the
-document and the line range it came from, so a reader can go and check.
+The obvious way to enforce a clearance boundary is to put it in the `WHERE` clause. This
+one does not. Both retrieval queries, the vector search and the full text search, run
+unrestricted, and the access rules are applied afterwards in one pure function that is
+exhaustively unit tested: clearance level, collection allowlist, company, department.
+Four checks, and a chunk has to survive all of them before its text is ever placed in
+front of the model.
 
-The interesting part is not making it answer. It is making it decline, reliably, and
-making declining feel like the system working rather than the system failing.
+It looks like the weaker design and it is the reason the interesting thing works. Because
+the candidate pool is unfiltered, the system can see the difference between what *matched*
+the question and what the reader is *allowed to read*. That difference is a signal. A
+denied chunk that scored above 0.45 cosine, or landed in the top three of the text search,
+is not a coincidence: somebody has asked a question shaped like a document they cannot
+open. The system records it as an access attempt, names the dimension that failed, and an
+admin can go from the audit entry straight to the conversation that produced it.
 
-## The clearance boundary is enforced in the database, not the prompt
+Filter in the query and you get the same safety and you are blind. You cannot log what you
+never retrieved.
 
-Each document carries a sensitivity level. Each role carries a clearance, a collection
-allowlist, and a feature allowlist. The filter runs server side, in the query, before
-any text reaches the model, because a boundary a prompt is asked politely to respect is
-not a boundary.
+## Citations you can land on
 
-When a reader tries to reach material above their clearance, the system does not just
-refuse. It records the attempt. A retrieval system that silently declines teaches you
-nothing about who is probing it.
+A chunk keeps the line range it came from, recovered by locating the piece back inside the
+original text rather than guessed at. So a citation is not a document name, it is a place:
+the reader clicks it and the source opens at those lines. Tables cite a row range. PDFs
+cite a page.
 
-## What it costs
+## What is actually enforced, and what is asked
 
-Refusal has a price, and the price is over-refusal. A system tuned to decline whenever
-grounding is thin will also decline questions it could have answered from a passage it
-ranked fourth, and a reader who is told "I cannot support that" twice stops asking. The
-tuning is a trade between a false answer and a useless one, and I would rather be
-interrogated about the second.
+I want to be exact here, because it is the difference between a guarantee and a habit.
 
-*I am building the retrieval and refusal path: chunking and embedding, the clearance
-filter in the query, binding citations to line ranges, and the refusal behaviour. Current
-work at Studio WIP. Architecture only. No client material appears here, or in an
-interview.*
+The clearance boundary is **enforced in code**. There is no prompt on earth that will
+persuade the agent to cite a document it was never handed, because a boundary a prompt is
+asked politely to respect is not a boundary.
+
+Grounding and refusal are **asked for in the prompt**. The answerability gate, the rule
+against answering from the model's own priors, the requirement to cite: those are
+instructions, and instructions are followed most of the time rather than always. So I grade
+it. A sample of real turns is scored for groundedness and citation validity, and the score
+goes on the admin dashboard rather than into a slide.
+
+The first honest reading was groundedness 0.70 and citation validity 0.64. That number is
+low, and chasing it turned out to be more interesting than the number itself: the grader
+was resolving citations against the whole knowledge base rather than against the evidence
+that particular answer had actually been shown, so it was marking good citations wrong. It
+now grades against the turn's real evidence. Measuring the agent honestly first meant
+fixing the instrument before the agent.
+
+The eval suite is where refusal is held in place: cases that must decline, and, just as
+importantly, nineteen assertions that must *not* decline. Over-refusal is the real cost of
+a system tuned to say no, and it is easy to tune the pendulum too far and end up with an
+agent that is useless and technically correct. Those nineteen cases are what stop me doing
+that quietly.
