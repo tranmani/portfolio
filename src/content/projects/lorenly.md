@@ -51,13 +51,12 @@ inside the Worker, and Next.js runs on Cloudflare Workers through OpenNext. Each
 gets a site they edit inline, in place, on the page, rather than through a form that
 describes the page.
 
-## What it costs
+## One schema, and the guarantee I would move into the database
 
-A shared schema means a shared blast radius, and I want to be precise about where the
-risk actually lives rather than wave at it. Isolation is carried in the query layer, not
-by the database: every read has to be scoped to the tenant, and the database will not
-stop you if you forget. That is fast to build and it puts the burden in exactly the place
-a tired developer is weakest, which is a bad place to put a burden. Row level security
-pushes that guarantee down into Postgres where it cannot be forgotten, and it is the
-first thing I would change. The cheap version was right for getting the product in front
-of salons. It is not right for the version of this that has real scale.
+A shared schema is cheap to run and it concentrates the risk in one place: every tenant
+lives in the same tables, so isolation has to be enforced on every path that touches
+them. Row level security pushes that guarantee down into Postgres, where it holds whether
+or not the person writing the next query remembers it, and that is the change I would
+make before this platform carries an order of magnitude more salons. The cheaper model
+was the right way to find out whether salons would switch at all. It is not the model I
+would scale on.

@@ -1,6 +1,8 @@
 export const site = {
   name: "Huy Tran",
-  role: "Product engineer",
+  // The title has to be the words a recruiter searches for, not a label you award
+  // yourself. "Product engineer" matched no requisition anyone can apply to.
+  role: "Full-stack and AI engineer",
   location: "Amsterdam",
   intro:
     "A chat room that only opens while you are actually at the train station it belongs to. A multi tenant SaaS for salons. An offline first family app on the App Store. At Studio WIP, an agentic retrieval system that cites its sources or refuses to answer.",

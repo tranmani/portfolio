@@ -28,7 +28,7 @@ Waiting for a train is dead time, and everyone standing around you is waiting to
 Perron opens an anonymous room for the people actually at your station, right now.
 Arrive and the room opens. Leave and it closes behind you.
 
-## The fence is 250 metres, and that number is an admission
+## Why the fence is 250 metres and not thirty
 
 The romantic version of this app gates each platform separately. The phone cannot do it.
 Under a canopy or below ground the GNSS fix is gone and the device falls back to Wi-Fi
@@ -41,7 +41,7 @@ somebody standing on the pavement outside, and that is the trade I want. Letting
 person who is nearly there costs the room very little. Turning away a real traveller who
 is standing exactly where they say they are costs me the user.
 
-## What stops someone faking it, and what does not
+## What the spoofing check buys, and what it does not
 
 Fixes are checked for plausible travel between them, capped at 300 km/h, comfortably
 above the fastest Dutch rail so that GPS jitter does not trip it. That rejects

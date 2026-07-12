@@ -1,6 +1,6 @@
 ---
 title: FamMedley
-hook: A family organiser that works with no signal at all, and is honest about the edit it will occasionally throw away.
+hook: A family organiser that works with no signal at all, because the sync queue collapses itself before it ever reaches the network.
 problem: >-
   Every device mutates the same shared state, and half of them are offline when they do
   it. A list edited on the train and the same list edited in the shop have to converge on
@@ -49,7 +49,7 @@ the device, writes are find then create or update, and the outbox is cleared onl
 the server returns 200. The batch applies inside one Postgres transaction, so a sync
 either happened or it did not.
 
-## What it costs, and it costs a real thing
+## Row level last write wins, and the point where I would replace it
 
 Conflicts resolve as last write wins at the level of the row. Each mutation carries a
 client timestamp, and if the row on the server has been touched more recently, the

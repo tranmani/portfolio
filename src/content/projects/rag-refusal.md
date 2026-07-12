@@ -53,4 +53,5 @@ interrogated about the second.
 
 *I am building the retrieval and refusal path: chunking and embedding, the clearance
 filter in the query, binding citations to line ranges, and the refusal behaviour. Current
-work at Studio WIP. Described at the level of the pattern; the corpus is the client's.*
+work at Studio WIP. Architecture only. No client material appears here, or in an
+interview.*
