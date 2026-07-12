@@ -1,13 +1,13 @@
 ---
 title: Lorenly
-hook: Salon software you can actually switch to, because it imports your history out of the nine systems you might be leaving.
+hook: Salon software you can actually switch to, because it lifts your clients, your bookings and your gift cards out of the nine systems you might be leaving.
 problem: >-
   You cannot win a salon that already has four years of clients and bookings sitting
-  inside a competitor's product. The switching cost is the whole market, so the import
-  has to be good enough to be the reason they move. That means nine export formats,
-  each with its own column names, date formats, duplicate clients spelled three ways,
-  bookings pointing at services that no longer exist, and gift card balances that do
-  not reconcile.
+  inside a competitor's product. The switching cost is the whole market, so the import has
+  to be good enough to be the reason they move. That means nine export formats, each with
+  its own column names and date formats, duplicate clients spelled three ways, bookings
+  pointing at services that no longer exist, and gift card balances that have to survive
+  the move exactly, because that money is a liability the salon still owes somebody.
 role: Solo. Product, platform, mobile app, infrastructure.
 year: 2026
 order: 3
@@ -18,38 +18,46 @@ links:
   - label: lorenly.com
     href: https://lorenly.com
 proof:
-  - One click import of clients, bookings, services and gift cards from 9 booking systems
-  - Multi tenant on a shared Postgres schema, resolved by host at the edge
-  - Every tenant gets an inline editable site and an Expo companion app
+  - "Imports clients, past bookings and gift card balances from 9 competing booking systems"
+  - "Multi tenant on one shared Postgres schema, tenants resolved per request from the Host header inside the Worker"
+  - "Next.js on Cloudflare Workers through OpenNext, with an inline editable site and an Expo app per tenant"
 ---
 
-Booking, client records, gift cards, payments, and a website per business. The product
-surface is ordinary. The thing that makes it winnable is the door.
+Booking, client records, gift cards, payments, and a website for each business. The
+product surface is ordinary. The thing that decides whether any of it gets used is the
+door.
 
-## The importer is the product
+## The importer is the door
 
 A salon owner does not evaluate booking software on features. They evaluate it on whether
 the four years of client history they are sitting on survives the move. If the answer is
-"export a CSV and retype it", the answer is no, and no feature you build later will
-change that.
+export a CSV and retype it, the answer is no, and no feature built afterwards changes
+that.
 
-So the import runs from nine competing systems, and each one is its own small hostile
-world: different column names, different date formats, duplicate clients spelled three
-ways, bookings that reference services that no longer exist, gift cards with balances that
-do not reconcile. The work is normalisation, deduplication, and being idempotent enough
-that a run which dies halfway can be run again without doubling somebody's revenue.
+So the import reads nine competing systems, and each one is its own small hostile world.
+Different column names, different date formats, the same client spelled three ways across
+three years, bookings that reference services which no longer exist, and gift cards whose
+balances have to land exactly right, because an unredeemed gift card is money the salon
+still owes a person who is going to walk in and ask for it.
 
-That is not glamorous engineering. It is the reason a salon can say yes.
+The work is normalisation, deduplication, and being repeatable enough that a run which
+dies halfway can be run again without charging anybody twice. It is not glamorous
+engineering. It is the reason a salon can say yes.
 
 ## Multi tenant without a database per tenant
 
-One shared Postgres schema, tenants resolved from the request host at the edge, running
-Next.js on Cloudflare Workers through OpenNext. Each tenant gets a site they can edit
-inline, in place, on the page, rather than through a form that describes the page.
+One shared Postgres schema. The tenant is resolved per request from the Host header
+inside the Worker, and Next.js runs on Cloudflare Workers through OpenNext. Each tenant
+gets a site they edit inline, in place, on the page, rather than through a form that
+describes the page.
 
 ## What it costs
 
-A shared schema means a shared blast radius. One tenant's runaway query is every
-tenant's slow afternoon, and a migration that is wrong is wrong for all of them at once,
-which is a real operational bill I pay for not running a database per salon. It is the
-right trade at this size and it is the first thing that breaks at ten times this size.
+A shared schema means a shared blast radius, and I want to be precise about where the
+risk actually lives rather than wave at it. Isolation is carried in the query layer, not
+by the database: every read has to be scoped to the tenant, and the database will not
+stop you if you forget. That is fast to build and it puts the burden in exactly the place
+a tired developer is weakest, which is a bad place to put a burden. Row level security
+pushes that guarantee down into Postgres where it cannot be forgotten, and it is the
+first thing I would change. The cheap version was right for getting the product in front
+of salons. It is not right for the version of this that has real scale.
