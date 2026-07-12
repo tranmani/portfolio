@@ -191,6 +191,33 @@
     border-color: var(--color-fg-subtle);
   }
 
+  /* Nav. The current section is marked by weight and a rule as well as colour,
+     so it survives greyscale and colour blindness. */
+  .nav-link {
+    position: relative;
+    padding-bottom: 2px;
+    transition: color 140ms ease;
+  }
+
+  .nav-link:hover {
+    color: var(--color-fg);
+  }
+
+  .nav-link[aria-current] {
+    color: var(--color-fg);
+    font-weight: 500;
+  }
+
+  .nav-link[aria-current]::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background: var(--color-accent);
+  }
+
   .link-accent {
     color: var(--color-accent);
     text-decoration: underline;

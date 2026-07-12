@@ -11,6 +11,7 @@ const { title = `${site.name} - ${site.role}, ${site.location}`, description = s
   Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const isCv = Astro.url.pathname.startsWith("/cv");
 const ogImage = new URL("/og.png", Astro.site);
 
 const personSchema = {
@@ -76,11 +77,15 @@ const personSchema = {
         class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3 md:px-10"
       >
         <a href="/" class="font-medium">{site.name}</a>
-        <ul class="flex list-none items-center gap-5 p-0 text-fg-muted">
-          <li><a href="/#work" class="hover:text-fg">Work</a></li>
-          <li><a href="/#experience" class="hover:text-fg">Experience</a></li>
-          <li><a href="/cv" class="hover:text-fg">CV</a></li>
-          <li><a href="/#contact" class="hover:text-fg">Contact</a></li>
+        <ul class="flex list-none items-center gap-4 p-0 text-fg-muted sm:gap-5">
+          <li><a href="/#work" class="nav-link" data-section="work">Work</a></li>
+          <li>
+            <a href="/#experience" class="nav-link" data-section="experience">Experience</a>
+          </li>
+          <li>
+            <a href="/cv" class="nav-link" aria-current={isCv ? "page" : undefined}>CV</a>
+          </li>
+          <li><a href="/#contact" class="nav-link" data-section="contact">Contact</a></li>
         </ul>
       </nav>
     </header>
@@ -88,6 +93,78 @@ const personSchema = {
     <main id="main">
       <slot />
     </main>
+
+    {/* The only script on the site. It marks the section you are currently in, and
+        if it never runs the nav still works. No scroll listener: the observer
+        fires only when a boundary is crossed. */}
+    <script is:inline>
+      (() => {
+        const links = document.querySelectorAll(".nav-link[data-section]");
+        if (!links.length) return;
+
+        const byId = new Map();
+        for (const link of links) byId.set(link.dataset.section, link);
+
+        const sections = [...byId.keys()]
+          .map((id) => document.getElementById(id))
+          .filter(Boolean);
+        if (!sections.length) return;
+
+        // A section is current while it crosses a thin band just under the header.
+        // The band is the trick: observing whole sections only fires when one
+        // enters or leaves the viewport, which never happens while you scroll
+        // through a tall section, so the highlight would go stale.
+        const active = new Set();
+
+        const atBottom = () =>
+          window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+
+        const paint = () => {
+          // If two sections touch the band, the lower one is the one being entered.
+          let current = null;
+          for (const s of sections) if (active.has(s.id)) current = s;
+
+          // The last section is short and sits at the foot of the page, so the
+          // page runs out of scroll before it can reach the band. Once you are at
+          // the bottom, you are looking at it, whatever the observer thinks.
+          if (atBottom()) current = sections[sections.length - 1];
+
+          for (const [id, link] of byId) {
+            if (current && id === current.id) link.setAttribute("aria-current", "true");
+            else link.removeAttribute("aria-current");
+          }
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) active.add(e.target.id);
+              else active.delete(e.target.id);
+            }
+            paint();
+          },
+          { rootMargin: "-120px 0px -75% 0px" },
+        );
+
+        for (const s of sections) observer.observe(s);
+
+        // Only to catch the bottom of the page, where no boundary is ever crossed.
+        // Coalesced to one frame, passive, so it cannot make scrolling janky.
+        let queued = false;
+        addEventListener(
+          "scroll",
+          () => {
+            if (queued) return;
+            queued = true;
+            requestAnimationFrame(() => {
+              queued = false;
+              paint();
+            });
+          },
+          { passive: true },
+        );
+      })();
+    </script>
 
     <footer class="border-t border-edge">
       <div
