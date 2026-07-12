@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /v1/
-Disallow: /v2/
 
 Sitemap: https://tranmani.com/sitemap-index.xml
