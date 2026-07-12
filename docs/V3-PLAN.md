@@ -195,7 +195,9 @@ Confidence is what you leave out.
 **Survivors, in order:**
 
 1. **Perron** — your best asset. It's the only project with a *hook a human repeats*: "a chat
-   room you can only join while physically standing on the platform." Real constraint (the
+   room you can only join while physically standing on the platform." *(Correction: the
+   geofence is a 250 m radius around the station, not per platform. A phone cannot resolve
+   platforms twelve metres apart indoors. The site says station.)* Real constraint (the
    geofence *is* the product, so it must resist spoofing — and it gates fun features but
    **never** safety-critical departure info: that's product judgment, say it out loud). Real
    data story (open CC0 GTFS-RT protobuf from OVapi/NDOV instead of the NS vendor API, so it

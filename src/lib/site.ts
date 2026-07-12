@@ -3,7 +3,7 @@ export const site = {
   role: "Product engineer",
   location: "Amsterdam",
   intro:
-    "A chat room you can only join while standing on the train platform it belongs to. A multi tenant SaaS for salons. An offline first family app on the App Store. At Studio WIP, an agentic retrieval system that cites its sources or refuses to answer.",
+    "A chat room that only opens while you are actually at the train station it belongs to. A multi tenant SaaS for salons. An offline first family app on the App Store. At Studio WIP, an agentic retrieval system that cites its sources or refuses to answer.",
   availability:
     "Open to full-stack and AI engineering roles in Amsterdam, or remote in the EU.",
   // A @tranmani.com address would read better here, but only if the mailbox exists.
