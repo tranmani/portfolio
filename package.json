@@ -12,8 +12,8 @@
     "astro": "astro",
     "check": "astro check",
     "test": "vitest run",
-    "prebuild": "node --experimental-strip-types scripts/og.mjs",
-    "verify": "npm run check && npm run test && npm run build && node scripts/a11y.mjs"
+    "verify": "npm run check && npm run test && npm run build && node scripts/a11y.mjs",
+    "og": "node --experimental-strip-types scripts/og.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
