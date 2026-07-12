@@ -12,8 +12,9 @@ year: 2026
 order: 1
 stack: ["Expo", "TypeScript", "Cloudflare Workers", "GTFS-RT"]
 status: In TestFlight. Not yet on the App Store.
-cover: ../../assets/projects/perron.png
-coverAlt: The Perron landing page, showing the location gated station chat concept.
+figure:
+  value: "250 m"
+  label: "the geofence, and it is a deliberate error in one direction"
 links:
   - label: perron.tranmani.com
     href: https://perron.tranmani.com

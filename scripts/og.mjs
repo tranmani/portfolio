@@ -1,6 +1,8 @@
 /**
- * Generates public/og.png. Runs as `prebuild`, so the card cannot drift away
- * from the copy it is quoting. Fonts are read from node_modules, not a CDN.
+ * Generates public/og.png from src/lib/site.ts. NOT wired into the build: it
+ * needs a browser, and Vercel's build image has none. og.png is committed, so
+ * run `npm run og` by hand after changing the hero copy. Checked by
+ * tests/content.test.ts, which fails if the two drift.
  */
 import { chromium } from "playwright";
 import { readFile } from "node:fs/promises";

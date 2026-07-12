@@ -20,6 +20,11 @@ const projects = defineCollection({
         stack: z.array(z.string()).min(1).max(5),
         /** Shipping status, where it is not obvious. Stated, never implied. */
         status: z.string().optional(),
+        /**
+         * The one fact worth reading if you read nothing else, set at scan size.
+         * It must be a number the code can back, not a number that sounds good.
+         */
+        figure: z.object({ value: z.string(), label: z.string() }),
         cover: image().optional(),
         coverAlt: z.string().optional(),
         links: z

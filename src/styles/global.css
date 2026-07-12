@@ -210,6 +210,50 @@
   }
 }
 
+/* The CV page tells a recruiter to press Ctrl+P. That instruction is only honest
+   if what comes out of the printer is a CV and not a screenshot of a website. */
+@media print {
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  :root {
+    --c-bg: #ffffff;
+    --c-fg: #000000;
+    --c-fg-muted: #333333;
+    --c-fg-subtle: #555555;
+    --c-border: #cccccc;
+    --c-border-strong: #999999;
+    --c-accent: #000000;
+  }
+
+  body {
+    font-size: 11pt;
+  }
+
+  li,
+  h2,
+  h3 {
+    break-inside: avoid;
+  }
+
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+  }
+
+  a[href^="#"]::after {
+    content: "";
+  }
+
+  @page {
+    margin: 18mm;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

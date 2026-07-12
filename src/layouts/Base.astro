@@ -65,7 +65,7 @@ const personSchema = {
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:px-4 focus:py-2"
-      style="background: var(--accent); color: var(--accent-fg);"
+      style="background: var(--color-accent); color: var(--color-accent-fg);"
     >
       Skip to content
     </a>
@@ -96,7 +96,6 @@ const personSchema = {
         <span>{site.name}, {site.location}</span>
         <span class="flex gap-5">
           <a href={`mailto:${site.email}`} class="hover:text-fg">Email</a>
-          <a href={site.cta.github} class="hover:text-fg" target="_blank" rel="noopener">GitHub</a>
           <a href={site.cta.linkedin} class="hover:text-fg" target="_blank" rel="noopener">
             LinkedIn
           </a>

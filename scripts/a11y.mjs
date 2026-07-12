@@ -1,5 +1,5 @@
 /**
- * Accessibility gate. Serves dist/ and runs axe against every route in both
+ * Accessibility gate. Serves dist/ and runs axe against each route below in both
  * colour schemes. Non-zero exit on any violation, so a regression fails CI
  * rather than waiting for a human to run a tool by hand.
  *

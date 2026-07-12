@@ -10,6 +10,9 @@ role: AI Engineer at Studio WIP
 year: 2026
 order: 2
 stack: ["TypeScript", "Postgres + pgvector", "Anthropic API", "Next.js"]
+figure:
+  value: "0"
+  label: "answers that are not grounded in a cited passage"
 links: []
 proof:
   - Answers cite the source document and line range, or the agent declines

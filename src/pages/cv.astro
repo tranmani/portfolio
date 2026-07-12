@@ -44,6 +44,7 @@ const rolesRendered = await Promise.all(
               <div class="measure body-copy mt-2">
                 <Content />
               </div>
+              {entry.data.note && <p class="mono-meta mt-2">{entry.data.note}</p>}
             </Rail>
           </li>
         ))
@@ -81,7 +82,7 @@ const rolesRendered = await Promise.all(
     </div>
 
     <p class="mono-meta mt-16 border-t border-edge pt-6">
-      Print this page to save it as a PDF.
+      Print this page to save it as a PDF. The header, nav and footer are dropped.
     </p>
   </section>
 </Base>

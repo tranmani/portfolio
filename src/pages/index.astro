@@ -1,6 +1,5 @@
 ---
 import { getCollection, render } from "astro:content";
-import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import Rail from "../components/Rail.astro";
 import { site } from "../lib/site";
@@ -34,15 +33,19 @@ const engagementLabel = {
 
     <p class="measure mt-6 text-lead">{site.availability}</p>
 
+    <p class="measure mono-meta mt-6 border-l-2 border-edge-strong pl-4">{site.situation}</p>
+
     {/* Mobile: buttons stack full width. Desktop: inline row. */}
     <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <a href={`mailto:${site.email}`} class="btn btn-primary">Email me</a>
       <a href={site.cta.cv} class="btn btn-secondary">Read the CV</a>
-      <a href={site.cta.github} class="btn btn-secondary">GitHub</a>
+      <a href={site.cta.linkedin} class="btn btn-secondary" target="_blank" rel="noopener">
+        LinkedIn
+      </a>
     </div>
   </section>
 
-  <section id="work" class="border-t border-edge scroll-mt-4">
+  <section id="work" class="border-t border-edge scroll-mt-24">
     <div class="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
       <h2 class="text-title font-medium">Selected work</h2>
 
@@ -66,18 +69,19 @@ const engagementLabel = {
                   <h3 class="text-title font-medium">{entry.data.title}</h3>
                   <p class="measure mt-4 text-lead text-fg">{entry.data.hook}</p>
 
-                  {entry.data.cover && entry.data.coverAlt && (
-                    <Image
-                      src={entry.data.cover}
-                      alt={entry.data.coverAlt}
-                      widths={[480, 900, 1350, 1800]}
-                      sizes="(max-width: 768px) 100vw, 760px"
-                      loading="lazy"
-                      class="mt-8 w-full rounded-card border border-edge"
-                    />
-                  )}
+                  {/* The scan layer. If a reader takes one thing from a project it is
+                      this number, and it has to be one the code can back. */}
+                  <div class="mt-10 flex flex-col gap-2 border-y border-edge py-8 sm:flex-row sm:items-baseline sm:gap-8">
+                    <span
+                      class="shrink-0 font-medium tracking-tight text-accent"
+                      style="font-size: clamp(2.75rem, 6vw, 4rem); line-height: 1;"
+                    >
+                      {entry.data.figure.value}
+                    </span>
+                    <span class="mono-meta">{entry.data.figure.label}</span>
+                  </div>
 
-                  <div class="measure mt-8 border-l-2 border-accent pl-5">
+                  <div class="measure mt-10 border-l-2 border-accent pl-5">
                     <div class="mono-meta">The hard problem</div>
                     <p class="body-copy mt-2">{entry.data.problem}</p>
                   </div>
@@ -102,7 +106,7 @@ const engagementLabel = {
     </div>
   </section>
 
-  <section id="experience" class="border-t border-edge scroll-mt-4">
+  <section id="experience" class="border-t border-edge scroll-mt-24">
     <div class="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
       <h2 class="text-title font-medium">Experience</h2>
 
@@ -126,7 +130,7 @@ const engagementLabel = {
                       {engagementLabel[entry.data.engagement]}
                     </span>
                   )}
-                  {entry.data.current && <span class="mono-meta text-live">Current</span>}
+                  {entry.data.current && <span class="mono-meta text-accent">Current</span>}
                 </div>
 
                 <div class="measure body-copy mt-2">
@@ -142,7 +146,7 @@ const engagementLabel = {
     </div>
   </section>
 
-  <section id="contact" class="border-t border-edge scroll-mt-4">
+  <section id="contact" class="border-t border-edge scroll-mt-24">
     <div class="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
       <h2 class="measure text-title font-medium">{site.availability}</h2>
 

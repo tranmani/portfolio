@@ -12,8 +12,9 @@ year: 2026
 order: 4
 stack: ["Go", "Expo", "SQLite", "PostgreSQL"]
 status: On the App Store since May 2026.
-cover: ../../assets/projects/fammedley.png
-coverAlt: The FamMedley family coordination platform landing page.
+figure:
+  value: "9 of 50"
+  label: "server tables mirrored onto the device, so the UI never waits"
 links:
   - label: fammedley.com
     href: https://fammedley.com

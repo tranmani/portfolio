@@ -12,8 +12,9 @@ role: Solo. Product, platform, mobile app, infrastructure.
 year: 2026
 order: 3
 stack: ["Next.js", "Cloudflare Workers", "Supabase", "Expo"]
-cover: ../../assets/projects/lorenly.png
-coverAlt: The Lorenly booking platform landing page.
+figure:
+  value: "9 → 1"
+  label: "competing booking systems, normalised into one schema"
 links:
   - label: lorenly.com
     href: https://lorenly.com

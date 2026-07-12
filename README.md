@@ -1,6 +1,6 @@
 # tranmani.com
 
-Personal site. Astro, static output, deployed to Cloudflare Workers.
+Personal site. Astro, static output, deployed on Vercel.
 
     npm install
     npm run dev        # local
