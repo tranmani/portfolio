@@ -1,7 +1,7 @@
 ---
 title: Full-stack Developer
-company: SevginWeb
-place: Deventer, remote
+company: Adamodigi
+place: Remote
 start: "Jan 2023"
 end: "Mar 2026"
 order: 3
