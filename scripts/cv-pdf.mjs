@@ -10,6 +10,9 @@
  *   - dates as plain "Mon YYYY - Mon YYYY" strings on the same line as the role
  *   - contact details as plain text in the body, never in a page header
  *
+ * Links are clickable in a PDF reader AND spelled out as text, because a parser
+ * that strips the anchor still has to be able to read the domain.
+ *
  * Run: npm run cv
  */
 import { chromium } from "playwright";
@@ -31,6 +34,13 @@ const load = (dir) => {
       const m = line.match(/^(\w+):\s*(.*)$/);
       if (m) data[m[1]] = m[2].replace(/^["']|["']$/g, "");
     }
+    // The `links` sequence is the one nested structure in this frontmatter, and
+    // the line parser above flattens it away. Read the pairs back out of the raw
+    // block so the PDF can carry the live URLs the site carries.
+    data.links = [...fm.matchAll(/^\s*-\s*label:\s*(.+)\n\s*href:\s*(\S+)/gm)].map(([, label, href]) => ({
+      label: label.trim(),
+      href: href.trim(),
+    }));
     return { data, body: body.trim().replace(/\s+/g, " ") };
   });
 };
@@ -51,7 +61,7 @@ const SKILLS = [
 ];
 
 const SUMMARY =
-  "Full-stack and AI engineer who ships whole products end to end: a multi tenant SaaS for salons, an offline first family app on the App Store, and a location gated chat app for the Dutch rail network. Currently building an agentic retrieval system at Studio WIP that grounds every answer in a cited passage, enforces document clearance in the query layer, and declines when the knowledge base cannot support an answer. Comfortable owning the whole path from Postgres to a released iOS build.";
+  "Full-stack and AI engineer who ships whole products end to end: a multi tenant SaaS for salons, an offline first family app on the App Store, and a location gated chat app for the Dutch rail network. Currently building an agentic retrieval system at Studio WIP that grounds every answer in a cited passage, enforces document clearance in code rather than in a prompt, and declines when the knowledge base cannot support an answer. Comfortable owning the whole path from Postgres to a released iOS build.";
 
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Huy Tran CV</title>
@@ -75,12 +85,15 @@ const html = `<!doctype html>
   li { margin-bottom: 2pt; break-inside: avoid; }
   .skill { margin-bottom: 3pt; }
   p { margin-bottom: 4pt; }
+  a { color: #000; text-decoration: underline; }
+  .links { font-size: 9.5pt; margin-top: 1pt; }
 </style></head>
 <body>
   <h1>${esc(site.name)}</h1>
   <div class="contact">
-    ${esc(site.role)} | ${esc(site.location)}, Netherlands | ${esc(site.phone)} | ${esc(site.email)}<br />
-    tranmani.com | linkedin.com/in/minh-huy-tran | Dutch work authorisation, no sponsorship needed
+    ${esc(site.role)} | ${esc(site.location)}, Netherlands | ${esc(site.phone)} | <a href="mailto:${esc(site.email)}">${esc(site.email)}</a><br />
+    <a href="https://tranmani.com">tranmani.com</a> | <a href="${esc(site.cta.linkedin)}">linkedin.com/in/minh-huy-tran</a> | <a href="${esc(site.cta.github)}">github.com/tranmani</a><br />
+    Dutch work authorisation, no sponsorship needed
   </div>
 
   <h2>Summary</h2>
@@ -111,6 +124,13 @@ const html = `<!doctype html>
         <div class="role-line">${esc(p.data.title)}${p.data.status ? ` - ${esc(p.data.status)}` : ""}</div>
         <div class="meta">${esc(p.data.stack.replace(/[\[\]"]/g, ""))}</div>
         <ul><li>${esc(p.data.hook)}</li></ul>
+        ${
+          p.data.links.length
+            ? `<div class="links">${p.data.links
+                .map((l) => `<a href="${esc(l.href)}">${esc(l.label)}</a>`)
+                .join(" | ")}</div>`
+            : ""
+        }
       </div>`,
     )
     .join("")}
