@@ -15,8 +15,8 @@ figure:
   value: "250 m"
   label: "the geofence, and it is a deliberate error in one direction"
 links:
-  - label: perron.tranmani.com
-    href: https://perron.tranmani.com
+  - label: perron.thenextbeacon.com
+    href: https://perron.thenextbeacon.com
 proof:
   - "250 m geofence around the station, sized to admit someone on the pavement rather than reject a real traveller standing indoors"
   - "Spoofing bounded by a 300 km/h travel plausibility check between fixes, which stops casual teleportation and nothing stronger"
