@@ -60,6 +60,23 @@ const personSchema = {
       set:html={JSON.stringify(personSchema)}
       is:inline
     />
+
+    {/* Microsoft Clarity. Async, so it never blocks the LCP; the CSP in
+        vercel.json is what actually lets it reach clarity.ms. */}
+    <script is:inline>
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", "vjbt90ua1x");
+    </script>
   </head>
 
   <body>
@@ -94,9 +111,9 @@ const personSchema = {
       <slot />
     </main>
 
-    {/* The only script on the site. It marks the section you are currently in, and
-        if it never runs the nav still works. No scroll listener: the observer
-        fires only when a boundary is crossed. */}
+    {/* The site's own script, alongside the Clarity tag in the head. It marks the
+        section you are currently in, and if it never runs the nav still works.
+        No scroll listener: the observer fires only when a boundary is crossed. */}
     <script is:inline>
       (() => {
         const links = document.querySelectorAll(".nav-link[data-section]");
