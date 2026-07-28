@@ -61,7 +61,7 @@ const SKILLS = [
 ];
 
 const SUMMARY =
-  "Full-stack and AI engineer who ships whole products end to end: a multi tenant SaaS for salons, an offline first family app on the App Store, and a location gated chat app for the Dutch rail network. Currently building an agentic retrieval system at Studio WIP that grounds every answer in a cited passage, enforces document clearance in code rather than in a prompt, and declines when the knowledge base cannot support an answer. Comfortable owning the whole path from Postgres to a released iOS build.";
+  "Full-stack and AI engineer who ships whole products end to end: a multi tenant SaaS for salons and an offline first family app, both on the App Store, and a location gated chat app for the Dutch rail network. Currently building an agentic retrieval system at Studio WIP that grounds every answer in a cited passage, enforces document clearance in code rather than in a prompt, and declines when the knowledge base cannot support an answer. Comfortable owning the whole path from Postgres to a released iOS build.";
 
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Huy Tran CV</title>

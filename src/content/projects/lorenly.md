@@ -12,16 +12,20 @@ role: Solo. Product, platform, mobile app, infrastructure.
 year: 2026
 order: 3
 stack: ["Next.js", "Cloudflare Workers", "Supabase", "Expo"]
+status: Salon app on the App Store since July 2026.
 figure:
   value: "9 → 1"
   label: "competing booking systems, normalised into one schema"
 links:
   - label: lorenly.com
     href: https://lorenly.com
+  - label: App Store
+    href: https://apps.apple.com/us/app/lorenly-salon-booking/id6788527063
 proof:
   - "Imports clients, past bookings and gift card balances from 9 competing booking systems"
   - "Multi tenant on one shared Postgres schema, tenants resolved per request from the Host header inside the Worker"
-  - "Next.js on Cloudflare Workers through OpenNext, with an inline editable site and an Expo app per tenant"
+  - "Next.js on Cloudflare Workers through OpenNext, with a website each tenant edits inline, in place"
+  - "One Expo app on the App Store for the whole platform: the salon is resolved from the signed in account, not from a build per tenant"
 ---
 
 Booking, client records, gift cards, payments, and a website for each business. The
