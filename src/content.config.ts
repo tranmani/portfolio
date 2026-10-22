@@ -64,4 +64,23 @@ const roles = defineCollection({
   }),
 });
 
-export const collections = { projects, roles };
+/**
+ * Everything else that shipped. One line each, no case study: the four projects
+ * above carry the depth, and this list carries the breadth. A line here makes the
+ * same promise as a figure above it, so a status is stated rather than implied.
+ */
+const shipped = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/shipped" }),
+  schema: z.object({
+    title: z.string(),
+    line: z.string().max(170),
+    kind: z.enum(["Game", "App", "Platform", "Tool", "Site"]),
+    year: z.number().int().min(2000).max(2100),
+    order: z.number().int(),
+    stack: z.array(z.string()).min(1).max(4),
+    status: z.string(),
+    links: z.array(z.object({ label: z.string(), href: z.string().url() })).default([]),
+  }),
+});
+
+export const collections = { projects, roles, shipped };

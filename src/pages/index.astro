@@ -1,165 +1,1439 @@
 ---
-import { getCollection, render } from "astro:content";
-import Base from "../layouts/Base.astro";
-import Rail from "../components/Rail.astro";
+import { Image, getImage } from "astro:assets";
+import Postcards from "../layouts/Postcards.astro";
 import { site } from "../lib/site";
+import { loadSite, engagementLabel, shotFor } from "../lib/content";
+import pcPerron from "../assets/postcards/pc-perron.webp";
+import pcRag from "../assets/postcards/pc-rag.webp";
+import pcLorenly from "../assets/postcards/pc-lorenly.webp";
+import pcFam from "../assets/postcards/pc-fammedley.webp";
 
-const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
-const roles = (await getCollection("roles")).sort((a, b) => a.data.order - b.data.order);
+/**
+ * The homepage, as postcards. Each project is a postcard sent from the place it was
+ * built: a painted front, and a back with a short message, a stamp worth the
+ * project's one number, and a postmark. Turn it over to read it, open the
+ * envelope underneath for the long letter. The page opens on the envelope they
+ * came in, which was forwarded through every job since 2021: the old jobs come
+ * first, as the address labels stuck on it. Then the postcards, the stamp album
+ * for smaller things, and a blank card to write back on.
+ */
+const { projects, roles, shipped } = await loadSite();
 
-const projectsRendered = await Promise.all(
-  projects.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
-);
-const rolesRendered = await Promise.all(
-  roles.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
-);
+const fronts: Record<string, { src: ImageMetadata; alt: string; place: string }> = {
+  perron: {
+    src: pcPerron,
+    alt: "A painted postcard of a bright Dutch station hall, a yellow train at the platform and travellers looking at their phones.",
+    place: "the platform",
+  },
+  "rag-refusal": {
+    src: pcRag,
+    alt: "A painted postcard of a tall library reading room, arched windows, shelves to the ceiling and one green lamp on a long table.",
+    place: "the library",
+  },
+  lorenly: {
+    src: pcLorenly,
+    alt: "A painted postcard of a sunny pastel salon, peach chairs before round mirrors, plants, and an appointment book on the counter.",
+    place: "the salon",
+  },
+  fammedley: {
+    src: pcFam,
+    alt: "A painted postcard of a mint green family kitchen, a table with a bowl of fruit, notes on the fridge and a garden through the window.",
+    place: "the kitchen table",
+  },
+};
 
-const engagementLabel = {
-  contract: "Contract",
-  internship: "Internship",
-  "part-time": "Part time",
-  permanent: "",
-} satisfies Record<string, string>;
+const fill = await getImage({ src: pcPerron, format: "webp", width: 1200 });
+const tilt = [-1.6, 1.2, -0.8, 1.5];
+const firstYear = [...roles].reverse()[0]?.entry.data.start.match(/\d{4}/)?.[0];
+const words = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+
+/**
+ * Structured data for the work itself, so a search for a project's name can
+ * resolve to this page and to the person who built it. Only things that have a
+ * public page are listed, and each points at that page.
+ */
+const workSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: `Work by ${site.name}`,
+  itemListElement: [
+    ...projects.map(({ entry }) => ({ title: entry.data.title, line: entry.data.hook, url: entry.data.links[0]?.href })),
+    ...shipped.map((s) => ({ title: s.data.title, line: s.data.line, url: s.data.links[0]?.href })),
+  ]
+    .filter((w) => w.url)
+    .map((w, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "CreativeWork",
+        name: w.title,
+        description: w.line,
+        url: w.url,
+        creator: { "@id": `${Astro.site}#person` },
+      },
+    })),
+};
 ---
 
-<Base>
-  <section class="mx-auto max-w-5xl px-6 pb-16 pt-16 md:px-10 md:pb-24 md:pt-20">
-    <h1 class="max-w-4xl text-display font-medium">
-      {site.name}
-      <span class="block text-fg-subtle">{site.role}, {site.location}</span>
-    </h1>
+<Postcards schema={[workSchema]}>
+  <Fragment slot="head">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/postcards/fraunces-latin-full-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/postcards/nunito-latin-wght-normal.woff2" />
+  </Fragment>
 
-    <p class="measure body-copy mt-8 md:mt-10">{site.intro}</p>
+  <div class="blobs" aria-hidden="true"><span></span><span></span><span></span></div>
 
-    <p class="measure mt-6 text-lead">{site.availability}</p>
+  <main id="main">
+    <header class="greet">
+      <svg class="plane" viewBox="0 0 40 24" aria-hidden="true">
+        <path d="M1 12 39 1 27 23 19 15Z" fill="#fffaf2" stroke="#3a2f2a" stroke-width="1.6" stroke-linejoin="round" />
+        <path d="M39 1 19 15 17 22" fill="none" stroke="#3a2f2a" stroke-width="1.6" stroke-linejoin="round" />
+      </svg>
+      <p class="from-script">Greetings from</p>
+      <h1 class="big" style={`--fill: url(${fill.src})`}>
+        <span class="big-name">{site.name}</span>
+      </h1>
+      <p class="sub">{site.role} · {site.location}, the Netherlands</p>
+      <p class="intro">
+        First the envelope, which has been through every job I have had since {firstYear}. Inside
+        are {words[projects.length] ?? projects.length} postcards from the things I built this year: turn each one over to read it.
+      </p>
+    </header>
 
-    {/* Mobile: buttons stack full width. Desktop: inline row. */}
-    <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-      <a href={`mailto:${site.email}`} class="btn btn-primary">Email me</a>
-      <a href={site.cta.cv} class="btn btn-secondary">Read the CV</a>
-      <a href={site.cta.linkedin} class="btn btn-secondary" target="_blank" rel="noopener">
-        LinkedIn
-      </a>
-    </div>
-  </section>
-
-  <section id="work" class="border-t border-edge scroll-mt-24">
-    <div class="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
-      <h2 class="text-title font-medium">Selected work</h2>
-
-      <ul class="mt-14 flex list-none flex-col gap-24 p-0 md:gap-32">
+    <section id="experience" class="moves" aria-labelledby="moves-h">
+      <div class="env">
+        <div class="env-top">
+          <div class="env-addr">
+            <p><span>To</span> whoever is reading this</p>
+            <p><span>From</span> {site.name}, {site.location}</p>
+          </div>
+          <p class="stamp env-stamp" aria-hidden="true">
+            <span class="stamp-in"><span class="stamp-v">✈</span></span>
+          </p>
+        </div>
+        <h2 id="moves-h" class="env-h">Forwarded {words[roles.length] ?? roles.length} times</h2>
+        <p class="env-sub">Every address I have worked at since {firstYear}, stuck on top of each other, the newest first.</p>
+      <ol class="labels">
         {
-          projectsRendered.map(({ entry, Content }) => (
-            <li>
-              <article>
-                <Rail sticky>
-                  <Fragment slot="rail">
-                    <span>{entry.data.role}</span>
-                    <span>{entry.data.stack.join(" / ")}</span>
-                    {entry.data.status && <span class="text-fg-muted">{entry.data.status}</span>}
-                    {entry.data.links.map((l) => (
-                      <a href={l.href} class="link-accent" target="_blank" rel="noopener">
-                        {l.label}
-                      </a>
-                    ))}
-                  </Fragment>
-
-                  <h3 class="text-title font-medium">{entry.data.title}</h3>
-                  <p class="measure mt-4 text-lead text-fg">{entry.data.hook}</p>
-
-                  {/* The scan layer. If a reader takes one thing from a project it is
-                      this number, and it has to be one the code can back. */}
-                  <div class="mt-10 flex flex-col gap-2 border-y border-edge py-8 sm:flex-row sm:items-baseline sm:gap-8">
-                    <span
-                      class="shrink-0 font-medium tracking-tight text-accent"
-                      style="font-size: clamp(2.75rem, 6vw, 4rem); line-height: 1;"
-                    >
-                      {entry.data.figure.value}
-                    </span>
-                    <span class="mono-meta">{entry.data.figure.label}</span>
-                  </div>
-
-                  <div class="measure mt-10 border-l-2 border-accent pl-5">
-                    <div class="mono-meta">The hard problem</div>
-                    <p class="body-copy mt-2">{entry.data.problem}</p>
-                  </div>
-
-                  <div class="measure body-copy mt-8">
-                    <Content />
-                  </div>
-
-                  {entry.data.proof.length > 0 && (
-                    <ul class="measure mt-10 flex list-none flex-col gap-3 border-t border-edge p-0 pt-6">
-                      {entry.data.proof.map((p) => (
-                        <li class="mono-meta text-fg-muted">{p}</li>
-                      ))}
-                    </ul>
-                  )}
-                </Rail>
-              </article>
+          roles.map(({ entry, Content }, i) => (
+            <li class:list={["label", entry.data.current && "current"]} style={`--tilt: ${[0.6, -0.5, 0.4, -0.7, 0.5][i % 5]}deg`}>
+              {i > 0 && (
+                <p class="moved" aria-hidden="true">
+                  Moved
+                </p>
+              )}
+              <p class="l-when">
+                {entry.data.start} – {entry.data.end}
+                {engagementLabel[entry.data.engagement] && <> · {engagementLabel[entry.data.engagement]}</>}
+              </p>
+              <h3>
+                {entry.data.company}
+                <span>
+                  {entry.data.title}, {entry.data.place}
+                </span>
+              </h3>
+              <div class="l-body">
+                <Content />
+              </div>
+              {entry.data.note && <p class="l-note">{entry.data.note}</p>}
             </li>
           ))
         }
-      </ul>
-    </div>
-  </section>
-
-  <section id="experience" class="border-t border-edge scroll-mt-24">
-    <div class="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
-      <h2 class="text-title font-medium">Experience</h2>
-
-      {/* The dates below raise a question the dates cannot answer. This answers it
-          before the reader has finished guessing. */}
-      <p class="measure body-copy mt-6 border-l-2 border-edge-strong pl-5">{site.situation}</p>
-
-      <ul class="mt-12 flex list-none flex-col p-0">
-        {
-          rolesRendered.map(({ entry, Content }) => (
-            <li class="border-t border-edge py-8 first:border-t-0 first:pt-0">
-              <Rail>
-                <Fragment slot="rail">
-                  <span>
-                    {entry.data.start} to {entry.data.end}
-                  </span>
-                  <span>{entry.data.place}</span>
-                </Fragment>
-
-                <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <h3 class="text-lead font-medium">{entry.data.title}</h3>
-                  <span class="text-fg-muted">at {entry.data.company}</span>
-                  {engagementLabel[entry.data.engagement] && (
-                    <span class="mono-meta rounded-card border border-edge-strong px-1.5">
-                      {engagementLabel[entry.data.engagement]}
-                    </span>
-                  )}
-                  {entry.data.current && <span class="mono-meta text-accent">Current</span>}
-                </div>
-
-                <div class="measure body-copy mt-2">
-                  <Content />
-                </div>
-
-                {entry.data.note && <p class="mono-meta mt-3">{entry.data.note}</p>}
-              </Rail>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <section id="contact" class="border-t border-edge scroll-mt-24">
-    <div class="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
-      <h2 class="measure text-title font-medium">{site.availability}</h2>
-
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-        <a href={`mailto:${site.email}`} class="btn btn-primary">Email me</a>
-        <a href={site.cta.linkedin} class="btn btn-secondary" target="_blank" rel="noopener">
-          LinkedIn
-        </a>
+      </ol>
+        <p class="env-note"><span>Why the newest two are so close together</span>{site.situation}</p>
       </div>
+    </section>
 
-      <p class="mono-meta mt-10">{site.email}</p>
-    </div>
-  </section>
-</Base>
+    <p class="opened">
+      <span class="open-flap" aria-hidden="true"></span>
+      Inside: {words[projects.length] ?? projects.length} postcards from this year
+    </p>
+
+    <ol id="work" class="cards">
+      {
+        projects.map(({ entry, Content }, i) => {
+          const f = fronts[entry.id];
+          return (
+            <li class="post" id={entry.id} style={`--tilt: ${tilt[i % tilt.length]}deg`}>
+              <h2 class="post-h">
+                <span class="post-no">No. {i + 1}</span> {entry.data.title}
+              </h2>
+
+              <div class="card" data-card>
+                <div class="face front">
+                  {f && (
+                    <Image format="webp" src={f.src} alt={f.alt} widths={[600, 960, 1280]} sizes="(min-width: 52rem) 48rem, 92vw" class="front-img" />
+                  )}
+                  <p class="front-label">
+                    <span>Greetings from</span> {f?.place ?? entry.data.title}
+                  </p>
+                </div>
+
+                <div class="face back">
+                  <div class="msg">
+                    <p class="hand">Hello from {f?.place ?? entry.data.title}!</p>
+                    <p class="hand">{entry.data.hook}</p>
+                    <p class="hand small">{entry.data.problem}</p>
+                    <p class="sign">— Huy</p>
+                  </div>
+                  <div class="addr">
+                    <div class="stamp-row">
+                      <div class="postmark" aria-hidden="true">
+                        <svg viewBox="0 0 120 50" class="waves">
+                          <path d="M0 10 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 M0 25 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 M0 40 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0" />
+                        </svg>
+                        <span class="pm-ring">
+                          {site.location}
+                          <br />
+                          {entry.data.year}
+                        </span>
+                      </div>
+                      <p class="stamp big-stamp">
+                        <span class="stamp-in">
+                          <span class="stamp-v">{entry.data.figure.value}</span>
+                        </span>
+                      </p>
+                    </div>
+                    <p class="figure-l">
+                      <span class="sr">The number: {entry.data.figure.value}, </span>
+                      {entry.data.figure.label}
+                    </p>
+                    <p class="line">{entry.data.role}</p>
+                    <p class="line">{entry.data.stack.join(" · ")}</p>
+                    {entry.data.status && <p class="line">{entry.data.status}</p>}
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="turn" aria-pressed="false" hidden>
+                <span class="turn-t">Turn the card over</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4" /></svg>
+              </button>
+
+              <details class="envelope">
+                <summary>
+                  <span class="flap" aria-hidden="true" />
+                  Read the long letter about {entry.data.title}
+                </summary>
+                <div class="letter">
+                  <Content />
+                  {entry.data.proof.length > 0 && (
+                    <>
+                      <h3>Things you can check</h3>
+                      <ul>
+                        {entry.data.proof.map((p) => (
+                          <li>{p}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                  {entry.data.links.length > 0 && (
+                    <p class="letter-links">
+                      {entry.data.links.map((l) => (
+                        <a href={l.href} target="_blank" rel="noopener">
+                          {l.label}
+                        </a>
+                      ))}
+                    </p>
+                  )}
+                </div>
+              </details>
+            </li>
+          );
+        })
+      }
+    </ol>
+
+    <section class="album" aria-labelledby="album-h">
+      <h2 id="album-h" class="sec-h">The stamp album</h2>
+      <p class="sec-sub">Smaller things I made in the evenings, one stamp each.</p>
+      <ul class="stamps">
+        {
+          shipped.map((s, i) => {
+            const shot = shotFor(s.id);
+            return (
+              <li style={`--tilt: ${[-2, 1.5, -1, 2, -1.5, 1][i % 6]}deg`}>
+                <div class:list={["stamp", "album-stamp", !shot && "text-stamp", `hue-${i % 4}`]}>
+                  <div class="stamp-in">
+                    {shot ? (
+                      <Image format="webp" src={shot.src} alt={shot.alt} widths={[240, 400]} sizes="12rem" />
+                    ) : (
+                      <span class="ts-title" aria-hidden="true">
+                        {s.data.title.replace(/^The /, "")}
+                      </span>
+                    )}
+                    <span class="stamp-kind" aria-hidden="true">
+                      {s.data.kind}
+                    </span>
+                  </div>
+                </div>
+                <h3>
+                  {s.data.links[0] ? (
+                    <a href={s.data.links[0].href} target="_blank" rel="noopener">
+                      {s.data.title}
+                    </a>
+                  ) : (
+                    s.data.title
+                  )}
+                </h3>
+                <p>{s.data.line}</p>
+                <p class="stamp-status">{s.data.status}</p>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+
+    <section id="contact" class="write" aria-labelledby="write-h">
+      <div class="blank">
+        <div class="msg">
+          <h2 id="write-h" class="hand-h">Write back?</h2>
+          <p>{site.availability}</p>
+          <p class="links">
+            <a href={site.cta.cv}>One page CV</a>
+            <a href={site.cta.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+            <a href={site.cta.github} target="_blank" rel="noopener">GitHub</a>
+          </p>
+        </div>
+        <div class="addr">
+          <p class="stamp big-stamp blank-stamp" aria-hidden="true">
+            <span class="stamp-in">
+              <span class="stamp-v">✉</span>
+            </span>
+          </p>
+          <p class="line">{site.name}</p>
+          <p class="line">{site.location}, the Netherlands</p>
+          <p class="line">
+            <a href={`mailto:${site.email}`} class="mail">{site.email}</a>
+          </p>
+          <svg class="send-plane" viewBox="0 0 40 24" aria-hidden="true">
+            <path d="M1 12 39 1 27 23 19 15Z" fill="#fffaf2" stroke="#3a2f2a" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M39 1 19 15 17 22" fill="none" stroke="#3a2f2a" stroke-width="1.6" stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Without this script both sides of every card simply show, one under the
+    // other, so nothing is hidden from a reader without JavaScript.
+    document.querySelectorAll<HTMLElement>(".post").forEach((post) => {
+      const card = post.querySelector<HTMLElement>("[data-card]");
+      const btn = post.querySelector<HTMLButtonElement>(".turn");
+      const label = btn?.querySelector(".turn-t");
+      if (!card || !btn || !label) return;
+      card.classList.add("flippable");
+      btn.hidden = false;
+      const flip = () => {
+        const on = !card.classList.contains("flipped");
+        card.classList.toggle("flipped", on);
+        btn.setAttribute("aria-pressed", String(on));
+        label.textContent = on ? "Turn it back" : "Turn the card over";
+        card.querySelector(".front")?.setAttribute("aria-hidden", String(on));
+        card.querySelector(".back")?.setAttribute("aria-hidden", String(!on));
+        post.classList.add("seen");
+      };
+      card.querySelector(".back")?.setAttribute("aria-hidden", "true");
+      btn.addEventListener("click", flip);
+      card.addEventListener("click", flip);
+
+      // A card leans towards the pointer, like picking it up off the table.
+      if (!reduce && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        card.addEventListener("pointermove", (e) => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty("--ry", `${((e.clientX - r.left) / r.width - 0.5) * 7}deg`);
+          card.style.setProperty("--rx", `${((e.clientY - r.top) / r.height - 0.5) * -7}deg`);
+        });
+        card.addEventListener("pointerleave", () => {
+          card.style.setProperty("--rx", "0deg");
+          card.style.setProperty("--ry", "0deg");
+        });
+      }
+    });
+
+    // Write back: the card folds into a plane and leaves before the mail app opens.
+    const mail = document.querySelector<HTMLAnchorElement>(".write .mail");
+    const blank = document.querySelector<HTMLElement>(".blank");
+    mail?.addEventListener("click", (e) => {
+      if (reduce || !blank || blank.classList.contains("sent")) return;
+      e.preventDefault();
+      blank.classList.add("sent");
+      setTimeout(() => {
+        location.href = mail.href;
+        setTimeout(() => blank.classList.remove("sent"), 1200);
+      }, 900);
+    });
+  </script>
+
+  <style is:global>
+    @font-face {
+      font-family: "Fraunces";
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+      src: url("/fonts/postcards/fraunces-latin-full-normal.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Fraunces";
+      font-weight: 100 900;
+      font-style: italic;
+      font-display: swap;
+      src: url("/fonts/postcards/fraunces-latin-full-italic.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Nunito";
+      font-weight: 200 1000;
+      font-style: normal;
+      font-display: swap;
+      src: url("/fonts/postcards/nunito-latin-wght-normal.woff2") format("woff2");
+    }
+
+    .pc {
+      --bg: #f6efe6;
+      --card: #fffaf2;
+      --ink: #3a2f2a;
+      --soft: #6b5a50;
+      --rose: #a3434b;
+      --sea: #2f6d78;
+      --line: #e3d6c6;
+      --soft-serif: "Fraunces", Georgia, serif;
+      --round: "Nunito", system-ui, sans-serif;
+      margin: 0;
+      color: var(--ink);
+      font: 400 1.0625rem/1.7 var(--round);
+      background:
+        radial-gradient(60rem 40rem at 10% 0%, #fde3d4 0, transparent 60%),
+        radial-gradient(50rem 40rem at 100% 30%, #dceee9 0, transparent 60%),
+        radial-gradient(50rem 40rem at 0% 80%, #e6e0f5 0, transparent 60%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    .pc *,
+    .pc *::before,
+    .pc *::after {
+      box-sizing: border-box;
+    }
+    .pc a {
+      color: var(--sea);
+      text-underline-offset: 0.2em;
+    }
+    .pc a:hover {
+      color: var(--rose);
+    }
+    .pc :focus-visible {
+      outline: 2px solid var(--sea);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .pc .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    /* Large letter greeting */
+    .pc .greet {
+      max-width: 64rem;
+      margin: 0 auto;
+      padding: clamp(3.5rem, 10vw, 7rem) 1.25rem 2rem;
+      text-align: center;
+    }
+    .pc .from-script {
+      margin: 0;
+      font: italic 400 clamp(1.6rem, 4vw, 2.4rem) / 1 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+      color: var(--rose);
+    }
+    .pc .big {
+      margin: 0.4rem 0 0;
+      font: 900 clamp(4rem, 15vw, 11rem) / 0.9 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "opsz" 144;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--sea);
+    }
+    @supports (background-clip: text) or (-webkit-background-clip: text) {
+      .pc .big-name {
+        background: var(--fill) center 45% / cover;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-stroke: 2px var(--ink);
+        paint-order: stroke fill;
+        filter: drop-shadow(4px 5px 0 #f2c6b4);
+      }
+    }
+    .pc .sub {
+      margin: 1.25rem 0 0;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--soft);
+    }
+    .pc .intro {
+      max-width: 34rem;
+      margin: 1.25rem auto 0;
+      font-size: 1.15rem;
+    }
+
+    /* Postcards */
+    .pc .cards {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 0;
+      list-style: none;
+    }
+    .pc .post {
+      margin-top: clamp(3.5rem, 9vw, 6rem);
+    }
+    .pc .post-h {
+      margin: 0 0 1rem;
+      font: 600 clamp(1.6rem, 4vw, 2.2rem) / 1.2 var(--soft-serif);
+      font-variation-settings: "SOFT" 100;
+    }
+    .pc .post-no {
+      display: block;
+      font: 800 0.8125rem/1.4 var(--round);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rose);
+    }
+    .pc .card {
+      display: grid;
+      gap: 1.25rem;
+      rotate: var(--tilt);
+    }
+    .pc .face {
+      border-radius: 6px;
+      background: var(--card);
+      color: var(--ink);
+      box-shadow:
+        0 1px 2px rgb(60 40 30 / 0.12),
+        0 14px 34px -12px rgb(60 40 30 / 0.3);
+      overflow: hidden;
+    }
+    .pc .front {
+      position: relative;
+      padding: 0.7rem;
+    }
+    .pc .front-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+      border-radius: 3px;
+    }
+    .pc .front-label {
+      position: absolute;
+      left: 1.6rem;
+      bottom: 1.4rem;
+      margin: 0;
+      padding: 0.35rem 0.9rem 0.45rem;
+      border-radius: 4px;
+      background: rgb(255 250 242 / 0.92);
+      font: 700 clamp(1rem, 2.6vw, 1.35rem) / 1.1 var(--soft-serif);
+      font-variation-settings: "SOFT" 100;
+      color: var(--ink);
+    }
+    .pc .front-label span {
+      display: block;
+      font: italic 400 0.8em/1.2 var(--soft-serif);
+      color: var(--rose);
+    }
+
+    .pc .back {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      background:
+        linear-gradient(var(--line), var(--line)) 54% 0 / 1px 100% no-repeat,
+        var(--card);
+    }
+    .pc .msg {
+      padding-right: clamp(1rem, 3vw, 2rem);
+    }
+    .pc .hand {
+      margin: 0 0 0.75rem;
+      font: italic 400 clamp(1.05rem, 2.3vw, 1.3rem) / 1.5 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+      color: #2c3b5a;
+    }
+    .pc .hand.small {
+      font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+      line-height: 1.55;
+      color: #44506b;
+    }
+    .pc .sign {
+      margin: 0;
+      font: italic 600 1.4rem/1 var(--soft-serif);
+      color: #2c3b5a;
+    }
+    .pc .addr {
+      padding-left: clamp(1rem, 3vw, 2rem);
+    }
+    .pc .stamp-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .pc .line {
+      margin: 0;
+      padding: 0.5rem 0 0.15rem;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.875rem;
+      line-height: 1.4;
+    }
+    .pc .figure-l {
+      margin: 0 0 0.25rem;
+      font-size: 0.8125rem;
+      color: var(--soft);
+      text-align: right;
+    }
+
+    /* Perforated stamp: a solid centre plus a ring of half holes in the padding */
+    .pc .stamp {
+      --hole: 7px;
+      margin: 0;
+      padding: var(--hole);
+      background: #fff;
+      -webkit-mask:
+        conic-gradient(#000 0 0) content-box,
+        radial-gradient(farthest-side, #0000 96%, #000) 0 0 / calc(2 * var(--hole)) calc(2 * var(--hole)) round;
+      mask:
+        conic-gradient(#000 0 0) content-box,
+        radial-gradient(farthest-side, #0000 96%, #000) 0 0 / calc(2 * var(--hole)) calc(2 * var(--hole)) round;
+      filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.35));
+    }
+    .pc .stamp-in {
+      position: relative;
+      display: grid;
+      place-items: center;
+      height: 100%;
+      border: 3px solid #fff;
+      outline: 1px solid rgb(0 0 0 / 0.08);
+      background: var(--rose);
+      color: #fff;
+      overflow: hidden;
+    }
+    .pc .big-stamp {
+      flex: none;
+      width: 7.75rem;
+      height: 7.75rem;
+      rotate: 3deg;
+    }
+    .pc .big-stamp .stamp-in {
+      background:
+        radial-gradient(circle at 30% 20%, rgb(255 255 255 / 0.25), transparent 60%),
+        var(--sea);
+    }
+    .pc .stamp-v {
+      padding: 0 0.3rem;
+      font: 800 1.35rem/1 var(--soft-serif);
+      white-space: nowrap;
+      font-variation-settings: "SOFT" 100;
+      text-align: center;
+    }
+    .pc .postmark {
+      position: relative;
+      width: 7rem;
+      height: 4.5rem;
+      margin-top: 1.25rem;
+      margin-right: -2.5rem;
+      z-index: 1;
+      rotate: -12deg;
+      color: rgb(70 60 90 / 0.55);
+    }
+    .pc .waves {
+      position: absolute;
+      inset: 0.7rem 0 auto 2.4rem;
+      width: 5.5rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+    .pc .pm-ring {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: grid;
+      place-items: center;
+      width: 4.5rem;
+      height: 4.5rem;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      font: 800 0.625rem/1.25 var(--round);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      background: rgb(255 250 242 / 0.4);
+    }
+
+    /* With the script running, the two faces share one cell and the card flips */
+    .pc .card.flippable {
+      grid-template-areas: "c";
+      perspective: 1600px;
+      cursor: pointer;
+      gap: 0;
+    }
+    .pc .card.flippable .face {
+      grid-area: c;
+      backface-visibility: hidden;
+      transition: transform 0.9s cubic-bezier(0.3, 0.7, 0.2, 1);
+    }
+    .pc .card.flippable .back {
+      transform: rotateY(180deg);
+    }
+    .pc .card.flipped .front {
+      transform: rotateY(-180deg);
+    }
+    .pc .card.flipped .back {
+      transform: rotateY(0);
+    }
+    .pc .turn {
+      display: block;
+      margin: 1.25rem auto 0;
+      padding: 0.55rem 1.25rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ink);
+      font: 700 0.9375rem/1 var(--round);
+      cursor: pointer;
+    }
+    .pc .turn:hover {
+      background: var(--ink);
+      color: var(--card);
+    }
+    .pc .turn[hidden] {
+      display: none;
+    }
+
+    /* The envelope */
+    .pc .envelope {
+      margin-top: 1.5rem;
+      border-radius: 6px;
+      background: #f3e3cf;
+      box-shadow: inset 0 0 0 1px #e2cdb2;
+    }
+    .pc .envelope summary {
+      position: relative;
+      display: block;
+      padding: 1.1rem 1.25rem 1.1rem 3.5rem;
+      font-weight: 800;
+      cursor: pointer;
+      list-style: none;
+    }
+    .pc .envelope summary::-webkit-details-marker {
+      display: none;
+    }
+    .pc .flap {
+      position: absolute;
+      left: 1.25rem;
+      top: 50%;
+      width: 1.5rem;
+      height: 1.05rem;
+      translate: 0 -50%;
+      border: 2px solid var(--rose);
+      border-radius: 2px;
+    }
+    .pc .flap::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -2px;
+      width: 0.95rem;
+      height: 0.95rem;
+      border-right: 2px solid var(--rose);
+      border-bottom: 2px solid var(--rose);
+      transform: translate(-50%, -50%) rotate(45deg) scale(0.75);
+      transform-origin: center;
+      translate: 0 0.3rem;
+    }
+    .pc .envelope[open] .flap::before {
+      transform: translate(-50%, -50%) rotate(225deg) scale(0.75);
+      translate: 0 -0.05rem;
+    }
+    .pc .letter {
+      margin: 0 0.6rem 0.6rem;
+      padding: clamp(1.25rem, 4vw, 2.5rem);
+      border-radius: 4px;
+      background:
+        repeating-linear-gradient(transparent 0 1.75rem, #ecdfcf 1.75rem calc(1.75rem + 1px)),
+        var(--card);
+      background-position: 0 0.4rem;
+      line-height: 1.75rem;
+    }
+    .pc .letter p,
+    .pc .letter ul {
+      margin: 0 0 1.75rem;
+    }
+    .pc .letter h2,
+    .pc .letter h3 {
+      margin: 0 0 0;
+      padding-top: 1.75rem;
+      font: 700 1.15rem/1.75rem var(--soft-serif);
+      font-variation-settings: "SOFT" 100;
+      color: var(--rose);
+    }
+    .pc .letter code {
+      font-size: 0.9em;
+    }
+    .pc .letter-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1.25rem;
+      font-weight: 700;
+    }
+
+    /* Section heads */
+    .pc .sec-h {
+      margin: 0;
+      font: 700 clamp(2rem, 5vw, 3rem) / 1.1 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+      text-align: center;
+    }
+    .pc .sec-sub {
+      max-width: 36rem;
+      margin: 0.75rem auto 0;
+      text-align: center;
+      color: var(--soft);
+    }
+
+    /* Stamp album */
+    .pc .album {
+      max-width: 64rem;
+      margin: clamp(5rem, 12vw, 9rem) auto 0;
+      padding: 0 1.25rem;
+    }
+    .pc .stamps {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+      gap: 3rem 2rem;
+      margin: 3rem 0 0;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      list-style: none;
+      border-radius: 8px;
+      background: #2f3b45;
+      box-shadow: inset 0 2px 12px rgb(0 0 0 / 0.35);
+      color: #f3ede4;
+    }
+    .pc .stamps a {
+      color: #ffd9c4;
+    }
+    .pc .album-stamp {
+      width: 9.5rem;
+      height: 12rem;
+      rotate: var(--tilt);
+      transition: rotate 0.4s ease;
+    }
+    .pc .stamps li:hover .album-stamp {
+      rotate: 0deg;
+    }
+    .pc .album-stamp img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+    .pc .stamp-kind {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0.2rem 0.4rem;
+      background: rgb(255 255 255 / 0.9);
+      color: var(--ink);
+      font: 800 0.6875rem/1.3 var(--round);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .pc .text-stamp .stamp-in {
+      padding: 0.75rem 0.75rem 2rem;
+    }
+    .pc .hue-0 .stamp-in {
+      background: #c46b5b;
+    }
+    .pc .hue-1 .stamp-in {
+      background: #4f7f72;
+    }
+    .pc .hue-2 .stamp-in {
+      background: #7d6aa8;
+    }
+    .pc .hue-3 .stamp-in {
+      background: #b8863a;
+    }
+    .pc .ts-title {
+      font: 800 1.45rem/1.1 var(--soft-serif);
+      font-variation-settings: "SOFT" 100;
+      text-align: center;
+    }
+    .pc .stamps h3 {
+      margin: 1.25rem 0 0.25rem;
+      font: 700 1.25rem/1.2 var(--soft-serif);
+      font-variation-settings: "SOFT" 100;
+    }
+    .pc .stamps p {
+      margin: 0;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+    .pc .stamps .stamp-status {
+      margin-top: 0.5rem;
+      font-weight: 800;
+      color: #c6e3da;
+    }
+
+    /* Previous addresses: address labels with a forwarding sticker */
+    .pc .moves {
+      max-width: 44rem;
+      margin: clamp(2.5rem, 8vw, 5rem) auto 0;
+      padding: 0 1rem;
+    }
+    /* The airmail envelope the labels are stuck on */
+    .pc .env {
+      position: relative;
+      padding: 1.4rem 1.1rem 1.6rem;
+      border: 10px solid transparent;
+      border-image: repeating-linear-gradient(-45deg, #c8463f 0 10px, #fffaf2 10px 20px, #2f5f9e 20px 30px, #fffaf2 30px 40px) 10;
+      background: #ecd9b8;
+      color: var(--ink);
+      box-shadow: 0 24px 50px -28px rgb(60 40 30 / 0.55);
+      rotate: -0.6deg;
+    }
+    .pc .env-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .pc .env-addr p {
+      margin: 0;
+      font: 500 1rem/1.5 var(--soft-serif);
+      font-style: italic;
+    }
+    .pc .env-addr span {
+      display: inline-block;
+      min-width: 3rem;
+      font: 800 0.75rem/1 var(--round);
+      font-style: normal;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7a3b2e;
+    }
+    .pc .env-stamp {
+      flex: none;
+      width: 4.2rem;
+      margin: 0;
+      rotate: 4deg;
+    }
+    .pc .env-stamp .stamp-v {
+      font-size: 1.6rem;
+    }
+    .pc .env-h {
+      margin: 1.4rem 0 0;
+      font: 700 clamp(1.9rem, 7vw, 2.6rem) / 1.1 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+    }
+    .pc .env-sub {
+      margin: 0.4rem 0 0;
+      color: #5a4636;
+    }
+    .pc .env-note {
+      margin: 2rem 0 0;
+      padding: 1rem 1.1rem;
+      border-radius: 4px;
+      background: #fff7c9;
+      font-size: 0.9375rem;
+      rotate: 0.8deg;
+      box-shadow: 0 6px 16px -10px rgb(60 40 30 / 0.4);
+    }
+    .pc .env-note span {
+      display: block;
+      font: 800 0.75rem/1.6 var(--round);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7a5a00;
+    }
+    .pc .opened {
+      margin: clamp(3.5rem, 10vw, 6rem) auto 0;
+      padding: 0 1.25rem;
+      text-align: center;
+      font: 600 clamp(1.4rem, 5vw, 2rem) / 1.25 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+    }
+    .pc .open-flap {
+      display: block;
+      width: 7rem;
+      height: 3.5rem;
+      margin: 0 auto 0.9rem;
+      background: linear-gradient(180deg, #dcc39b, #ecd9b8);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top;
+      transform: perspective(300px) rotateX(180deg);
+      animation: c4-flap 1.6s cubic-bezier(0.3, 1.2, 0.4, 1) 0.2s both;
+    }
+    @keyframes c4-flap {
+      from { transform: perspective(300px) rotateX(0deg); }
+    }
+    @supports (animation-timeline: view()) {
+      .pc .open-flap {
+        animation: c4-flap linear both;
+        animation-timeline: view();
+        animation-range: entry 40% cover 45%;
+      }
+    }
+    .pc .labels {
+      margin: 1.5rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .pc .label {
+      position: relative;
+      margin-top: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      border-radius: 6px;
+      background: var(--card);
+      box-shadow: 0 8px 22px -12px rgb(60 40 30 / 0.35);
+      rotate: var(--tilt);
+      font-size: 0.9375rem;
+    }
+    .pc .label.current {
+      box-shadow:
+        inset 0 0 0 2px var(--sea),
+        0 8px 22px -12px rgb(60 40 30 / 0.35);
+    }
+    .pc .moved {
+      position: absolute;
+      right: 1.25rem;
+      top: -0.9rem;
+      margin: 0;
+      padding: 0.15rem 0.75rem;
+      border-radius: 3px;
+      background: #f7d774;
+      color: #4a3a10;
+      font: 900 0.75rem/1.6 var(--round);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      rotate: 4deg;
+    }
+    .pc .l-when {
+      margin: 0;
+      font-weight: 800;
+      font-size: 0.8125rem;
+      letter-spacing: 0.06em;
+      color: var(--rose);
+    }
+    .pc .label h3 {
+      margin: 0.25rem 0 0.5rem;
+      font: 700 1.4rem/1.2 var(--soft-serif);
+      font-variation-settings: "SOFT" 100;
+    }
+    .pc .label h3 span {
+      display: block;
+      font: 600 0.875rem/1.5 var(--round);
+      color: var(--soft);
+    }
+    .pc .l-body p {
+      margin: 0;
+    }
+    .pc .l-note {
+      margin: 0.5rem 0 0;
+      font-style: italic;
+      color: var(--soft);
+    }
+
+    /* Blank postcard */
+    .pc .write {
+      max-width: 52rem;
+      margin: clamp(5rem, 12vw, 9rem) auto 0;
+      padding: 0 1.25rem 9rem;
+    }
+    .pc .blank {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      border-radius: 6px;
+      background:
+        linear-gradient(var(--line), var(--line)) 54% 0 / 1px 100% no-repeat,
+        var(--card);
+      box-shadow: 0 14px 34px -12px rgb(60 40 30 / 0.3);
+      rotate: -0.6deg;
+    }
+    .pc .hand-h {
+      margin: 0 0 1rem;
+      font: italic 600 clamp(2rem, 5vw, 2.75rem) / 1.1 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+      color: #2c3b5a;
+    }
+    .pc .blank .msg p {
+      margin: 0 0 1rem;
+    }
+    .pc .blank .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1.25rem;
+      font-weight: 800;
+    }
+    .pc .blank .stamp-row,
+    .pc .blank-stamp {
+      margin: 0 0 1.5rem auto;
+    }
+    .pc .blank-stamp .stamp-v {
+      font-size: 2.5rem;
+    }
+    .pc .blank .line {
+      font-size: 1rem;
+      padding-top: 0.75rem;
+    }
+    .pc .mail {
+      font-weight: 800;
+      word-break: break-all;
+    }
+
+
+    /* ---- Life ---- */
+    .pc .blobs {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .pc .blobs span {
+      position: absolute;
+      width: 70vmax;
+      height: 70vmax;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.55;
+      animation: c4-blob 34s ease-in-out infinite alternate;
+    }
+    .pc .blobs span:nth-child(1) { left: -30vmax; top: -25vmax; background: #fbd3c0; }
+    .pc .blobs span:nth-child(2) { right: -35vmax; top: 20vh; background: #cfe9e2; animation-duration: 41s; animation-delay: -12s; }
+    .pc .blobs span:nth-child(3) { left: -20vmax; bottom: -40vmax; background: #ddd5f3; animation-duration: 47s; animation-delay: -20s; }
+    @keyframes c4-blob {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(12vw, 8vh) scale(1.12); }
+      100% { transform: translate(-6vw, 14vh) scale(0.94); }
+    }
+
+    .pc .greet {
+      position: relative;
+    }
+    /* The plane's path and the send animation run past the screen edge on a
+       phone. Clip rather than hidden, so nothing here becomes a scroll box. */
+    .pc main,
+    .pc .greet {
+      overflow-x: clip;
+    }
+    .pc .plane {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 44px;
+      offset-path: path("M -60 140 C 120 20, 260 260, 420 120 S 700 40, 900 160");
+      offset-rotate: auto;
+      animation: c4-fly 16s ease-in-out infinite;
+      filter: drop-shadow(3px 6px 4px rgb(60 40 30 / 0.2));
+      pointer-events: none;
+    }
+    @keyframes c4-fly {
+      0% { offset-distance: 0%; opacity: 0; }
+      8% { opacity: 1; }
+      55% { opacity: 1; }
+      62%, 100% { offset-distance: 100%; opacity: 0; }
+    }
+    @media (max-width: 40rem) {
+      .pc .plane {
+        width: 32px;
+        offset-path: path("M -50 90 C 60 10, 160 170, 240 70 S 380 30, 460 110");
+      }
+    }
+    .pc .from-script {
+      animation: c4-write 1.6s cubic-bezier(0.4, 0, 0.2, 1) both 0.2s;
+    }
+    @keyframes c4-write { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 -5% 0 0); } }
+    .pc .big {
+      animation: c4-stampdown 0.9s cubic-bezier(0.3, 1.4, 0.5, 1) both 0.9s;
+    }
+    @keyframes c4-stampdown {
+      from { opacity: 0; transform: scale(1.25) rotate(-3deg); }
+      to { opacity: 1; transform: none; }
+    }
+    .pc .big-name {
+      background-size: 160% auto !important;
+      animation: c4-pan 30s ease-in-out infinite alternate;
+    }
+    @keyframes c4-pan { from { background-position: 0% 40%; } to { background-position: 100% 60%; } }
+    .pc .sub,
+    .pc .intro {
+      animation: c4-up 0.9s ease-out both 1.4s;
+    }
+    @keyframes c4-up { from { opacity: 0; transform: translateY(12px); } }
+
+    .pc .card {
+      --rx: 0deg;
+      --ry: 0deg;
+      transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry));
+      transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .pc .front-img {
+      animation: c4-kenburns 26s ease-in-out infinite alternate;
+    }
+    .pc .post:nth-child(even) .front-img {
+      animation-direction: alternate-reverse;
+    }
+    @keyframes c4-kenburns { from { transform: scale(1.02); } to { transform: scale(1.12) translate(-2%, -1%); } }
+    .pc .card.flipped .postmark {
+      animation: c4-thunk 0.55s cubic-bezier(0.3, 1.5, 0.5, 1) both 0.35s;
+    }
+    .pc .card.flipped .big-stamp {
+      animation: c4-stamp 0.6s cubic-bezier(0.3, 1.5, 0.5, 1) both 0.2s;
+    }
+    .pc .card.flipped .hand {
+      animation: c4-up 0.6s ease-out both 0.3s;
+    }
+    .pc .card.flipped .hand + .hand { animation-delay: 0.45s; }
+    .pc .card.flipped .hand + .hand + .hand { animation-delay: 0.6s; }
+    @keyframes c4-thunk {
+      from { opacity: 0; transform: scale(1.6) rotate(-14deg); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes c4-stamp {
+      from { opacity: 0; transform: translate(14px, -18px) rotate(12deg) scale(1.15); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .pc .turn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 2.75rem;
+    }
+    .pc .post {
+      text-align: left;
+    }
+    .pc .turn {
+      margin-inline: auto;
+    }
+    .pc .post > .turn {
+      display: flex;
+    }
+    .pc .turn svg {
+      width: 1.1rem;
+      height: 1.1rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.6s cubic-bezier(0.3, 1.4, 0.5, 1);
+    }
+    .pc .turn:hover svg,
+    .pc .turn[aria-pressed="true"] svg {
+      transform: rotate(180deg);
+    }
+    .pc .post:not(.seen) .turn {
+      animation: c4-nudge 3.2s ease-in-out infinite 2s;
+    }
+    @keyframes c4-nudge {
+      0%, 80%, 100% { transform: none; }
+      85% { transform: rotate(-4deg) scale(1.04); }
+      90% { transform: rotate(3deg) scale(1.04); }
+      95% { transform: rotate(-1deg); }
+    }
+
+    .pc .envelope[open] .letter {
+      animation: c4-letter 0.7s cubic-bezier(0.2, 0.8, 0.3, 1.1) both;
+    }
+    @keyframes c4-letter { from { opacity: 0; transform: translateY(-28px) scale(0.98); } }
+    .pc .flap::before {
+      transition: transform 0.45s cubic-bezier(0.3, 1.4, 0.5, 1), translate 0.45s;
+    }
+
+    @keyframes c4-wiggle {
+      0%, 100% { rotate: var(--tilt); }
+      25% { rotate: calc(var(--tilt) - 5deg); }
+      60% { rotate: calc(var(--tilt) + 4deg); }
+    }
+    .pc .stamps li:hover .album-stamp {
+      animation: c4-wiggle 0.6s ease-in-out;
+    }
+
+    .pc .send-plane {
+      position: absolute;
+      right: 2rem;
+      top: 2rem;
+      width: 40px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .pc .blank {
+      position: relative;
+    }
+    .pc .blank.sent .send-plane {
+      animation: c4-send 0.9s cubic-bezier(0.5, 0, 0.6, 1) both;
+    }
+    .pc .blank.sent {
+      animation: c4-lift 0.9s ease-in-out;
+    }
+    @keyframes c4-send {
+      0% { opacity: 0; transform: translate(0, 40px) rotate(0deg) scale(0.6); }
+      20% { opacity: 1; transform: translate(-10px, 20px) rotate(-10deg) scale(1); }
+      100% { opacity: 0; transform: translate(160px, -220px) rotate(-25deg) scale(0.7); }
+    }
+    @keyframes c4-lift { 40% { transform: translateY(-6px) rotate(-0.6deg); } }
+
+    @supports (animation-timeline: view()) {
+      .pc .post .card {
+        animation: c4-drop linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 85%;
+      }
+      .pc .post-h {
+        animation: c4-up linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 70%;
+      }
+      .pc .stamps li {
+        animation: c4-scatter linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 80%;
+      }
+      .pc .moved {
+        animation: c4-slap linear both;
+        animation-timeline: view();
+        animation-range: entry 50% cover 35%;
+      }
+      .pc .blank {
+        animation: c4-drop linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 80%;
+      }
+    }
+    @keyframes c4-drop {
+      from { opacity: 0; translate: 0 70px; scale: 1.06; rotate: calc(var(--tilt, 1deg) * 5); }
+      70% { opacity: 1; scale: 1; }
+      to { opacity: 1; translate: 0 0; scale: 1; rotate: var(--tilt, 0deg); }
+    }
+    @keyframes c4-scatter {
+      from { opacity: 0; translate: 0 40px; rotate: calc(var(--tilt) * -6); }
+      to { opacity: 1; translate: 0 0; rotate: 0deg; }
+    }
+    @keyframes c4-slap {
+      0%, 30% { opacity: 0; scale: 2.2; }
+      60% { opacity: 1; scale: 0.92; }
+      100% { opacity: 1; scale: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pc *,
+      .pc *::before,
+      .pc *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .pc .plane,
+      .pc .send-plane {
+        display: none;
+      }
+    }
+
+    @media (max-width: 40rem) {
+      .pc .back,
+      .pc .blank {
+        grid-template-columns: 1fr;
+        background: var(--card);
+      }
+      .pc .msg {
+        padding: 0 0 1.25rem;
+        border-bottom: 1px solid var(--line);
+      }
+      .pc .addr {
+        padding: 1rem 0 0;
+      }
+      .pc .card {
+        rotate: calc(var(--tilt) / 2);
+      }
+      /* Both faces share one cell on a phone too, so turning a card never
+         changes its height. The back is the taller face, and the painting
+         fills the same box edge to edge, with no paper frame around it. */
+      .pc .front {
+        padding: 0;
+      }
+      .pc .front-img {
+        border-radius: 0;
+      }
+      .pc .front-label {
+        left: 1rem;
+        bottom: 1rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pc .card.flippable .face {
+        transition: none;
+      }
+      .pc .album-stamp {
+        transition: none;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .pc {
+        --bg: #221d22;
+        --card: #fbf5ec;
+        --ink: #3a2f2a;
+        color: #efe6dc;
+        background:
+          radial-gradient(60rem 40rem at 10% 0%, #3d2a2c 0, transparent 60%),
+          radial-gradient(50rem 40rem at 100% 30%, #1f3436 0, transparent 60%),
+          var(--bg);
+      }
+      .pc .greet,
+      .pc .opened,
+      .pc .post-h,
+      .pc .sec-h {
+        color: #efe6dc;
+      }
+      .pc .sub,
+      .pc .sec-sub {
+        color: #cdbfb3;
+      }
+      .pc .post-no,
+      .pc .from-script {
+        color: #f0a4a0;
+      }
+      .pc .greet a,
+      .pc .intro {
+        color: #efe6dc;
+      }
+      .pc .label,
+      .pc .env,
+      .pc .envelope,
+      .pc .blank {
+        color: var(--ink);
+      }
+      .pc .turn {
+        border-color: #efe6dc;
+        color: #efe6dc;
+      }
+      .pc .turn:hover {
+        background: #efe6dc;
+        color: var(--ink);
+      }
+    }
+  </style>
+</Postcards>

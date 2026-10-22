@@ -1,0 +1,45 @@
+---
+import Seo from "../components/Seo.astro";
+import { site } from "../lib/site";
+
+/**
+ * Shell for the postcards homepage. It sends the same head as Base but skips
+ * the site stylesheet, so the page owns every pixel of its own look.
+ */
+interface Props {
+  /** Extra JSON-LD for this page, alongside the site-wide graph. */
+  schema?: object[];
+}
+
+const { schema = [] } = Astro.props;
+// "Almere" is where I live; "Amsterdam" is what a recruiter types into a search box.
+const title = `${site.name} - ${site.role}, Amsterdam area`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <Seo title={title} description={site.description} schema={schema} />
+    <slot name="head" />
+  </head>
+
+  <body class="pc">
+    <a href="#main" class="pc-skip">Skip to content</a>
+    <slot />
+
+    <style is:global>
+      .pc-skip {
+        position: absolute;
+        left: -9999px;
+      }
+      .pc-skip:focus {
+        left: 1rem;
+        top: 1rem;
+        z-index: 100;
+        padding: 0.5rem 1rem;
+        background: #111;
+        color: #fff;
+      }
+    </style>
+  </body>
+</html>

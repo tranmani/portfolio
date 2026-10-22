@@ -1,0 +1,112 @@
+---
+import { site } from "../lib/site";
+
+/**
+ * Everything a page's head says to search engines, link previews and Clarity.
+ * Shared by the homepage, which brings its own styles, and by Base, which
+ * brings the site stylesheet, so both send the same signals.
+ */
+interface Props {
+  title: string;
+  description: string;
+  /** Extra JSON-LD for this page, alongside the site-wide graph. */
+  schema?: object[];
+  /** For pages that should never be in an index, like the 404. */
+  noindex?: boolean;
+}
+
+const { title, description, schema = [], noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/og.png", Astro.site);
+
+const home = Astro.site!.toString();
+const graph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${home}#person`,
+      name: site.name,
+      jobTitle: site.role,
+      url: home,
+      image: ogImage.toString(),
+      email: `mailto:${site.email}`,
+      address: { "@type": "PostalAddress", addressLocality: site.location, addressCountry: "NL" },
+      worksFor: { "@type": "Organization", name: "Studio WIP" },
+      knowsAbout: [
+        "Full-stack development",
+        "Retrieval augmented generation",
+        "AI agents",
+        "React Native",
+        "Expo",
+        "TypeScript",
+        "Go",
+        "Cloudflare Workers",
+        "Offline first sync",
+        "Multi tenant SaaS",
+      ],
+      sameAs: [site.cta.github, site.cta.linkedin],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${home}#website`,
+      url: home,
+      name: site.name,
+      inLanguage: "en",
+      publisher: { "@id": `${home}#person` },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${canonical}#page`,
+      url: canonical.toString(),
+      name: title,
+      isPartOf: { "@id": `${home}#website` },
+      mainEntity: { "@id": `${home}#person` },
+    },
+  ],
+};
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}
+<meta name="author" content={site.name} />
+<link rel="canonical" href={canonical} />
+<link rel="icon" href="/favicon.ico" />
+
+<meta property="og:type" content="profile" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en_GB" />
+<meta property="profile:first_name" content={site.name.split(" ")[0]} />
+<meta property="profile:last_name" content={site.name.split(" ").slice(1).join(" ")} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" set:html={JSON.stringify(graph)} is:inline />
+{schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} is:inline />)}
+
+{/* Microsoft Clarity. Async, so it never blocks the LCP; the CSP in
+    vercel.json is what actually lets it reach clarity.ms. */}
+<script is:inline>
+  (function (c, l, a, r, i, t, y) {
+    c[a] =
+      c[a] ||
+      function () {
+        (c[a].q = c[a].q || []).push(arguments);
+      };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i;
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+  })(window, document, "clarity", "script", "vjbt90ua1x");
+</script>

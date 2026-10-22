@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
-Disallow: /v1/
-Disallow: /v2/
+
+# /v1 and /v2 are deliberately NOT disallowed here. They carry a noindex
+# header and meta tag, and a crawler that is disallowed never fetches the page,
+# so it never sees the noindex and can keep a stale copy in the index.
 
 Sitemap: https://tranmani.com/sitemap-index.xml

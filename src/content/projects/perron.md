@@ -11,12 +11,15 @@ role: Solo. Design, mobile app, backend, infrastructure.
 year: 2026
 order: 1
 stack: ["Expo", "TypeScript", "Cloudflare Workers", "GTFS-RT"]
+status: On the Dutch App Store since August 2026.
 figure:
   value: "250 m"
   label: "the geofence, and it is a deliberate error in one direction"
 links:
   - label: perron.thenextbeacon.com
     href: https://perron.thenextbeacon.com
+  - label: App Store
+    href: https://apps.apple.com/nl/app/perron-saai-aan-het-wachten/id6789883135
 proof:
   - "250 m geofence around the station, sized to admit someone on the pavement rather than reject a real traveller standing indoors"
   - "Spoofing bounded by a 300 km/h travel plausibility check between fixes, which stops casual teleportation and nothing stronger"
