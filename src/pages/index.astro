@@ -278,6 +278,15 @@ const workSchema = {
                 </h3>
                 <p>{s.data.line}</p>
                 <p class="stamp-status">{s.data.status}</p>
+                {s.data.links.length > 1 && (
+                  <p class="stamp-links">
+                    {s.data.links.slice(1).map((l) => (
+                      <a href={l.href} target="_blank" rel="noopener">
+                        {l.label}
+                      </a>
+                    ))}
+                  </p>
+                )}
               </li>
             );
           })
@@ -894,6 +903,13 @@ const workSchema = {
       margin-top: 0.5rem;
       font-weight: 800;
       color: #c6e3da;
+    }
+    .pc .stamps .stamp-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-weight: 800;
+      text-underline-offset: 0.2em;
     }
 
     /* Previous addresses: address labels with a forwarding sticker */

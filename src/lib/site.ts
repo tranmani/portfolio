@@ -5,7 +5,7 @@ export const site = {
   role: "Full-stack and AI engineer",
   location: "Almere",
   intro:
-    "A chat room that only opens while you are actually at the train station it belongs to, a multi tenant SaaS for salons, and an offline first family app, all three on the App Store. At Studio WIP, an agentic retrieval system that cites its sources or refuses to answer. Two games and a music player of my own are in App Store review.",
+    "A chat room that only opens while you are actually at the train station it belongs to, a multi tenant SaaS for salons, and an offline first family app, all three on the App Store and Google Play. At Studio WIP, an agentic retrieval system that cites its sources or refuses to answer. Four games of my own are on Google Play, and I made a music player for iPhone.",
   /**
    * Reads above the role list, not in the hero. The three month tenure at In The
    * Zone and the job that followed it are the first things a reader notices in the
@@ -25,5 +25,5 @@ export const site = {
     linkedin: "https://www.linkedin.com/in/minh-huy-tran/",
   },
   description:
-    "Huy Tran, full-stack and AI engineer near Amsterdam. Built Perron, Lorenly and FamMedley, all three on the App Store, and agentic retrieval at Studio WIP.",
+    "Huy Tran, full-stack and AI engineer near Amsterdam. Built Perron, Lorenly and FamMedley, on the App Store and Google Play, and agentic retrieval at Studio WIP.",
 } as const;

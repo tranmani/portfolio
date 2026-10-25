@@ -58,6 +58,7 @@ const shotAlts: Record<string, string> = {
   "ten-million-cells": "10 Million Cells: a disc of coloured cells half dug away, with loose cells falling below it.",
   "scrap-heap": "Scrap Heap: the salvage yard, a grid of scrap items with rarities and prices.",
   moonwindow: "Mahjong Moonwindow: a stacked board of pale tiles with leaves, stones and seeds.",
+  "connect-garden": "Connect Garden: a board of fruit tiles in a sunny garden, with hint, shuffle, undo and pop buttons below.",
   playwave: "Playwave: the now playing screen, with album art, playback controls and an up next list.",
 };
 
@@ -65,6 +66,7 @@ const shotFiles: Record<string, string> = {
   "ten-million-cells": "tmc.webp",
   "scrap-heap": "scrapheap.webp",
   moonwindow: "moonwindow.webp",
+  "connect-garden": "connectgarden.webp",
   playwave: "playwave.webp",
 };
 

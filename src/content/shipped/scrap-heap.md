@@ -5,8 +5,10 @@ kind: Game
 year: 2026
 order: 2
 stack: ["Godot 4", "GDScript", "Cloudflare"]
-status: In App Store review.
+status: On Google Play.
 links:
   - label: scrapheap.thenextbeacon.com
     href: https://scrapheap.thenextbeacon.com
+  - label: Google Play
+    href: https://play.google.com/store/apps/details?id=com.thenextbeacon.scrapheap
 ---

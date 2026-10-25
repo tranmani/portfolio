@@ -12,7 +12,7 @@ role: Solo. Product, platform, mobile app, infrastructure.
 year: 2026
 order: 3
 stack: ["Next.js", "Cloudflare Workers", "Supabase", "Expo"]
-status: Salon app on the App Store since July 2026.
+status: Salon app on the App Store since July 2026, and on Google Play since October 2026.
 figure:
   value: "9 → 1"
   label: "competing booking systems, normalised into one schema"
@@ -21,6 +21,8 @@ links:
     href: https://lorenly.com
   - label: App Store
     href: https://apps.apple.com/us/app/lorenly-salon-booking/id6788527063
+  - label: Google Play
+    href: https://play.google.com/store/apps/details?id=com.lorenly.mobile
 proof:
   - "Imports clients, past bookings and gift card balances from 9 competing booking systems"
   - "Multi tenant on one shared Postgres schema, tenants resolved per request from the Host header inside the Worker"

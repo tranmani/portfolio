@@ -11,7 +11,7 @@ role: Solo. Go API, Expo app, sync engine, infrastructure.
 year: 2026
 order: 4
 stack: ["Go", "Expo", "SQLite", "PostgreSQL"]
-status: On the App Store since May 2026.
+status: On the App Store since May 2026, and on Google Play since October 2026.
 figure:
   value: "9 of 50"
   label: "server tables mirrored onto the device, so the UI never waits"
@@ -20,6 +20,8 @@ links:
     href: https://fammedley.com
   - label: App Store
     href: https://apps.apple.com/us/app/fammedley-family-organizer/id6761373489
+  - label: Google Play
+    href: https://play.google.com/store/apps/details?id=com.thenextbeacon.fammedley
 proof:
   - "Every device owns a SQLite database of 9 tables, mirroring 7 of the server's 50, so the UI never waits on the network"
   - "Writes land locally, queue in an outbox, and replay when the connection returns"

@@ -5,8 +5,10 @@ kind: Game
 year: 2026
 order: 3
 stack: ["Godot 4", "GDScript", "TypeScript"]
-status: In beta on TestFlight.
+status: On Google Play.
 links:
   - label: moonwindow.thenextbeacon.com
     href: https://moonwindow.thenextbeacon.com
+  - label: Google Play
+    href: https://play.google.com/store/apps/details?id=com.thenextbeacon.mahjongsanctuary
 ---
