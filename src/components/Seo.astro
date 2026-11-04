@@ -33,7 +33,10 @@ const graph = {
       image: ogImage.toString(),
       email: `mailto:${site.email}`,
       address: { "@type": "PostalAddress", addressLocality: site.location, addressCountry: "NL" },
-      worksFor: { "@type": "Organization", name: "Studio WIP" },
+      worksFor: [
+        { "@type": "Organization", name: "Studio WIP" },
+        { "@type": "Organization", name: "In The Zone" },
+      ],
       knowsAbout: [
         "Full-stack development",
         "Retrieval augmented generation",

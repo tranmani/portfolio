@@ -7,13 +7,13 @@ export const site = {
   intro:
     "A chat room that only opens while you are actually at the train station it belongs to, a multi tenant SaaS for salons, and an offline first family app, all three on the App Store and Google Play. At Studio WIP, an agentic retrieval system that cites its sources or refuses to answer. Four games of my own are on Google Play, and I made a music player for iPhone.",
   /**
-   * Reads above the role list, not in the hero. The three month tenure at In The
-   * Zone and the job that followed it are the first things a reader notices in the
-   * dates, and a reader who is not told why fills the gap with the worst version.
-   * It also says how the two roles are connected, which the dates cannot.
+   * Reads above the role list, not in the hero. Two roles that overlap since July
+   * are the first thing a reader notices in the dates, and a reader who is not told
+   * why fills the gap with the worst version. It also says how the two roles are
+   * connected, which the dates cannot.
    */
   situation:
-    "In The Zone ran out of runway in June, three months in. Studio WIP's founder had seen the agentic dashboard I built there and brought me in to take that idea further, which is the retrieval work above. I am not in a hurry to leave it, and I am open to the right thing.",
+    "In The Zone ran low on runway in June, three months in, so since July I work there part time. Studio WIP's founder had seen the agentic dashboard I built there and brought me in to take that idea further, which is the retrieval work above. I am not in a hurry to leave either, and I am open to the right thing.",
   availability:
     "Open to full-stack and AI engineering roles in Amsterdam, or remote in the EU. Dutch work authorisation, no sponsorship needed.",
   // A @tranmani.com address would read better here, but only if the mailbox exists.
