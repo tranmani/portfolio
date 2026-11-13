@@ -1,0 +1,173 @@
+/*
+ * The postcards look, shared by every page that uses the Postcards layout: the
+ * fonts, the paper colours, links and focus, the perforated stamp, and the
+ * slow colour blobs behind the page. Each page adds its own pieces on top.
+ */
+@font-face {
+  font-family: "Fraunces";
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/postcards/fraunces-latin-full-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/postcards/fraunces-latin-full-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito";
+  font-weight: 200 1000;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/postcards/nunito-latin-wght-normal.woff2") format("woff2");
+}
+
+.pc {
+  --bg: #f6efe6;
+  --card: #fffaf2;
+  --ink: #3a2f2a;
+  --soft: #6b5a50;
+  --rose: #a3434b;
+  --sea: #2f6d78;
+  --line: #e3d6c6;
+  --soft-serif: "Fraunces", Georgia, serif;
+  --round: "Nunito", system-ui, sans-serif;
+  margin: 0;
+  color: var(--ink);
+  font: 400 1.0625rem/1.7 var(--round);
+  background:
+    radial-gradient(60rem 40rem at 10% 0%, #fde3d4 0, transparent 60%),
+    radial-gradient(50rem 40rem at 100% 30%, #dceee9 0, transparent 60%),
+    radial-gradient(50rem 40rem at 0% 80%, #e6e0f5 0, transparent 60%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.pc *,
+.pc *::before,
+.pc *::after {
+  box-sizing: border-box;
+}
+.pc a {
+  color: var(--sea);
+  text-underline-offset: 0.2em;
+}
+.pc a:hover {
+  color: var(--rose);
+}
+.pc :focus-visible {
+  outline: 2px solid var(--sea);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.pc .sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Perforated stamp: a solid centre plus a ring of half holes in the padding */
+.pc .stamp {
+  --hole: 7px;
+  margin: 0;
+  padding: var(--hole);
+  background: #fff;
+  -webkit-mask:
+    conic-gradient(#000 0 0) content-box,
+    radial-gradient(farthest-side, #0000 96%, #000) 0 0 / calc(2 * var(--hole)) calc(2 * var(--hole)) round;
+  mask:
+    conic-gradient(#000 0 0) content-box,
+    radial-gradient(farthest-side, #0000 96%, #000) 0 0 / calc(2 * var(--hole)) calc(2 * var(--hole)) round;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.35));
+}
+.pc .stamp-in {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  border: 3px solid #fff;
+  outline: 1px solid rgb(0 0 0 / 0.08);
+  background: var(--rose);
+  color: #fff;
+  overflow: hidden;
+}
+
+.pc .stamp-v {
+  padding: 0 0.3rem;
+  font: 800 1.35rem/1 var(--soft-serif);
+  white-space: nowrap;
+  font-variation-settings: "SOFT" 100;
+  text-align: center;
+}
+
+/* ---- Life ---- */
+.pc .blobs {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.pc .blobs span {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  animation: c4-blob 34s ease-in-out infinite alternate;
+}
+.pc .blobs span:nth-child(1) { left: -30vmax; top: -25vmax; background: #fbd3c0; }
+.pc .blobs span:nth-child(2) { right: -35vmax; top: 20vh; background: #cfe9e2; animation-duration: 41s; animation-delay: -12s; }
+.pc .blobs span:nth-child(3) { left: -20vmax; bottom: -40vmax; background: #ddd5f3; animation-duration: 47s; animation-delay: -20s; }
+@keyframes c4-blob {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(12vw, 8vh) scale(1.12); }
+  100% { transform: translate(-6vw, 14vh) scale(0.94); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc *,
+  .pc *::before,
+  .pc *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .pc {
+    --bg: #221d22;
+    --card: #fbf5ec;
+    --ink: #3a2f2a;
+    color: #efe6dc;
+    background:
+      radial-gradient(60rem 40rem at 10% 0%, #3d2a2c 0, transparent 60%),
+      radial-gradient(50rem 40rem at 100% 30%, #1f3436 0, transparent 60%),
+      var(--bg);
+  }
+  /* The light pastels wash a dark page out to grey, so the blobs go deep too. */
+  .pc .blobs span { opacity: 0.6; }
+  .pc .blobs span:nth-child(1) { background: #4a2c2e; }
+  .pc .blobs span:nth-child(2) { background: #1d3a3c; }
+  .pc .blobs span:nth-child(3) { background: #2e2745; }
+}
+
+/* Skip link: off screen until it has focus. */
+.pc-skip {
+  position: absolute;
+  left: -9999px;
+}
+.pc-skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: #111;
+  color: #fff;
+}

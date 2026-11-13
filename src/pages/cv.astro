@@ -1,95 +1,571 @@
 ---
-import { getCollection, render } from "astro:content";
-import Base from "../layouts/Base.astro";
-import Rail from "../components/Rail.astro";
+import Postcards from "../layouts/Postcards.astro";
 import { site } from "../lib/site";
+import { loadSite, engagementLabel } from "../lib/content";
 
 /**
- * The CV is generated from the same content collections as the homepage, so it
- * cannot drift out of date behind a stale PDF. Print this page to get the PDF.
+ * The CV, as a letter of introduction on the same paper as the postcards. It is
+ * generated from the same content collections as the homepage, so it cannot
+ * drift out of date behind a stale PDF. The PDF itself is a separate, plain,
+ * ATS friendly file made by scripts/cv-pdf.mjs; printing this page gives a
+ * clean sheet too, without the stamps and the colour behind it.
  */
-const roles = (await getCollection("roles")).sort((a, b) => a.data.order - b.data.order);
-const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
-
-const rolesRendered = await Promise.all(
-  roles.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
-);
+const { projects, roles } = await loadSite();
+const year = new Date().getFullYear();
+const hues = ["sea", "rose", "plum", "ochre"];
 ---
 
-<Base title={`CV - ${site.name}, ${site.role}`} description={site.description}>
-  <section class="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
-    <h1 class="text-title font-medium">{site.name}</h1>
-    <p class="mt-2 text-lead text-fg-muted">{site.role}, {site.location}</p>
-    <p class="measure body-copy mt-6">{site.intro}</p>
-    <p class="mono-meta mt-6">
-      {site.email} / <a href={site.cta.github} class="link-accent">github.com/tranmani</a>
-    </p>
+<Postcards title={`CV - ${site.name}, ${site.role}`} description={site.description}>
+  <main id="main" class="cvw">
+    <nav class="tools no-print" aria-label="CV">
+      <a href="/" class="pill">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        Back<span class="pill-more"> to the postcards</span>
+      </a>
+      {/* Offered before the CV rather than only after it, so a reader who wants the
+          file does not have to read the page to find out they can have it. */}
+      <a href="/Huy-Tran-CV.pdf" class="pill pill-solid" download>Download as PDF</a>
+    </nav>
 
-    {/* Offered before the CV rather than only after it, so a reader who wants the
-        file does not have to read the page to find out they can have it. */}
-    <div class="no-print mt-8">
-      <a href="/Huy-Tran-CV.pdf" class="btn btn-secondary" download>Download as PDF</a>
-    </div>
+    <article class="sheet">
+      <header class="head">
+        <div class="head-text">
+          <p class="from">A letter of introduction from</p>
+          <h1 class="name">{site.name}</h1>
+          <p class="role">{site.role} · {site.location}, the Netherlands</p>
+        </div>
+        <div class="head-mark" aria-hidden="true">
+          <span class="pm-ring">
+            {site.location}
+            <br />
+            {year}
+          </span>
+          <p class="stamp head-stamp">
+            <span class="stamp-in"><span class="stamp-v">CV</span></span>
+          </p>
+        </div>
+      </header>
 
-    <h2 class="mt-16 text-lead font-medium">Experience</h2>
-    <ul class="mt-6 flex list-none flex-col p-0">
-      {
-        rolesRendered.map(({ entry, Content }) => (
-          <li class="border-t border-edge py-6 first:border-t-0 first:pt-0">
-            <Rail>
-              <Fragment slot="rail">
-                <span>
-                  {entry.data.start} to {entry.data.end}
-                </span>
-                <span>{entry.data.place}</span>
-              </Fragment>
-              <div class="flex flex-wrap items-baseline gap-x-2">
-                <h3 class="font-medium">{entry.data.title}</h3>
-                <span class="text-fg-muted">at {entry.data.company}</span>
-              </div>
-              <div class="measure body-copy mt-2">
-                <Content />
-              </div>
-              {entry.data.note && <p class="mono-meta mt-2">{entry.data.note}</p>}
-            </Rail>
+      <p class="hello">{site.intro}</p>
+
+      <p class="contact">
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={site.cta.github} target="_blank" rel="noopener">github.com/tranmani</a>
+        <a href={site.cta.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      </p>
+
+      <section aria-labelledby="exp-h">
+        <h2 id="exp-h" class="sh">Experience</h2>
+        <ol class="entries">
+          {
+            roles.map(({ entry, Content }) => (
+              <li class="entry">
+                <p class="when">
+                  {entry.data.start} – {entry.data.end}
+                  {engagementLabel[entry.data.engagement] && <> · {engagementLabel[entry.data.engagement]}</>}
+                  {entry.data.current && <span class="now">Now</span>}
+                </p>
+                <h3>
+                  {entry.data.company}
+                  <span>
+                    {entry.data.title}, {entry.data.place}
+                  </span>
+                </h3>
+                <div class="body">
+                  <Content />
+                </div>
+                {entry.data.note && <p class="note">{entry.data.note}</p>}
+              </li>
+            ))
+          }
+        </ol>
+        <p class="aside">
+          <span>Why the newest two overlap</span>
+          {site.situation}
+        </p>
+      </section>
+
+      <section aria-labelledby="work-h">
+        <h2 id="work-h" class="sh">Selected work</h2>
+        <ol class="entries">
+          {
+            projects.map(({ entry }, i) => (
+              <li class="entry work">
+                <p class={`stamp work-stamp hue-${hues[i % hues.length]}`} aria-hidden="true">
+                  <span class="stamp-in">
+                    <span class="stamp-v">{entry.data.figure.value}</span>
+                  </span>
+                </p>
+                <div>
+                  <h3>
+                    {entry.data.links[0] ? (
+                      <a href={entry.data.links[0].href} target="_blank" rel="noopener">
+                        {entry.data.title}
+                      </a>
+                    ) : (
+                      entry.data.title
+                    )}
+                    <span>{entry.data.stack.join(" · ")}</span>
+                  </h3>
+                  <p class="body">{entry.data.hook}</p>
+                  <p class="fig">
+                    <b>{entry.data.figure.value}</b>: {entry.data.figure.label}
+                  </p>
+                  {entry.data.status && <p class="note">{entry.data.status}</p>}
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section aria-labelledby="edu-h">
+        <h2 id="edu-h" class="sh">Education</h2>
+        <ol class="entries">
+          <li class="entry">
+            <p class="when">2018 – 2022</p>
+            <h3>
+              Saxion University of Applied Sciences
+              <span>BSc Computer Science, Deventer</span>
+            </h3>
           </li>
-        ))
-      }
-    </ul>
+        </ol>
+      </section>
 
-    <h2 class="mt-16 text-lead font-medium">Selected work</h2>
-    <ul class="mt-6 flex list-none flex-col p-0">
-      {
-        projects.map((p) => (
-          <li class="border-t border-edge py-6 first:border-t-0 first:pt-0">
-            <Rail>
-              <Fragment slot="rail">
-                <span>{p.data.stack.join(" / ")}</span>
-              </Fragment>
-              <h3 class="font-medium">{p.data.title}</h3>
-              <p class="measure body-copy mt-1">{p.data.hook}</p>
-              {p.data.status && <p class="mono-meta mt-2">{p.data.status}</p>}
-            </Rail>
-          </li>
-        ))
-      }
-    </ul>
-
-    <h2 class="mt-16 text-lead font-medium">Education</h2>
-    <div class="mt-6 border-t border-edge pt-6">
-      <Rail>
-        <Fragment slot="rail">
-          <span>2018 to 2022</span>
-          <span>Deventer</span>
-        </Fragment>
-        <h3 class="font-medium">BSc Computer Science</h3>
-        <p class="text-fg-muted">Saxion University of Applied Sciences</p>
-      </Rail>
-    </div>
+      <footer class="sign-off">
+        <p class="sign">— Huy</p>
+        <p class="ps">
+          <span>P.S.</span>
+          {site.availability}
+        </p>
+      </footer>
+    </article>
 
     {/* No point printing a button that offers a download. */}
-    <div class="no-print mt-16 border-t border-edge pt-8">
-      <a href="/Huy-Tran-CV.pdf" class="btn btn-secondary" download>Download as PDF</a>
-    </div>
-  </section>
-</Base>
+    <p class="tools tools-end no-print">
+      <a href="/Huy-Tran-CV.pdf" class="pill pill-solid" download>Download as PDF</a>
+    </p>
+  </main>
+
+  <style is:global>
+    .cvw {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: clamp(1rem, 4vw, 2.5rem) 0.75rem 6rem;
+      /* The tilted sheet would poke past a phone's edge. Clip, never scroll. */
+      overflow-x: clip;
+    }
+
+    /* Toolbar pills, the same shape as "Turn the card over" */
+    .cvw .tools {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin: 0 0 1.5rem;
+    }
+    .cvw .tools-end {
+      justify-content: center;
+      margin: 2.5rem 0 0;
+    }
+    .cvw .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      min-height: 2.75rem;
+      padding: 0.55rem 1.25rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 999px;
+      color: var(--ink);
+      font: 700 0.9375rem/1 var(--round);
+      text-decoration: none;
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+    }
+    .cvw .pill:hover {
+      background: var(--ink);
+      color: var(--card);
+    }
+    .cvw .pill-solid {
+      border-color: var(--sea);
+      background: var(--sea);
+      color: #fff;
+    }
+    .cvw .pill-solid:hover {
+      border-color: var(--ink);
+    }
+    .cvw .pill svg {
+      width: 1.1rem;
+      height: 1.1rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* The sheet of letter paper */
+    .cvw .sheet {
+      position: relative;
+      padding: clamp(1.4rem, 5vw, 3.25rem) clamp(1.15rem, 5vw, 3.5rem);
+      border-radius: 6px;
+      background: var(--card);
+      color: var(--ink);
+      box-shadow:
+        0 1px 2px rgb(60 40 30 / 0.12),
+        0 24px 50px -24px rgb(60 40 30 / 0.45);
+      animation: cv-settle 0.9s cubic-bezier(0.3, 1.2, 0.4, 1) both 0.1s;
+    }
+    @keyframes cv-settle {
+      from { opacity: 0; transform: translateY(24px) rotate(-1.4deg); }
+    }
+
+    .cvw .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .cvw .from {
+      margin: 0;
+      font: italic 400 clamp(1.05rem, 3vw, 1.35rem) / 1.2 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+      color: var(--rose);
+    }
+    .cvw .name {
+      margin: 0.3rem 0 0;
+      font: 900 clamp(2.6rem, 10vw, 4.5rem) / 0.95 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "opsz" 144;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--sea);
+      text-shadow: 3px 4px 0 #f2c6b4;
+    }
+    .cvw .role {
+      margin: 0.75rem 0 0;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--soft);
+    }
+
+    .cvw .head-mark {
+      position: relative;
+      flex: none;
+      width: 7.5rem;
+      height: 6.5rem;
+    }
+    .cvw .head-stamp {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 5.25rem;
+      height: 6.25rem;
+      rotate: 4deg;
+    }
+    .cvw .head-stamp .stamp-in {
+      background:
+        radial-gradient(circle at 30% 20%, rgb(255 255 255 / 0.25), transparent 60%),
+        var(--rose);
+    }
+    .cvw .head-stamp .stamp-v {
+      font-size: 1.7rem;
+    }
+    .cvw .pm-ring {
+      position: absolute;
+      left: 0;
+      bottom: -0.5rem;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 4.25rem;
+      height: 4.25rem;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      background: rgb(255 250 242 / 0.45);
+      color: rgb(70 60 90 / 0.6);
+      font: 800 0.625rem/1.25 var(--round);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      rotate: -12deg;
+    }
+
+    .cvw .hello {
+      margin: 1.75rem 0 0;
+      font: italic 400 clamp(1.05rem, 2.4vw, 1.25rem) / 1.6 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+      color: #2c3b5a;
+    }
+    .cvw .contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1.25rem;
+      margin: 1.25rem 0 0;
+      font-weight: 800;
+    }
+    .cvw .contact a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+      word-break: break-all;
+    }
+
+    /* Sections */
+    .cvw section {
+      margin-top: clamp(2.25rem, 6vw, 3.25rem);
+    }
+    .cvw .sh {
+      margin: 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--ink);
+      font: 700 clamp(1.5rem, 4vw, 1.9rem) / 1.15 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+    }
+    .cvw .entries {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .cvw .entry {
+      padding: 1.25rem 0;
+      border-bottom: 1px dashed var(--line);
+    }
+    .cvw .entry:last-child {
+      border-bottom: 0;
+    }
+    .cvw .when {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.25rem 0.6rem;
+      margin: 0;
+      font-weight: 800;
+      font-size: 0.8125rem;
+      letter-spacing: 0.06em;
+      color: var(--rose);
+    }
+    .cvw .now {
+      padding: 0.05rem 0.55rem;
+      border-radius: 3px;
+      background: var(--sea);
+      color: #fff;
+      font: 900 0.6875rem/1.6 var(--round);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .cvw .entry h3 {
+      margin: 0.25rem 0 0.5rem;
+      font: 700 1.3rem/1.25 var(--soft-serif);
+      font-variation-settings: "SOFT" 100;
+    }
+    .cvw .entry h3 span {
+      display: block;
+      font: 600 0.875rem/1.5 var(--round);
+      color: var(--soft);
+    }
+    .cvw .entry h3 a {
+      color: inherit;
+      text-decoration-color: var(--sea);
+      text-decoration-thickness: 2px;
+    }
+    .cvw .entry h3 a:hover {
+      color: var(--rose);
+    }
+    .cvw .body,
+    .cvw .body p {
+      margin: 0;
+      font-size: 0.9875rem;
+    }
+    .cvw .body p + p {
+      margin-top: 0.6rem;
+    }
+    .cvw .note {
+      margin: 0.5rem 0 0;
+      font-size: 0.9375rem;
+      font-style: italic;
+      color: var(--soft);
+    }
+    .cvw .fig {
+      margin: 0.5rem 0 0;
+      font-size: 0.9375rem;
+      color: var(--soft);
+    }
+    .cvw .fig b {
+      color: var(--ink);
+    }
+    .cvw .aside {
+      margin: 0.75rem 0 0;
+      padding: 1rem 1.1rem;
+      border-radius: 4px;
+      background: #fff7c9;
+      font-size: 0.9375rem;
+      box-shadow: 0 6px 16px -10px rgb(60 40 30 / 0.4);
+      rotate: 0.5deg;
+    }
+    .cvw .aside span,
+    .cvw .ps span {
+      display: block;
+      font: 800 0.75rem/1.6 var(--round);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7a5a00;
+    }
+
+    /* Selected work: one stamp each, worth the project's number */
+    .cvw .work {
+      display: grid;
+      grid-template-columns: 5.5rem minmax(0, 1fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .cvw .work-stamp {
+      width: 5.5rem;
+      height: 6.5rem;
+      margin-top: 0.35rem;
+      rotate: -2deg;
+    }
+    .cvw .work:nth-child(even) .work-stamp {
+      rotate: 2.5deg;
+    }
+    .cvw .work-stamp .stamp-v {
+      font-size: 1.05rem;
+      white-space: normal;
+    }
+    .cvw .hue-sea .stamp-in { background: var(--sea); }
+    .cvw .hue-rose .stamp-in { background: var(--rose); }
+    .cvw .hue-plum .stamp-in { background: #6a5896; }
+    .cvw .hue-ochre .stamp-in { background: #8a6420; }
+
+    .cvw .sign-off {
+      margin-top: 2.5rem;
+    }
+    .cvw .sign {
+      margin: 0;
+      font: italic 600 1.75rem/1 var(--soft-serif);
+      color: #2c3b5a;
+    }
+    .cvw .ps {
+      margin: 1.5rem 0 0;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--line);
+      font-size: 0.9375rem;
+    }
+
+    @media (min-width: 40rem) {
+      .cvw {
+        padding-inline: 1.25rem;
+      }
+      .cvw .sheet {
+        rotate: -0.4deg;
+      }
+    }
+    @media (max-width: 30rem) {
+      /* Both pills on one line at phone width: the rest of the label stays for
+         screen readers. */
+      .cvw .pill-more {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      .cvw .head-mark {
+        width: 5rem;
+        height: 5rem;
+      }
+      .cvw .head-stamp {
+        width: 4rem;
+        height: 4.75rem;
+      }
+      .cvw .head-stamp .stamp-v {
+        font-size: 1.3rem;
+      }
+      .cvw .pm-ring {
+        width: 3.4rem;
+        height: 3.4rem;
+        font-size: 0.5rem;
+      }
+      .cvw .work {
+        grid-template-columns: 4.25rem minmax(0, 1fr);
+        gap: 1rem;
+      }
+      .cvw .work-stamp {
+        width: 4.25rem;
+        height: 5rem;
+      }
+      .cvw .work-stamp .stamp-v {
+        font-size: 0.875rem;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .cvw .pill {
+        border-color: #efe6dc;
+        color: #efe6dc;
+      }
+      .cvw .pill:hover {
+        background: #efe6dc;
+        color: var(--ink);
+      }
+      .cvw .pill-solid {
+        border-color: var(--sea);
+        color: #fff;
+      }
+    }
+
+    /* Printing this page gives a plain sheet: no colour behind it, no stamps,
+       no buttons, no tilt, and every link spelled out. */
+    @media print {
+      .pc {
+        background: #fff !important;
+        color: #000;
+        font-size: 10.5pt;
+      }
+      .pc .blobs,
+      .pc .pc-skip,
+      .cvw .no-print,
+      .cvw .head-mark,
+      .cvw .work-stamp {
+        display: none !important;
+      }
+      .cvw {
+        max-width: none;
+        padding: 0;
+      }
+      .cvw .sheet {
+        padding: 0;
+        box-shadow: none;
+        rotate: none;
+        animation: none;
+        background: #fff;
+      }
+      .cvw .work {
+        display: block;
+      }
+      .cvw .aside {
+        box-shadow: none;
+        rotate: none;
+        border: 1px solid #ccc;
+        background: #fff;
+      }
+      .cvw .name {
+        text-shadow: none;
+      }
+      .cvw .entry,
+      .cvw .sh {
+        break-inside: avoid;
+      }
+      .cvw a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 8.5pt;
+        font-weight: 400;
+        color: #555;
+      }
+      @page {
+        margin: 16mm;
+      }
+    }
+  </style>
+</Postcards>

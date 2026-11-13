@@ -3,8 +3,7 @@ import { site } from "../lib/site";
 
 /**
  * Everything a page's head says to search engines, link previews and Clarity.
- * Shared by the homepage, which brings its own styles, and by Base, which
- * brings the site stylesheet, so both send the same signals.
+ * Sent by the Postcards layout, so every page sends the same signals.
  */
 interface Props {
   title: string;

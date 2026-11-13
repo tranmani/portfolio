@@ -1,13 +1,55 @@
 ---
-import Base from "../layouts/Base.astro";
+import Postcards from "../layouts/Postcards.astro";
 ---
 
-<Base title="Not found" description="That page does not exist." noindex>
-  <section class="mx-auto max-w-5xl px-6 py-24 md:px-10 md:py-32">
-    <h1 class="text-title font-medium">That page does not exist.</h1>
-    <p class="measure body-copy mt-4">
-      It may have belonged to an older version of this site.
-    </p>
-    <a href="/" class="btn btn-primary mt-8">Back to the work</a>
-  </section>
-</Base>
+<Postcards title="Not found" description="That page does not exist." noindex>
+  <main id="main" class="lost">
+    <p class="lost-from">Return to sender</p>
+    <h1>That page does not exist.</h1>
+    <p>It may have belonged to an older version of this site.</p>
+    <a href="/" class="lost-back">Back to the postcards</a>
+  </main>
+
+  <style is:global>
+    .lost {
+      max-width: 36rem;
+      margin: clamp(4rem, 14vw, 9rem) auto;
+      padding: 2.5rem 1.5rem;
+      border-radius: 6px;
+      background: var(--card);
+      color: var(--ink);
+      text-align: center;
+      box-shadow: 0 14px 34px -12px rgb(60 40 30 / 0.3);
+    }
+    .lost-from {
+      margin: 0;
+      font: italic 400 1.3rem/1.2 var(--soft-serif);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+      color: var(--rose);
+    }
+    .lost h1 {
+      margin: 0.5rem 0 1rem;
+      font: 700 clamp(1.8rem, 6vw, 2.4rem) / 1.15 var(--soft-serif);
+      font-variation-settings: "SOFT" 100;
+    }
+    .lost p {
+      margin: 0;
+    }
+    .lost .lost-back {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+      margin-top: 1.5rem;
+      padding: 0.55rem 1.25rem;
+      border-radius: 999px;
+      background: var(--sea);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .lost .lost-back:hover {
+      background: var(--ink);
+      color: var(--card);
+    }
+  </style>
+</Postcards>

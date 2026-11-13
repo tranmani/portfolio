@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
@@ -12,7 +11,4 @@ export default defineConfig({
   // inlines only what is small enough to be worth it and leaves the rest to the
   // immutable cache in vercel.json.
   build: { inlineStylesheets: "auto" },
-  vite: {
-    plugins: [tailwindcss()],
-  },
 });

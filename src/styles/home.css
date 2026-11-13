@@ -1,0 +1,932 @@
+/* Homepage pieces: the envelope, the postcards, the album and the reply card.
+   The shared look (tokens, stamp, blobs, dark mode) lives in postcards.css. */
+/* Large letter greeting */
+.pc .greet {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 10vw, 7rem) 1.25rem 2rem;
+  text-align: center;
+}
+.pc .from-script {
+  margin: 0;
+  font: italic 400 clamp(1.6rem, 4vw, 2.4rem) / 1 var(--soft-serif);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  color: var(--rose);
+}
+.pc .big {
+  margin: 0.4rem 0 0;
+  font: 900 clamp(4rem, 15vw, 11rem) / 0.9 var(--soft-serif);
+  font-variation-settings: "SOFT" 100, "opsz" 144;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--sea);
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .pc .big-name {
+    background: var(--fill) center 45% / cover;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--ink);
+    paint-order: stroke fill;
+    filter: drop-shadow(4px 5px 0 #f2c6b4);
+  }
+}
+.pc .sub {
+  margin: 1.25rem 0 0;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--soft);
+}
+.pc .intro {
+  max-width: 34rem;
+  margin: 1.25rem auto 0;
+  font-size: 1.15rem;
+}
+
+/* Postcards */
+.pc .cards {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 0;
+  list-style: none;
+}
+.pc .post {
+  margin-top: clamp(3.5rem, 9vw, 6rem);
+}
+.pc .post-h {
+  margin: 0 0 1rem;
+  font: 600 clamp(1.6rem, 4vw, 2.2rem) / 1.2 var(--soft-serif);
+  font-variation-settings: "SOFT" 100;
+}
+.pc .post-no {
+  display: block;
+  font: 800 0.8125rem/1.4 var(--round);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rose);
+}
+.pc .card {
+  display: grid;
+  gap: 1.25rem;
+  rotate: var(--tilt);
+}
+.pc .face {
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow:
+    0 1px 2px rgb(60 40 30 / 0.12),
+    0 14px 34px -12px rgb(60 40 30 / 0.3);
+  overflow: hidden;
+}
+.pc .front {
+  position: relative;
+  padding: 0.7rem;
+}
+.pc .front-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 3px;
+}
+.pc .front-label {
+  position: absolute;
+  left: 1.6rem;
+  bottom: 1.4rem;
+  margin: 0;
+  padding: 0.35rem 0.9rem 0.45rem;
+  border-radius: 4px;
+  background: rgb(255 250 242 / 0.92);
+  font: 700 clamp(1rem, 2.6vw, 1.35rem) / 1.1 var(--soft-serif);
+  font-variation-settings: "SOFT" 100;
+  color: var(--ink);
+}
+.pc .front-label span {
+  display: block;
+  font: italic 400 0.8em/1.2 var(--soft-serif);
+  color: var(--rose);
+}
+
+.pc .back {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background:
+    linear-gradient(var(--line), var(--line)) 54% 0 / 1px 100% no-repeat,
+    var(--card);
+}
+.pc .msg {
+  padding-right: clamp(1rem, 3vw, 2rem);
+}
+.pc .hand {
+  margin: 0 0 0.75rem;
+  font: italic 400 clamp(1.05rem, 2.3vw, 1.3rem) / 1.5 var(--soft-serif);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  color: #2c3b5a;
+}
+.pc .hand.small {
+  font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+  line-height: 1.55;
+  color: #44506b;
+}
+.pc .sign {
+  margin: 0;
+  font: italic 600 1.4rem/1 var(--soft-serif);
+  color: #2c3b5a;
+}
+.pc .addr {
+  padding-left: clamp(1rem, 3vw, 2rem);
+}
+.pc .stamp-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+.pc .line {
+  margin: 0;
+  padding: 0.5rem 0 0.15rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+.pc .figure-l {
+  margin: 0 0 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--soft);
+  text-align: right;
+}
+
+.pc .big-stamp {
+  flex: none;
+  width: 7.75rem;
+  height: 7.75rem;
+  rotate: 3deg;
+}
+.pc .big-stamp .stamp-in {
+  background:
+    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 0.25), transparent 60%),
+    var(--sea);
+}
+.pc .postmark {
+  position: relative;
+  width: 7rem;
+  height: 4.5rem;
+  margin-top: 1.25rem;
+  margin-right: -2.5rem;
+  z-index: 1;
+  rotate: -12deg;
+  color: rgb(70 60 90 / 0.55);
+}
+.pc .waves {
+  position: absolute;
+  inset: 0.7rem 0 auto 2.4rem;
+  width: 5.5rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.pc .pm-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font: 800 0.625rem/1.25 var(--round);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  background: rgb(255 250 242 / 0.4);
+}
+
+/* With the script running, the two faces share one cell and the card flips */
+.pc .card.flippable {
+  grid-template-areas: "c";
+  perspective: 1600px;
+  cursor: pointer;
+  gap: 0;
+}
+.pc .card.flippable .face {
+  grid-area: c;
+  backface-visibility: hidden;
+  transition: transform 0.9s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+.pc .card.flippable .back {
+  transform: rotateY(180deg);
+}
+.pc .card.flipped .front {
+  transform: rotateY(-180deg);
+}
+.pc .card.flipped .back {
+  transform: rotateY(0);
+}
+.pc .turn {
+  display: block;
+  margin: 1.25rem auto 0;
+  padding: 0.55rem 1.25rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 700 0.9375rem/1 var(--round);
+  cursor: pointer;
+}
+.pc .turn:hover {
+  background: var(--ink);
+  color: var(--card);
+}
+.pc .turn[hidden] {
+  display: none;
+}
+
+/* The envelope */
+.pc .envelope {
+  margin-top: 1.5rem;
+  border-radius: 6px;
+  background: #f3e3cf;
+  box-shadow: inset 0 0 0 1px #e2cdb2;
+}
+.pc .envelope summary {
+  position: relative;
+  display: block;
+  padding: 1.1rem 1.25rem 1.1rem 3.5rem;
+  font-weight: 800;
+  cursor: pointer;
+  list-style: none;
+}
+.pc .envelope summary::-webkit-details-marker {
+  display: none;
+}
+.pc .flap {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  width: 1.5rem;
+  height: 1.05rem;
+  translate: 0 -50%;
+  border: 2px solid var(--rose);
+  border-radius: 2px;
+}
+.pc .flap::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  width: 0.95rem;
+  height: 0.95rem;
+  border-right: 2px solid var(--rose);
+  border-bottom: 2px solid var(--rose);
+  transform: translate(-50%, -50%) rotate(45deg) scale(0.75);
+  transform-origin: center;
+  translate: 0 0.3rem;
+}
+.pc .envelope[open] .flap::before {
+  transform: translate(-50%, -50%) rotate(225deg) scale(0.75);
+  translate: 0 -0.05rem;
+}
+.pc .letter {
+  margin: 0 0.6rem 0.6rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(transparent 0 1.75rem, #ecdfcf 1.75rem calc(1.75rem + 1px)),
+    var(--card);
+  background-position: 0 0.4rem;
+  line-height: 1.75rem;
+}
+.pc .letter p,
+.pc .letter ul {
+  margin: 0 0 1.75rem;
+}
+.pc .letter h2,
+.pc .letter h3 {
+  margin: 0 0 0;
+  padding-top: 1.75rem;
+  font: 700 1.15rem/1.75rem var(--soft-serif);
+  font-variation-settings: "SOFT" 100;
+  color: var(--rose);
+}
+.pc .letter code {
+  font-size: 0.9em;
+}
+.pc .letter-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  font-weight: 700;
+}
+
+/* Section heads */
+.pc .sec-h {
+  margin: 0;
+  font: 700 clamp(2rem, 5vw, 3rem) / 1.1 var(--soft-serif);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  text-align: center;
+}
+.pc .sec-sub {
+  max-width: 36rem;
+  margin: 0.75rem auto 0;
+  text-align: center;
+  color: var(--soft);
+}
+
+/* Stamp album */
+.pc .album {
+  max-width: 64rem;
+  margin: clamp(5rem, 12vw, 9rem) auto 0;
+  padding: 0 1.25rem;
+}
+.pc .stamps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 3rem 2rem;
+  margin: 3rem 0 0;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  list-style: none;
+  border-radius: 8px;
+  background: #2f3b45;
+  box-shadow: inset 0 2px 12px rgb(0 0 0 / 0.35);
+  color: #f3ede4;
+}
+.pc .stamps a {
+  color: #ffd9c4;
+}
+.pc .album-stamp {
+  width: 9.5rem;
+  height: 12rem;
+  rotate: var(--tilt);
+  transition: rotate 0.4s ease;
+}
+.pc .stamps li:hover .album-stamp {
+  rotate: 0deg;
+}
+.pc .album-stamp img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.pc .stamp-kind {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.2rem 0.4rem;
+  background: rgb(255 255 255 / 0.9);
+  color: var(--ink);
+  font: 800 0.6875rem/1.3 var(--round);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.pc .text-stamp .stamp-in {
+  padding: 0.75rem 0.75rem 2rem;
+}
+.pc .hue-0 .stamp-in {
+  background: #c46b5b;
+}
+.pc .hue-1 .stamp-in {
+  background: #4f7f72;
+}
+.pc .hue-2 .stamp-in {
+  background: #7d6aa8;
+}
+.pc .hue-3 .stamp-in {
+  background: #b8863a;
+}
+.pc .ts-title {
+  font: 800 1.45rem/1.1 var(--soft-serif);
+  font-variation-settings: "SOFT" 100;
+  text-align: center;
+}
+.pc .stamps h3 {
+  margin: 1.25rem 0 0.25rem;
+  font: 700 1.25rem/1.2 var(--soft-serif);
+  font-variation-settings: "SOFT" 100;
+}
+.pc .stamps p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.pc .stamps .stamp-status {
+  margin-top: 0.5rem;
+  font-weight: 800;
+  color: #c6e3da;
+}
+.pc .stamps .stamp-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 800;
+  text-underline-offset: 0.2em;
+}
+
+/* Previous addresses: address labels with a forwarding sticker */
+.pc .moves {
+  max-width: 44rem;
+  margin: clamp(2.5rem, 8vw, 5rem) auto 0;
+  padding: 0 1rem;
+}
+/* The airmail envelope the labels are stuck on */
+.pc .env {
+  position: relative;
+  padding: 1.4rem 1.1rem 1.6rem;
+  border: 10px solid transparent;
+  border-image: repeating-linear-gradient(-45deg, #c8463f 0 10px, #fffaf2 10px 20px, #2f5f9e 20px 30px, #fffaf2 30px 40px) 10;
+  background: #ecd9b8;
+  color: var(--ink);
+  box-shadow: 0 24px 50px -28px rgb(60 40 30 / 0.55);
+  rotate: -0.6deg;
+}
+.pc .env-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.pc .env-addr p {
+  margin: 0;
+  font: 500 1rem/1.5 var(--soft-serif);
+  font-style: italic;
+}
+.pc .env-addr span {
+  display: inline-block;
+  min-width: 3rem;
+  font: 800 0.75rem/1 var(--round);
+  font-style: normal;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7a3b2e;
+}
+.pc .env-stamp {
+  flex: none;
+  width: 4.2rem;
+  margin: 0;
+  rotate: 4deg;
+}
+.pc .env-stamp .stamp-v {
+  font-size: 1.6rem;
+}
+.pc .env-h {
+  margin: 1.4rem 0 0;
+  font: 700 clamp(1.9rem, 7vw, 2.6rem) / 1.1 var(--soft-serif);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+.pc .env-sub {
+  margin: 0.4rem 0 0;
+  color: #5a4636;
+}
+.pc .env-note {
+  margin: 2rem 0 0;
+  padding: 1rem 1.1rem;
+  border-radius: 4px;
+  background: #fff7c9;
+  font-size: 0.9375rem;
+  rotate: 0.8deg;
+  box-shadow: 0 6px 16px -10px rgb(60 40 30 / 0.4);
+}
+.pc .env-note span {
+  display: block;
+  font: 800 0.75rem/1.6 var(--round);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a5a00;
+}
+.pc .opened {
+  margin: clamp(3.5rem, 10vw, 6rem) auto 0;
+  padding: 0 1.25rem;
+  text-align: center;
+  font: 600 clamp(1.4rem, 5vw, 2rem) / 1.25 var(--soft-serif);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+.pc .open-flap {
+  display: block;
+  width: 7rem;
+  height: 3.5rem;
+  margin: 0 auto 0.9rem;
+  background: linear-gradient(180deg, #dcc39b, #ecd9b8);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transform: perspective(300px) rotateX(180deg);
+  animation: c4-flap 1.6s cubic-bezier(0.3, 1.2, 0.4, 1) 0.2s both;
+}
+@keyframes c4-flap {
+  from { transform: perspective(300px) rotateX(0deg); }
+}
+@supports (animation-timeline: view()) {
+  .pc .open-flap {
+    animation: c4-flap linear both;
+    animation-timeline: view();
+    animation-range: entry 40% cover 45%;
+  }
+}
+.pc .labels {
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pc .label {
+  position: relative;
+  margin-top: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: 6px;
+  background: var(--card);
+  box-shadow: 0 8px 22px -12px rgb(60 40 30 / 0.35);
+  rotate: var(--tilt);
+  font-size: 0.9375rem;
+}
+.pc .label.current {
+  box-shadow:
+    inset 0 0 0 2px var(--sea),
+    0 8px 22px -12px rgb(60 40 30 / 0.35);
+}
+.pc .moved {
+  position: absolute;
+  right: 1.25rem;
+  top: -0.9rem;
+  margin: 0;
+  padding: 0.15rem 0.75rem;
+  border-radius: 3px;
+  background: #f7d774;
+  color: #4a3a10;
+  font: 900 0.75rem/1.6 var(--round);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  rotate: 4deg;
+}
+.pc .l-when {
+  margin: 0;
+  font-weight: 800;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  color: var(--rose);
+}
+.pc .label h3 {
+  margin: 0.25rem 0 0.5rem;
+  font: 700 1.4rem/1.2 var(--soft-serif);
+  font-variation-settings: "SOFT" 100;
+}
+.pc .label h3 span {
+  display: block;
+  font: 600 0.875rem/1.5 var(--round);
+  color: var(--soft);
+}
+.pc .l-body p {
+  margin: 0;
+}
+.pc .l-note {
+  margin: 0.5rem 0 0;
+  font-style: italic;
+  color: var(--soft);
+}
+
+/* Blank postcard */
+.pc .write {
+  max-width: 52rem;
+  margin: clamp(5rem, 12vw, 9rem) auto 0;
+  padding: 0 1.25rem 9rem;
+}
+.pc .blank {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: 6px;
+  background:
+    linear-gradient(var(--line), var(--line)) 54% 0 / 1px 100% no-repeat,
+    var(--card);
+  box-shadow: 0 14px 34px -12px rgb(60 40 30 / 0.3);
+  rotate: -0.6deg;
+}
+.pc .hand-h {
+  margin: 0 0 1rem;
+  font: italic 600 clamp(2rem, 5vw, 2.75rem) / 1.1 var(--soft-serif);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  color: #2c3b5a;
+}
+.pc .blank .msg p {
+  margin: 0 0 1rem;
+}
+.pc .blank .links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  font-weight: 800;
+}
+.pc .blank .stamp-row,
+.pc .blank-stamp {
+  margin: 0 0 1.5rem auto;
+}
+.pc .blank-stamp .stamp-v {
+  font-size: 2.5rem;
+}
+.pc .blank .line {
+  font-size: 1rem;
+  padding-top: 0.75rem;
+}
+.pc .mail {
+  font-weight: 800;
+  word-break: break-all;
+}
+
+
+
+.pc .greet {
+  position: relative;
+}
+/* The plane's path and the send animation run past the screen edge on a
+   phone. Clip rather than hidden, so nothing here becomes a scroll box. */
+.pc main,
+.pc .greet {
+  overflow-x: clip;
+}
+.pc .plane {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  offset-path: path("M -60 140 C 120 20, 260 260, 420 120 S 700 40, 900 160");
+  offset-rotate: auto;
+  animation: c4-fly 16s ease-in-out infinite;
+  filter: drop-shadow(3px 6px 4px rgb(60 40 30 / 0.2));
+  pointer-events: none;
+}
+@keyframes c4-fly {
+  0% { offset-distance: 0%; opacity: 0; }
+  8% { opacity: 1; }
+  55% { opacity: 1; }
+  62%, 100% { offset-distance: 100%; opacity: 0; }
+}
+@media (max-width: 40rem) {
+  .pc .plane {
+    width: 32px;
+    offset-path: path("M -50 90 C 60 10, 160 170, 240 70 S 380 30, 460 110");
+  }
+}
+.pc .from-script {
+  animation: c4-write 1.6s cubic-bezier(0.4, 0, 0.2, 1) both 0.2s;
+}
+@keyframes c4-write { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 -5% 0 0); } }
+.pc .big {
+  animation: c4-stampdown 0.9s cubic-bezier(0.3, 1.4, 0.5, 1) both 0.9s;
+}
+@keyframes c4-stampdown {
+  from { opacity: 0; transform: scale(1.25) rotate(-3deg); }
+  to { opacity: 1; transform: none; }
+}
+.pc .big-name {
+  background-size: 160% auto !important;
+  animation: c4-pan 30s ease-in-out infinite alternate;
+}
+@keyframes c4-pan { from { background-position: 0% 40%; } to { background-position: 100% 60%; } }
+.pc .sub,
+.pc .intro {
+  animation: c4-up 0.9s ease-out both 1.4s;
+}
+@keyframes c4-up { from { opacity: 0; transform: translateY(12px); } }
+
+.pc .card {
+  --rx: 0deg;
+  --ry: 0deg;
+  transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.pc .front-img {
+  animation: c4-kenburns 26s ease-in-out infinite alternate;
+}
+.pc .post:nth-child(even) .front-img {
+  animation-direction: alternate-reverse;
+}
+@keyframes c4-kenburns { from { transform: scale(1.02); } to { transform: scale(1.12) translate(-2%, -1%); } }
+.pc .card.flipped .postmark {
+  animation: c4-thunk 0.55s cubic-bezier(0.3, 1.5, 0.5, 1) both 0.35s;
+}
+.pc .card.flipped .big-stamp {
+  animation: c4-stamp 0.6s cubic-bezier(0.3, 1.5, 0.5, 1) both 0.2s;
+}
+.pc .card.flipped .hand {
+  animation: c4-up 0.6s ease-out both 0.3s;
+}
+.pc .card.flipped .hand + .hand { animation-delay: 0.45s; }
+.pc .card.flipped .hand + .hand + .hand { animation-delay: 0.6s; }
+@keyframes c4-thunk {
+  from { opacity: 0; transform: scale(1.6) rotate(-14deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes c4-stamp {
+  from { opacity: 0; transform: translate(14px, -18px) rotate(12deg) scale(1.15); }
+  to { opacity: 1; transform: none; }
+}
+
+.pc .turn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+}
+.pc .post {
+  text-align: left;
+}
+.pc .turn {
+  margin-inline: auto;
+}
+.pc .post > .turn {
+  display: flex;
+}
+.pc .turn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.6s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.pc .turn:hover svg,
+.pc .turn[aria-pressed="true"] svg {
+  transform: rotate(180deg);
+}
+.pc .post:not(.seen) .turn {
+  animation: c4-nudge 3.2s ease-in-out infinite 2s;
+}
+@keyframes c4-nudge {
+  0%, 80%, 100% { transform: none; }
+  85% { transform: rotate(-4deg) scale(1.04); }
+  90% { transform: rotate(3deg) scale(1.04); }
+  95% { transform: rotate(-1deg); }
+}
+
+.pc .envelope[open] .letter {
+  animation: c4-letter 0.7s cubic-bezier(0.2, 0.8, 0.3, 1.1) both;
+}
+@keyframes c4-letter { from { opacity: 0; transform: translateY(-28px) scale(0.98); } }
+.pc .flap::before {
+  transition: transform 0.45s cubic-bezier(0.3, 1.4, 0.5, 1), translate 0.45s;
+}
+
+@keyframes c4-wiggle {
+  0%, 100% { rotate: var(--tilt); }
+  25% { rotate: calc(var(--tilt) - 5deg); }
+  60% { rotate: calc(var(--tilt) + 4deg); }
+}
+.pc .stamps li:hover .album-stamp {
+  animation: c4-wiggle 0.6s ease-in-out;
+}
+
+.pc .send-plane {
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+  width: 40px;
+  opacity: 0;
+  pointer-events: none;
+}
+.pc .blank {
+  position: relative;
+}
+.pc .blank.sent .send-plane {
+  animation: c4-send 0.9s cubic-bezier(0.5, 0, 0.6, 1) both;
+}
+.pc .blank.sent {
+  animation: c4-lift 0.9s ease-in-out;
+}
+@keyframes c4-send {
+  0% { opacity: 0; transform: translate(0, 40px) rotate(0deg) scale(0.6); }
+  20% { opacity: 1; transform: translate(-10px, 20px) rotate(-10deg) scale(1); }
+  100% { opacity: 0; transform: translate(160px, -220px) rotate(-25deg) scale(0.7); }
+}
+@keyframes c4-lift { 40% { transform: translateY(-6px) rotate(-0.6deg); } }
+
+@supports (animation-timeline: view()) {
+  .pc .post .card {
+    animation: c4-drop linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 85%;
+  }
+  .pc .post-h {
+    animation: c4-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+  .pc .stamps li {
+    animation: c4-scatter linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+  .pc .moved {
+    animation: c4-slap linear both;
+    animation-timeline: view();
+    animation-range: entry 50% cover 35%;
+  }
+  .pc .blank {
+    animation: c4-drop linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+}
+@keyframes c4-drop {
+  from { opacity: 0; translate: 0 70px; scale: 1.06; rotate: calc(var(--tilt, 1deg) * 5); }
+  70% { opacity: 1; scale: 1; }
+  to { opacity: 1; translate: 0 0; scale: 1; rotate: var(--tilt, 0deg); }
+}
+@keyframes c4-scatter {
+  from { opacity: 0; translate: 0 40px; rotate: calc(var(--tilt) * -6); }
+  to { opacity: 1; translate: 0 0; rotate: 0deg; }
+}
+@keyframes c4-slap {
+  0%, 30% { opacity: 0; scale: 2.2; }
+  60% { opacity: 1; scale: 0.92; }
+  100% { opacity: 1; scale: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc .plane,
+  .pc .send-plane {
+    display: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .pc .back,
+  .pc .blank {
+    grid-template-columns: 1fr;
+    background: var(--card);
+  }
+  .pc .msg {
+    padding: 0 0 1.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .pc .addr {
+    padding: 1rem 0 0;
+  }
+  .pc .card {
+    rotate: calc(var(--tilt) / 2);
+  }
+  /* Both faces share one cell on a phone too, so turning a card never
+     changes its height. The back is the taller face, and the painting
+     fills the same box edge to edge, with no paper frame around it. */
+  .pc .front {
+    padding: 0;
+  }
+  .pc .front-img {
+    border-radius: 0;
+  }
+  .pc .front-label {
+    left: 1rem;
+    bottom: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc .card.flippable .face {
+    transition: none;
+  }
+  .pc .album-stamp {
+    transition: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .pc .greet,
+  .pc .opened,
+  .pc .post-h,
+  .pc .sec-h {
+    color: #efe6dc;
+  }
+  .pc .sub,
+  .pc .sec-sub {
+    color: #cdbfb3;
+  }
+  .pc .post-no,
+  .pc .from-script {
+    color: #f0a4a0;
+  }
+  .pc .greet a,
+  .pc .intro {
+    color: #efe6dc;
+  }
+  .pc .label,
+  .pc .env,
+  .pc .envelope,
+  .pc .blank {
+    color: var(--ink);
+  }
+  .pc .turn {
+    border-color: #efe6dc;
+    color: #efe6dc;
+  }
+  .pc .turn:hover {
+    background: #efe6dc;
+    color: var(--ink);
+  }
+}
