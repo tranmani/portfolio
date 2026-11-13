@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 /**
@@ -28,7 +29,7 @@ const projects = defineCollection({
         cover: image().optional(),
         coverAlt: z.string().optional(),
         links: z
-          .array(z.object({ label: z.string(), href: z.string().url() }))
+          .array(z.object({ label: z.string(), href: z.url() }))
           .default([]),
         proof: z.array(z.string()).default([]),
       })
@@ -37,7 +38,7 @@ const projects = defineCollection({
       .superRefine((data, ctx) => {
         if (data.cover && !data.coverAlt?.trim()) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             path: ["coverAlt"],
             message: "A project with a cover image must describe it in coverAlt.",
           });
@@ -79,7 +80,7 @@ const shipped = defineCollection({
     order: z.number().int(),
     stack: z.array(z.string()).min(1).max(4),
     status: z.string(),
-    links: z.array(z.object({ label: z.string(), href: z.string().url() })).default([]),
+    links: z.array(z.object({ label: z.string(), href: z.url() })).default([]),
   }),
 });
 
